@@ -1,0 +1,13 @@
+<nz-tabset id="tabs" [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="nzSelectChange($event)">
+  <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+    <ng-template #titleTemplate>
+      <div>
+        {{ tab.title }}
+        <i nz-icon type="close" (click)="closeUrl(tab.url)" class="ant-tabs-close-x"></i>
+      </div>
+    </ng-template>
+  </nz-tab>
+</nz-tabset>
+<div style="background-color: #f3f3f3">
+  <router-outlet></router-outlet>
+</div>

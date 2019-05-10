@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   login(){
-    document.cookie="this is cookie";
+    document.cookie="user login";
     window.location.href="/";
   }
 

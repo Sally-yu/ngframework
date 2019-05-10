@@ -2,7 +2,7 @@
 <div id="logindiv">
   <form nz-form [formGroup]="validateForm" class="login-form" >
     <nz-form-item style="text-align: center;">
-      <img src="http://10.24.20.71:8090/assets/img/logo-big.png" alt="inspur">
+      <img src="../../assets/src/logo-big.png" alt="inspur">
     </nz-form-item>
     <nz-form-item>
       <nz-form-control>
@@ -31,7 +31,7 @@
         <label nz-checkbox formControlName="remember">
           <span>记住我</span>
         </label>
-        <a class="login-form-forgot" class="login-form-forgot">忘记密码</a>
+        <a class="login-form-forgot">忘记密码</a>
         <button nz-button class="login-form-button" [nzType]="'primary'" (click)="login()">登录</button>
         <a href="">立即注册</a>
       </nz-form-control>

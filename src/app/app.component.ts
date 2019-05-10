@@ -6,9 +6,9 @@ import { Component ,OnInit} from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'ngframework';
 
+  cookie;
   ngOnInit(){
-
+    this.cookie = document.cookie;
   }
 }
