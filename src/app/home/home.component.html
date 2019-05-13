@@ -1,44 +1,39 @@
-<div id="patch">
-  <!--菜单缩放-->
-  <span id="logo" (click)="menuExp=!menuExp;">
-    浪潮制造智能分析平台
-  </span>
+<div id="ava">
+  <nz-badge nzDot>
+    <i nz-icon nzType="user" nzTheme="outline"></i>
+  </nz-badge>
 
 
-  <div id="ava">
-    <nz-badge nzDot>
-      <i nz-icon nzType="user" nzTheme="outline"></i>
-    </nz-badge>
-
-
-    <div id="user-menu">
-      <ul>
-        <li>
-          <i nz-icon nzType="user" nzTheme="outline"></i>
-          个人中心
-        </li>
-        <li>
-          <i nz-icon nzType="setting" nzTheme="outline"></i>
-          基本设置
-        </li>
-        <li>
-          <nz-badge [nzCount]="50">
-            <a class="head-example" style="margin-right: 24px"></a>
-            <i nz-icon nzType="notification" nzTheme="outline"></i>
-            消息通知
-          </nz-badge>
-        </li>
-        <li (click)="logout()">
-          <i nz-icon nzType="poweroff" nzTheme="outline"></i>
-          退出登录
-        </li>
-      </ul>
-    </div>
+  <div id="user-menu">
+    <ul>
+      <li>
+        <i nz-icon nzType="user" nzTheme="outline"></i>
+        个人中心
+      </li>
+      <li>
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
+        基本设置
+      </li>
+      <li>
+        <nz-badge [nzCount]="50">
+          <a class="head-example" style="margin-right: 24px"></a>
+          <i nz-icon nzType="notification" nzTheme="outline"></i>
+          消息通知
+        </nz-badge>
+      </li>
+      <li (click)="logout()">
+        <i nz-icon nzType="poweroff" nzTheme="outline"></i>
+        退出登录
+      </li>
+    </ul>
   </div>
 </div>
 
 <div [ngClass]="{'menu':menuExp,'menu-mini':!menuExp}">
   <!--三选项组合按钮-->
+  <span id="logo" >
+    浪潮制造智能分析平台
+  </span>
   <div id="box">
     <div id="radio">
       <ul>
@@ -70,7 +65,7 @@
                [(ngModel)]="searchValue">
       </label>
       <i nz-icon [nzType]="searchExp?'close':'search'" nzTheme="outline"
-         (click)="searchExp=!searchExp;"></i>
+         (click)="searchExp=!searchExp;searchValue='';"></i>
     </div>
   </div>
 
@@ -84,7 +79,7 @@
     </ng-template>
 
     <ng-template #nzTreeTemplate let-node>
-      <div class="custom-node" [class.active]="activedNode?.key === node.key" (click)="openFolder(node)" >
+      <div class="custom-node" [class.active]="activedNode?(activedNode.key == node.key):false" (click)="openFolder(node)">
         <div *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
           <i nz-icon [type]="node.icon"
              style="display: inline-block;"></i>
@@ -96,7 +91,7 @@
   -o-transition-duration: 400ms;
   transition-duration: 400ms;"></i>
         </div>
-        <div *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)" >
+        <div *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
           <div class="file-name" style="padding-left: 30px;width:156px;overflow-x: hidden">{{ node.title }}</div>
         </div>
       </div>
@@ -104,8 +99,26 @@
 
   </nz-tree>
 </div>
-<div [ngClass]="{'content':menuExp,'contentExp':!menuExp}">
-  <app-tabs></app-tabs>
+
+
+<div [ngClass]="{'content':menuExp,'contentExp':!menuExp}" >
+  <div id="leftBtn" (click)="menuExp=!menuExp;">
+    <i nz-icon nzTheme="outline" [nzType]="menuExp?'menu-fold':'menu-unfold'"></i>
+  </div>
+
+  <nz-tabset id="tabs" [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" (nzSelectChange)="selectChange($event)">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+      <ng-template #titleTemplate>
+        <div [ngStyle]="{'user-select':'none'}">
+          {{ tab.title }}
+          <i nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
+        </div>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+  <div style="background-color: #f3f3f3;height:800px">
+    {{tabs[tabIndex]?.temp}}
+  </div>
 </div>
 
 <div id="nav">
@@ -113,10 +126,10 @@
     <li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip (click)="click('/')">
       <i nz-icon nzType="dashboard" nzTheme="outline"></i>
     </li>
-    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('user')">
+    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('/model')">
       <i nz-icon nzType="global" nzTheme="outline"></i>
     </li>
-    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('setting')">
+    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('/grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
     </li>
     <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('/topo')">

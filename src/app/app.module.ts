@@ -13,17 +13,7 @@ import {IconDefinition} from '@ant-design/icons-angular';
 
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import {LoginComponent} from './login/login.component';
-import {RouteReuseStrategy, RouterModule, Routes} from '@angular/router';
-import {TabsComponent} from './tabs/tabs.component';
-import {TabsModule} from './tabs/tabs.module';
-import {UserComponent} from './tabs/user/user.component';
-import {SettingComponent} from './tabs/setting/setting.component';
-import {HomeModule} from './home/home.module';
-import {SettingModule} from './tabs/setting/setting.module';
-import {UserModule} from './tabs/user/user.module';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {Reuse} from './reuse';
-
+import {RouterModule, Routes} from '@angular/router';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -32,32 +22,27 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 
 registerLocaleData(zh);
 
+const routes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    TabsComponent,
-    UserComponent,
-    SettingComponent,
-    DashboardComponent,
   ],
   imports: [
-    RouterModule,
     BrowserModule,
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HomeModule,
-    TabsModule,
-    SettingModule,
-    UserModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [
-    {provide: RouteReuseStrategy, useClass: Reuse},
     {provide: NZ_I18N, useValue: zh_CN},
     {provide: NZ_ICONS, useValue: icons}
   ],

@@ -1,11 +1,6 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {concat} from 'rxjs';
-import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions} from 'ng-zorro-antd';
-import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3/view/util';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {promise} from 'selenium-webdriver';
-import {filter, map, mergeMap} from 'rxjs/operators';
-import {Title} from '@angular/platform-browser';
+import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode} from 'ng-zorro-antd';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +11,7 @@ export class HomeComponent implements OnInit {
 
   menuList = 'all';
 
-  tabIndex = -1;
+  tabIndex = 0;
 
   searchExp = false;
 
@@ -24,11 +19,14 @@ export class HomeComponent implements OnInit {
 
   menuExp = true; //菜单栏展开
 
-  tabs = [];
+  tabs = [
+    {title: '设备卡片', key: '1000', temp: `<app-user></app-user>`, author: 'NG ZORRO', isLeaf: true, fav: true, share: true},
+
+  ];
 
   dropdown: NzDropdownContextComponent;
   // actived node
-  activedNode: NzTreeNode;
+  activedNode: {};
   allNodes = [
     {
       title: '设备管理',
@@ -37,7 +35,7 @@ export class HomeComponent implements OnInit {
       expanded: true,
       icon: 'appstore',
       children: [
-        {title: '设备卡片', key: '1000', author: 'NG ZORRO', isLeaf: true, fav: true, share: true},
+        {title: '设备卡片', key: '1000', temp: `<app-user></app-user>`, author: 'NG ZORRO', isLeaf: true, fav: true, share: true},
         {title: '设备列表', key: '1001', author: 'NG ZORRO', isLeaf: true, fav: false, share: false},
         {title: '设备模板', key: '1002', author: 'NG ZORRO', isLeaf: true, fav: true, share: true},
       ]
@@ -101,6 +99,12 @@ export class HomeComponent implements OnInit {
   nodes = [];
   childNodes = [];
 
+  constructor(
+    private router: Router,
+    private nzDropdownService: NzDropdownService) {
+
+  }
+
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
@@ -115,8 +119,13 @@ export class HomeComponent implements OnInit {
 
   activeNode(data: NzFormatEmitEvent): void {
     if (data.node.origin.isLeaf) {     //仅子节点可选中
-      this.activedNode = data.node!;
-      this.tabIndex = this.tabs.indexOf(data.node.title) >= 0 ? this.tabs.indexOf(data.node.title) : this.tabs.push(data.node.title);
+      this.activedNode = data.node.origin;
+      var obj = JSON.parse(JSON.stringify(data.node.origin));
+      this.tabIndex = this.tabs.map(function (e) {
+        return e.key;
+      }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
+        return e.key;
+      }).indexOf(obj.key) : this.tabs.push(obj);
     }
   }
 
@@ -129,19 +138,41 @@ export class HomeComponent implements OnInit {
     // do something
   }
 
-  constructor(
-    private router :Router,
-    private nzDropdownService: NzDropdownService) {
-
-  }
-
   logout() {
     document.cookie = '';
     window.location.href = '/';
   }
 
-  click(data) {
-    this.router.navigate([data]);
+  click(key) {
+    // this.tabs.indexOf(key) >= 0 ? this.tabIndex = this.tabs.indexOf(key) : this.tabIndex = this.tabs.push(key);
+    this.router.navigate(key);
+  }
+
+  selectChange($event) {
+    this.tabIndex = $event.index;
+    const tab = this.tabs[this.tabIndex];
+    this.findNode(this.nodes,tab.key);
+  }
+
+  findNode(nodes, key) {
+    nodes.forEach(node => {
+      if (!node.isLeaf) {
+        this.findNode(node.children, key);
+      } else if(node.isLeaf) {
+        if (node.key == key) {
+          this.activedNode = node;
+          node.selected = true;
+          // console.log(this.nodes);
+        }else{
+          node.selected=false;
+        }
+      }
+    });
+  }
+
+  closeTab(tab): void {
+    this.tabs.splice(this.tabs.indexOf(tab), 1);
+    this.findNode(this.nodes,this.tabs[this.tabIndex].key);
   }
 
   //展开所有菜单
@@ -191,7 +222,6 @@ export class HomeComponent implements OnInit {
   }
 
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event);
   }
 
   ngOnInit() {
