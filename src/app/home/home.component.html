@@ -1,25 +1,33 @@
+<!--右上用户下拉选项，绝对定位-->
 <div id="ava">
   <nz-badge nzDot>
     <i nz-icon nzType="user" nzTheme="outline"></i>
   </nz-badge>
 
-
   <div id="user-menu">
     <ul>
-      <li>
+      <li (click)="optionClick('1040')">
         <i nz-icon nzType="user" nzTheme="outline"></i>
         个人中心
       </li>
-      <li>
+      <li (click)="optionClick('1041')">
         <i nz-icon nzType="setting" nzTheme="outline"></i>
         基本设置
       </li>
-      <li>
+      <li (click)="optionClick('1042')">
         <nz-badge [nzCount]="50">
           <a class="head-example" style="margin-right: 24px"></a>
           <i nz-icon nzType="notification" nzTheme="outline"></i>
           消息通知
         </nz-badge>
+      </li>
+      <li (click)="optionClick('1043')">
+        <i nz-icon nzType="team" nzTheme="outline"></i>
+        用户列表
+      </li>
+      <li (click)="optionClick('1044')">
+        <i nz-icon nzType="safety" nzTheme="outline"></i>
+        角色管理
       </li>
       <li (click)="logout()">
         <i nz-icon nzType="poweroff" nzTheme="outline"></i>
@@ -29,11 +37,14 @@
   </div>
 </div>
 
+<!--左菜单-->
 <div [ngClass]="{'menu':menuExp,'menu-mini':!menuExp}">
   <!--三选项组合按钮-->
-  <span id="logo" >
+  <span id="logo">
     浪潮制造智能分析平台
   </span>
+
+  <!--菜单功能栏-->
   <div id="box">
     <div id="radio">
       <ul>
@@ -54,7 +65,7 @@
       </ul>
     </div>
 
-    <div id="reload">
+    <div id="reload" (click)="reloadTree()">
       <i nz-icon nzType="reload" nzTheme="outline"></i>
     </div>
 
@@ -69,6 +80,7 @@
     </div>
   </div>
 
+  <!--菜单主体树列表-->
   <nz-tree [nzData]="nodes" (nzDblClick)="openFolder($event)" (nzClick)="activeNode($event)" [nzHideUnMatched]="true"
            [nzShowExpand]="false" [nzSearchValue]="searchValue" (nzSearchValueChange)="nzEvent($event)">
     <ng-template #contextTemplate>
@@ -79,7 +91,8 @@
     </ng-template>
 
     <ng-template #nzTreeTemplate let-node>
-      <div class="custom-node" [class.active]="activedNode?(activedNode.key == node.key):false" (click)="openFolder(node)">
+      <div class="custom-node" [class.active]="activedNode?(activedNode.key == node.key):false"
+           (click)="openFolder(node)">
         <div *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
           <i nz-icon [type]="node.icon"
              style="display: inline-block;"></i>
@@ -96,17 +109,19 @@
         </div>
       </div>
     </ng-template>
-
   </nz-tree>
 </div>
 
-
-<div [ngClass]="{'content':menuExp,'contentExp':!menuExp}" >
+<!--内容框-->
+<div [ngClass]="{'content':menuExp,'contentExp':!menuExp}">
+  <!--菜单搜索按钮-->
   <div id="leftBtn" (click)="menuExp=!menuExp;">
     <i nz-icon nzTheme="outline" [nzType]="menuExp?'menu-fold':'menu-unfold'"></i>
   </div>
 
-  <nz-tabset id="tabs" [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" (nzSelectChange)="selectChange($event)">
+  <!--tab条-->
+  <nz-tabset id="tabs" [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0"
+             (nzSelectChange)="selectChange($event)">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
       <ng-template #titleTemplate>
         <div [ngStyle]="{'user-select':'none'}">
@@ -116,29 +131,96 @@
       </ng-template>
     </nz-tab>
   </nz-tabset>
-  <div style="background-color: #f3f3f3;height:800px">
-    {{tabs[tabIndex]?.temp}}
+
+  <!--tab条下内容，根据tab页切换-->
+  <div id="app-content">
+    <!--控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测-->
+
+    <!--device mgr-->
+    <app-device-card *ngIf="exist('1000')" class="back"
+                     [ngStyle]="{'display':active=='1000'?'block':'none'}"></app-device-card>
+    <app-device-list *ngIf="exist('1001')" class="back"
+                     [ngStyle]="{'display':active=='1001'?'block':'none'}"></app-device-list>
+    <app-device-template *ngIf="exist('1002')" class="back"
+                         [ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>
+
+    <!--operation-->
+    <app-realtime-detection *ngIf="exist('1010')" class="back"
+                            [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-realtime-detection>
+    <app-operation-summary *ngIf="exist('1011')" class="back"
+                           [ngStyle]="{'display':active=='1011'?'block':'none'}"></app-operation-summary>
+    <app-operation-details *ngIf="exist('1012')" class="back"
+                           [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-operation-details>
+    <app-utilization-summary *ngIf="exist('1013')" class="back"
+                             [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-utilization-summary>
+    <app-utilization-detail *ngIf="exist('1014')" class="back"
+                            [ngStyle]="{'display':active=='1014'?'block':'none'}"></app-utilization-detail>
+
+    <!--alarm-->
+    <app-alarm-mgr *ngIf="exist('1020')" class="back"
+                   [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-alarm-mgr>
+    <app-alarm-strategy-list *ngIf="exist('1021')" class="back"
+                             [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-alarm-strategy-list>
+    <app-alarm-summary *ngIf="exist('1022')" class="back"
+                       [ngStyle]="{'display':active=='1022'?'block':'none'}"></app-alarm-summary>
+    <app-alarm-detail *ngIf="exist('1023')" class="back"
+                      [ngStyle]="{'display':active=='1023'?'block':'none'}"></app-alarm-detail>
+    <app-alarm-history *ngIf="exist('1024')" class="back"
+                       [ngStyle]="{'display':active=='1024'?'block':'none'}"></app-alarm-history>
+
+    <!--efficiency-->
+    <app-table-code-analysis *ngIf="exist('1030')" class="back"
+                             [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-table-code-analysis>
+    <app-usage-analysis *ngIf="exist('1031')" class="back"
+                        [ngStyle]="{'display':active=='1031'?'block':'none'}"></app-usage-analysis>
+    <app-trend-analysis *ngIf="exist('1032')" class="back"
+                        [ngStyle]="{'display':active=='1032'?'block':'none'}"></app-trend-analysis>
+    <app-efficiency-analysis *ngIf="exist('1033')" class="back"
+                             [ngStyle]="{'display':active=='1033'?'block':'none'}"></app-efficiency-analysis>
+    <app-price-analysis *ngIf="exist('1034')" class="back"
+                        [ngStyle]="{'display':active=='1034'?'block':'none'}"></app-price-analysis>
+
+    <!--user-->
+    <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"></app-user>
+    <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
+    <app-notification *ngIf="exist('1042')" class="back"
+                      [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>
+    <app-user-list *ngIf="exist('1043')" class="back"
+                   [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
+    <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
+
+
+    <!--自定义菜单一个，其子菜单存在tab页时渲染-->
+    <div *ngIf="cusExist()" style="height: 100%;">
+      <!--每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用-->
+      <div *ngFor="let meta of customTopo.children" style="height: 100%;"
+           [ngStyle]="{'display':active==meta.key?'block':'none'}">
+        <!--iframe嵌入，需要safe管道。按tab存在状态控制渲染-->
+        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>
+      </div>
+    </div>
   </div>
 </div>
 
+<!--右悬浮导航，绝对定位-->
 <div id="nav">
   <ul>
-    <li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip (click)="click('/')">
+    <li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >
       <i nz-icon nzType="dashboard" nzTheme="outline"></i>
     </li>
-    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('/model')">
+    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('model')">
       <i nz-icon nzType="global" nzTheme="outline"></i>
     </li>
-    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('/grafana')">
+    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
     </li>
-    <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('/topo')">
+    <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('topo')">
       <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
     </li>
-    <li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('/datapro')">
+    <li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">
       <i nz-icon nzType="robot" nzTheme="outline"></i>
     </li>
-    <li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('/datamgr')">
+    <li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('datamgr')">
       <i nz-icon nzType="database" nzTheme="outline"></i>
     </li>
   </ul>

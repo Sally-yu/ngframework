@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -9,8 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent implements OnInit {
-
-
 
 
   validateForm: FormGroup;
@@ -22,11 +20,14 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,
+              private router:Router
+  ) {
+  }
 
-  login(){
-    document.cookie="user login";
-    window.location.href="/";
+  login() {
+    document.cookie = 'user login';
+    this.router.navigate(['/']);
   }
 
 
