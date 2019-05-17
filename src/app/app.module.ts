@@ -35,7 +35,6 @@ import { UserListComponent } from './tabs/user-mgr/user-list/user-list.component
 import { RoleComponent } from './tabs/user-mgr/role/role.component';
 import { UtilizationDetailComponent } from './tabs/operation-detect/utilization-detail/utilization-detail.component';
 import { UtilizationSummaryComponent } from './tabs/operation-detect/utilization-summary/utilization-summary.component';
-import { CustomComponent } from './custom/custom.component';
 import {SettingComponent} from './tabs/user-mgr/setting/setting.component';
 import {UserComponent} from './tabs/user-mgr/user/user.component';
 import { SafePipe } from './safe.pipe';
@@ -78,7 +77,6 @@ const routes: Routes = [
     RoleComponent,
     UtilizationDetailComponent,
     UtilizationSummaryComponent,
-    CustomComponent,
     SettingComponent,
     UserComponent,
     SafePipe,
