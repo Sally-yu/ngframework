@@ -2,11 +2,11 @@
 /* CSS Document */
 *{ margin:0; padding:0 ;}
 html{ -webkit-text-size-adjust:none;/*只针对低版本谷歌*/}
-body{font-size:12px; color:#666; _overflow:hidden; overflow-x:hidden;  background:#fff; width: 100%;  *cursor: default;}
+body{font-size:14px; color: #1d1d1d; _overflow:hidden; overflow-x:hidden;  background:#fff; width: 100%;  *cursor: default;}
 body,ol,table,tr,td,ul,li,dt,dd,dl,h1,h2,h3,h4,h5,h6,form,input,select,textarea,p,
 blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,
 fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed,figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,time, mark, audio, video{ font-family: "微软雅黑",Tahoma, Helvetica, Arial, sans-serif; font-size:12px; font-weight:normal; font-style:normal;}
+menu, nav, output, ruby, section, summary,time, mark, audio, video{ font-family: "微软雅黑",Tahoma, Helvetica, Arial, sans-serif; font-size:14px; font-weight:normal; font-style:normal;}
 li{ list-style-type:none;}
 img{ border:none; vertical-align:middle;}
 /*-------将特定标签设成块---------*/
@@ -15,29 +15,29 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 a{ outline:none; cursor:pointer; text-decoration:none; color:#666; transition:all .4s ease 0s; -webkit-transition:all .4s ease 0s; -moz-transition:all .4s ease 0s;}
 a:active, a:hover { text-decoration:none}
 a, area, a:active{ blr:expression(this.onFocus=this.blur());}
-:focus { -moz-outline-style: none;} 
+:focus { -moz-outline-style: none;}
 /*在浏览器拖动鼠标颜色*/
-::selection { color: #fff; background-color: #000;}    
-::-moz-selection { color: #fff; background-color: #000;} 
+::selection { color: #fff; background-color: #000;}
+::-moz-selection { color: #fff; background-color: #000;}
 /*更改浏览器滚动条颜色兼容*/
-html,body{ 
+html,body{
 /*更改ie浏览器滚动条颜色*/
-	scrollbar-face-color:#000; 
+	scrollbar-face-color:#000;
 	scrollbar-highlight-color:#222;
-	scrollbar-shadow-color:#222; 
-	scrollbar-3dlight-color:#222; 
-	scrollbar-arrow-color:#000; 
-	scrollbar-track-color:#222; 
-	scrollbar-darkshadow-color:#222; 
-}  
+	scrollbar-shadow-color:#222;
+	scrollbar-3dlight-color:#222;
+	scrollbar-arrow-color:#000;
+	scrollbar-track-color:#222;
+	scrollbar-darkshadow-color:#222;
+}
 /*更改-webkit-内核滚动条样式*/
-::-webkit-scrollbar { width:8px;  height: 8px; background-color: #333;}  
-::-webkit-scrollbar-track  { border-radius: 10px; background-color: #333;}  
+::-webkit-scrollbar { width:8px;  height: 8px; background-color: #333;}
+::-webkit-scrollbar-track  { border-radius: 10px; background-color: #333;}
 ::-webkit-scrollbar-thumb  {  border-radius: 10px; background-color: #211F1F; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);}
 /*清除默认样式*/
 blockquote, q{ quotes: none;}
-blockquote:before, 
-blockquote:after, 
+blockquote:before,
+blockquote:after,
 q:before,
 q:after { content: ''; content: none;}
 /*-------表单居中、清理描边---------*/
@@ -70,10 +70,10 @@ caption { display:none;}
 .toe{ word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 /*引入图标字体*/
 @font-face {font-family: 'iconfont';
-    src: url('../font/iconfont.eot'); 
-    src: url('../font/iconfont.eot?#iefix') format('embedded-opentype'), 
+    src: url('../font/iconfont.eot');
+    src: url('../font/iconfont.eot?#iefix') format('embedded-opentype'),
     url('../font/iconfont.woff') format('woff'),
-    url('../font/iconfont.ttf') format('truetype'), 
+    url('../font/iconfont.ttf') format('truetype'),
     url('../font/iconfont.svg#iconfont') format('svg');
 }
 .iconfont{

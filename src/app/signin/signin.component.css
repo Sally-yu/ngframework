@@ -1,0 +1,11 @@
+[nz-form] {
+  height: 100%;
+  background-color: #f2f2f2;
+  margin: auto;
+  padding-top: 100px;
+  max-width: 800px;
+}
+button {
+  margin-left: 8px;
+}
+/*# sourceMappingURL=signin.component.css.map */

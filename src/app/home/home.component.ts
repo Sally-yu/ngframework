@@ -39,6 +39,7 @@ import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {error} from 'selenium-webdriver';
 import {reject} from 'q';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,8 @@ import {reject} from 'q';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
+
+  user={};
 
   menuList = 'all'; //菜单选项 全部 收藏 共享
 
@@ -91,7 +94,7 @@ export class HomeComponent implements OnInit {
     expanded: false,
     icon: 'bulb',
     children: [
-      {title: '模拟设备运转', key: '9001', url: 'http://10.24.20.45:8081/MachineTool.html', isLeaf: true, fav: false, share: false},
+      {title: '模拟设备运转', key: '9001', url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html', isLeaf: true, fav: false, share: false},
     ]
   }; //自定义菜单，仿照树节点结构
 
@@ -141,6 +144,7 @@ export class HomeComponent implements OnInit {
   topoUrl = this.url.topoUrl;
 
   constructor(
+    private userSrv:UserService,
     private url: UrlService,
     private router: Router,
     private http: HttpClient,
@@ -193,7 +197,7 @@ export class HomeComponent implements OnInit {
     let url;
     switch (key) {
       case 'model':
-        url = '';
+        url = 'http://10.24.20.42:9999/';
         break;
       case 'grafana':
         url = this.grafanaUrl;
@@ -416,11 +420,19 @@ export class HomeComponent implements OnInit {
     this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
   }
 
+  getUser() {
+    this.userSrv.getUser(document.cookie).then(user=>{
+      this.user=user;
+    });
+  }
+
   ngOnInit() {
     var cookie = document.cookie;
     if (!cookie) {
       this.router.navigate(['/login']);
     }
+    this.getUser()
+    console.log(cookie)
     this.reloadTree();
     console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
   }

@@ -1,0 +1,19 @@
+[nz-form] {
+  height: 100%;
+  padding-top: 8px;
+  max-width: 600px;
+}
+button {
+  margin-left: 8px;
+}
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+/*# sourceMappingURL=user.component.css.map */

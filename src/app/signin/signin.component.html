@@ -1,0 +1,81 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event, validateForm.value)">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>用户名</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
+      <nz-form-explain
+        *ngIf="
+              (validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors) ||
+              validateForm.get('userName')?.pending
+            "
+      >
+        <ng-container *ngIf="validateForm.get('userName')?.hasError('required')">
+          请输入用户名
+        </ng-container>
+        <ng-container *ngIf="validateForm.get('userName')?.hasError('duplicated')">
+          用户名已被占用
+        </ng-container>
+        <ng-container *ngIf="validateForm.get('userName')?.pending">
+          校验中...
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>手机</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <input nz-input formControlName="phone" placeholder="phone" type="tel" />
+      <nz-form-explain *ngIf="validateForm.get('email')?.dirty && validateForm.get('email')?.errors">
+        <ng-container *ngIf="validateForm.get('email')?.hasError('required')">
+          请输入E-mail地址!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <input nz-input formControlName="email" placeholder="email" type="email" />
+      <nz-form-explain *ngIf="validateForm.get('email')?.dirty && validateForm.get('email')?.errors">
+        <ng-container *ngIf="validateForm.get('email')?.hasError('email')">
+          不可用的E-mail地址!
+        </ng-container>
+        <ng-container *ngIf="validateForm.get('email')?.hasError('required')">
+          请输入E-mail地址!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
+    <div>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
+        <nz-form-explain
+          *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.hasError('required')"
+        >Please input your password!</nz-form-explain
+        >
+      </nz-form-control>
+    </div>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>确认密码</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
+      <nz-form-explain *ngIf="validateForm.get('confirm')?.dirty && validateForm.get('confirm')?.errors">
+        <ng-container *ngIf="validateForm.get('confirm')?.hasError('required')">
+          Please confirm your password!
+        </ng-container>
+        <ng-container *ngIf="validateForm.get('confirm')?.hasError('confirm')">
+          Password is inconsistent!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzOffset]="7" [nzSpan]="12">
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid">提交</button>
+      <button nz-button (click)="resetForm($event)">重置</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

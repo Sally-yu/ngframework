@@ -7,37 +7,28 @@
   margin: 12px;
   background-color: #ffffff;
   border-radius: 8px;
-  min-height: 600px;
-  //box-shadow: 0 0 4px rgba(10,10,10,.5);
 }
-
 #list-tool {
   height: 48px;
   width: 100%;
   padding-top: 8px;
-
-  label {
-    display: inline-block;
-  }
 }
-
+#list-tool label {
+  display: inline-block;
+}
 #btns {
   float: right;
 }
-
 button {
   margin-left: 8px;
 }
-
-.ant-table-tbody {
-  tr {
-    font-size: 14px;
-  }
-
-  td {
-    a{
-      font-size: 14px;
-    }
-    font-size: 14px;
-  }
+.ant-table-tbody tr {
+  font-size: 14px;
 }
+.ant-table-tbody td {
+  font-size: 14px;
+}
+.ant-table-tbody td a {
+  font-size: 14px;
+}
+/*# sourceMappingURL=user-list.component.css.map */

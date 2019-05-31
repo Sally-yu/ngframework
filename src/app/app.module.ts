@@ -38,6 +38,8 @@ import { UtilizationSummaryComponent } from './tabs/operation-detect/utilization
 import {SettingComponent} from './tabs/user-mgr/setting/setting.component';
 import {UserComponent} from './tabs/user-mgr/user/user.component';
 import { SafePipe } from './safe.pipe';
+import { SigninComponent } from './signin/signin.component';
+import {AddUserComponent} from './tabs/user-mgr/user-list/add-user/add-user.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -49,6 +51,7 @@ registerLocaleData(zh);
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'signin', component: SigninComponent},
 ];
 
 @NgModule({
@@ -80,6 +83,8 @@ const routes: Routes = [
     SettingComponent,
     UserComponent,
     SafePipe,
+    SigninComponent,
+    AddUserComponent,
   ],
   imports: [
     BrowserModule,

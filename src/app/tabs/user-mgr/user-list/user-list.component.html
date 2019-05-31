@@ -1,3 +1,86 @@
-<p>
-  user-list works!
-</p>
+<div id="content">
+  <app-add-user *ngIf="addUser" [option]="option" [user]="user" (result)="cancelAdd($event)"></app-add-user>
+
+  <div *ngIf="!addUser">
+    <nz-layout style="padding:24px 0; background: transparent">
+      <nz-sider [nzWidth]="200" style="background:transparent">
+        <ul nz-menu [nzMode]="'inline'" style="height:100%">
+          <li nz-submenu>
+            <span title><i nz-icon type="user"></i>subnav 1</span>
+            <ul>
+              <li nz-menu-item>option1</li>
+              <li nz-menu-item>option2</li>
+              <li nz-menu-item>option3</li>
+              <li nz-menu-item>option4</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="laptop"></i>subnav 2</span>
+            <ul>
+              <li nz-menu-item>option5</li>
+              <li nz-menu-item>option6</li>
+              <li nz-menu-item>option7</li>
+              <li nz-menu-item>option8</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="notification"></i>subnav 3</span>
+            <ul>
+              <li nz-menu-item>option9</li>
+              <li nz-menu-item>option10</li>
+              <li nz-menu-item>option11</li>
+              <li nz-menu-item>option12</li>
+            </ul>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-content style="padding: 0 24px; min-height: 280px;">
+        <div id="list-tool">
+          <label>
+            <input type="text" nz-input placeholder="输入用户名搜索">
+          </label>
+          <button nz-button nzType="primary">搜索</button>
+          <div id="btns">
+            <button nz-button (click)="getList()">刷新</button>
+            <button nz-button nzType="primary" (click)="addUser=true;option='new';user={};">新增</button>
+          </div>
+        </div>
+        <nz-table #list [nzData]="userList" [nzLoading]="loading" [nzPageSize]="5">
+          <thead>
+          <tr>
+            <th nzWidth="100px">#</th>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>手机</th>
+            <th nzWidth="100px">状态</th>
+            <th nzWidth="200px">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of list.data">
+            <td>{{userList.indexOf(data)+1}}</td>
+            <td>{{ data.username }}</td>
+            <td>{{ data.email }}</td>
+            <td>{{ data.phone }}</td>
+            <td *ngIf="data.status==='0'" style="color:gold">未认证</td>
+            <td *ngIf="data.status==='1'" style="color: #52c41a">正常</td>
+            <td *ngIf="data.status==='2'" style="color: #ff2222">禁用中</td>
+            <td>
+              <a (click)="addUser=true;option='edit';user=data;user['password']='';">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+                编辑
+              </a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(data.key)" style="color: #ff2222;">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+                删除</a>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-content>
+    </nz-layout>
+  </div>
+
+</div>
+
