@@ -214,7 +214,7 @@
     <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
 
-    <!--此处三个自定义菜单，逻辑一样且很细致，不确定能否简化，建议兄弟们别乱搞-->
+    <!--此处三个自定义菜单，逻辑相同，且细致缠绵，不确定能否简化，建议兄弟们别乱搞-->
     <!--自定义grafana区域，其子菜单存在tab页时渲染-->
     <!--打开的tab页中有grafana自定义菜单，则渲染整个大div（感觉可以去掉，还有显隐控制） // 激活的tab页属于grafana自定义菜单时才display // height必须100%，否则有高度问题，应该源于ant样式-->
     <div *ngIf="cusExist('grafana')" style="height: 100%;" [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">

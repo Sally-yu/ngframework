@@ -32,7 +32,7 @@ export class UserListComponent implements OnInit {
   getList() {
     this.loading=true;
     this.userSrv.getList().then(res=>{
-      this.userList=res["list"];
+      this.userList=res;
       this.loading=false;
     });
   }

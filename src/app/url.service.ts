@@ -18,5 +18,9 @@ export class UrlService {
   public updateUser=this.hostname+this.hostPort+'/user/update';
   public removeUser=this.hostname+this.hostPort+'/user/remove';
 
+  public allNotif=this.hostname+this.hostPort+'/notif/all';
+  public newNotif=this.hostname+this.hostPort+'/notif/new';
+  public removeNotif=this.hostname+this.hostPort+'/notif/remove';
+
   constructor() { }
 }

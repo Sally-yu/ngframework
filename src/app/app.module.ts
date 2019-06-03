@@ -40,6 +40,10 @@ import {UserComponent} from './tabs/user-mgr/user/user.component';
 import { SafePipe } from './safe.pipe';
 import { SigninComponent } from './signin/signin.component';
 import {AddUserComponent} from './tabs/user-mgr/user-list/add-user/add-user.component';
+import { PhoneComponent } from './tabs/user-mgr/user/modify/phone/phone.component';
+import { EmailComponent } from './tabs/user-mgr/user/modify/email/email.component';
+import {PasswordComponent} from './tabs/user-mgr/user/modify/password/password.component';
+import { NotifDetialComponent } from './tabs/user-mgr/notification/detail/notif-detial/notif-detial.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -85,6 +89,10 @@ const routes: Routes = [
     SafePipe,
     SigninComponent,
     AddUserComponent,
+    PasswordComponent,
+    PhoneComponent,
+    EmailComponent,
+    NotifDetialComponent,
   ],
   imports: [
     BrowserModule,
