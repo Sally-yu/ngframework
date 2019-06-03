@@ -42,7 +42,8 @@ export class UserService {
       this.http.post(this.userUrl, {key: key}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
-            user["time"]=user["time"].slice(0,user["time"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
+            // user["sigintime"]=user["sigintime"].slice(0,user["sigintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
+            // user["logintime"]=user["logintime"].slice(0,user["logintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
           } else {
             this.message.error(res['msg']);
           }
@@ -62,7 +63,8 @@ export class UserService {
         if (res['status']) {
           data = res['data'];
           data.forEach(e=>{
-            e["time"]=e["time"].slice(0,e["time"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
+            // e["sigintime"]=e["sigintime"].slice(0,e["sigintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
+            // e["logintime"]=e["logintime"].slice(0,e["logintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
           })
         }
         resolve(data);
