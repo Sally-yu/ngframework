@@ -29,7 +29,7 @@
  *            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.
  *
  *
- *    又看源码，看你**呀！
+ *    又看源码，看你**呀
  */
 
 import {Component, OnInit, TemplateRef} from '@angular/core';
@@ -48,7 +48,7 @@ import {UserService} from '../user.service';
 })
 export class HomeComponent implements OnInit {
 
-  user={};
+  user = {};
 
   menuList = 'all'; //菜单选项 全部 收藏 共享
 
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
   ]; //tab页内容数组，元素格式是数的子节点
 
   customTopo = {
-    title: '设备布局',
+    title: '拓扑监控',
     key: '700',
     expanded: false,
     icon: 'gateway',
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
   }; //自定义菜单，仿照树节点结构
 
   cusGrafana = {
-    title: '数据检测',
+    title: '实时监控',
     key: '800',
     expanded: false,
     icon: 'line-chart',
@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
   }; //自定义菜单，仿照树节点结构
 
   custom3D = {
-    title: '三维仿真',
+    title: '三维监控',
     key: '900',
     expanded: false,
     icon: 'bulb',
@@ -133,18 +133,38 @@ export class HomeComponent implements OnInit {
         {title: '报警信息详情', key: '1013', app: 'alarm-detail', isLeaf: true, fav: true, share: true},
         {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
       ]
+    },
+    {
+      title: '数据管理',
+      key: '102',
+      expanded: false,
+      icon: 'database',
+      children: [
+        {title: '数据库管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: true},
+      ]
+    },
+    {
+      title: '数据处理',
+      key: '103',
+      expanded: false,
+      icon: 'robot',
+      children: [
+        {title: '数据定义', key: '1030', app: 'data-define', isLeaf: true, fav: false, share: true},
+      ]
     }
   ]; //所有预置节点，渲染菜单结构
 
   nodes = []; //用于树列表绑定
+  staticNodes; //拼接后的节点，用于刷新菜单不必异步请求，刷新树列表时刷新
 
   workSpc;
   listUrl = this.url.workUrl;
   grafanaUrl = this.url.gafanaUrl;
   topoUrl = this.url.topoUrl;
+  loading = false;
 
   constructor(
-    private userSrv:UserService,
+    private userSrv: UserService,
     private url: UrlService,
     private router: Router,
     private http: HttpClient,
@@ -341,10 +361,10 @@ export class HomeComponent implements OnInit {
     this.menuList = key;
     switch (this.menuList) {
       case 'all':
-        this.nodes = JSON.parse(JSON.stringify(this.allNodes));//浅复制
+        this.nodes=JSON.parse(JSON.stringify(this.staticNodes));
         break;
       case 'fav':
-        this.nodes = JSON.parse(JSON.stringify(this.allNodes));
+        this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
         this.nodes.forEach(e => {
           e.children.forEach(c => {
             if (!c.fav) {
@@ -354,7 +374,7 @@ export class HomeComponent implements OnInit {
         });
         break;
       case 'share':
-        this.nodes = JSON.parse(JSON.stringify(this.allNodes));
+        this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
         this.nodes.forEach(e => {
           e.children.forEach(c => {
             if (!c.share) {
@@ -409,20 +429,26 @@ export class HomeComponent implements OnInit {
   }
 
   reloadTree() {
-    //异步等待
-    this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-
+    this.loading = true;
     //网络错误等待不来时不会执行
     this.getWorkSpc().then(_ => {
-      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义菜 深复制防联动
+      this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义 深复制防联动
+      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
+      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
+      this.loading = false;
+      this.staticNodes=JSON.parse(JSON.stringify(this.nodes));
+    }, _ => {
+      this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+      this.staticNodes=JSON.parse(JSON.stringify(this.nodes));
+      this.loading = false;
     });
-    this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
-    this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
+
   }
 
   getUser() {
-    this.userSrv.getUser(document.cookie).then(user=>{
-      this.user=user;
+    this.userSrv.getUser(document.cookie).then(user => {
+      this.user = user;
     });
   }
 
@@ -431,8 +457,8 @@ export class HomeComponent implements OnInit {
     if (!cookie) {
       this.router.navigate(['/login']);
     }
-    this.getUser()
-    console.log(cookie)
+    this.getUser();
+    console.log(cookie);
     this.reloadTree();
     console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
   }

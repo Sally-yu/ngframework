@@ -23,6 +23,9 @@ export class UserComponent implements OnInit {
   confirm;
   confirmOK = true;
   confirmStatus ;
+  changePwd= false;
+  changeEmail= false;
+  changePhone= false;
 
   constructor(private rsa: RsaService,
               private http: HttpClient,
@@ -70,5 +73,12 @@ export class UserComponent implements OnInit {
     this.getUser();
   }
 
-
+  cancel($event: any) {
+    if(event){
+      this.changeEmail=false;
+      this.changePhone=false;
+      this.changePwd=false;
+    }
+    this.getUser();
+  }
 }

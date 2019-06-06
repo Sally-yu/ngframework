@@ -44,6 +44,10 @@ import { PhoneComponent } from './tabs/user-mgr/user/modify/phone/phone.componen
 import { EmailComponent } from './tabs/user-mgr/user/modify/email/email.component';
 import {PasswordComponent} from './tabs/user-mgr/user/modify/password/password.component';
 import { NotifDetialComponent } from './tabs/user-mgr/notification/detail/notif-detial/notif-detial.component';
+import { TemplateDetailComponent } from './tabs/device-mgr/device-template/template-detail/template-detail.component';
+import { DeviceDetailComponent } from './tabs/device-mgr/device-list/device-detail/device-detail.component';
+import { DbMgrComponent } from './tabs/data-mgr/db-mgr/db-mgr.component';
+import { DataDefineComponent } from './tabs/data-process/data-define/data-define.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -93,6 +97,10 @@ const routes: Routes = [
     PhoneComponent,
     EmailComponent,
     NotifDetialComponent,
+    TemplateDetailComponent,
+    DeviceDetailComponent,
+    DbMgrComponent,
+    DataDefineComponent,
   ],
   imports: [
     BrowserModule,

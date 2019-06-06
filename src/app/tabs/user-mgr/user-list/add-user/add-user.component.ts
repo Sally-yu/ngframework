@@ -51,18 +51,22 @@ export class AddUserComponent implements OnInit {
       case 'edit':
         this.userSrv.update(this.user).then(msg => {
           this.loading = false;
+        },msg=>{
+          this.loading=false;
         });
         break;
       case 'new':
         this.userSrv.newUser(this.user).then(msg => {
           this.loading = false;
+          this.close();
+        },error=>{
+          this.loading=false;
         });
         break;
       default:
         this.loading=false;
         break;
     }
-
   }
 
   reset() {

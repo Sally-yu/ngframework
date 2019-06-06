@@ -17,7 +17,7 @@ button {
   margin: 12px;
   background-color: #ffffff;
   border-radius: 8px;
-  min-height: 600px;
+  min-height: 660px;
   //box-shadow: 0 0 4px rgba(10,10,10,.5);
 }
 
@@ -77,4 +77,14 @@ button {
   i{
     color: #0987fe;
   }
+}
+
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
 }

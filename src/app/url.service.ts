@@ -17,10 +17,34 @@ export class UrlService {
   public addUser=this.hostname+this.hostPort+'/user/add';
   public updateUser=this.hostname+this.hostPort+'/user/update';
   public removeUser=this.hostname+this.hostPort+'/user/remove';
+  public newPwd=this.hostname+this.hostPort+'/user/newpwd';
+  public authKey=this.hostname+this.hostPort+'/user/authkey';
+
 
   public allNotif=this.hostname+this.hostPort+'/notif/all';
   public newNotif=this.hostname+this.hostPort+'/notif/new';
   public removeNotif=this.hostname+this.hostPort+'/notif/remove';
+
+
+  public deviceList=this.hostname+this.hostPort+'/device/all';
+  public device=this.hostname+this.hostPort+'/device/key';
+  public removeDevice=this.hostname+this.hostPort+'/device/remove';
+  public addDevice=this.hostname+this.hostPort+'/device/add';
+  public updateDevice=this.hostname+this.hostPort+'/device/update';
+
+
+  public tempList=this.hostname+this.hostPort+'/template/all';
+  public template=this.hostname+this.hostPort+'/template/key';
+  public removeTemp=this.hostname+this.hostPort+'/template/remove';
+  public addTemp=this.hostname+this.hostPort+'/template/add';
+  public updateTemp=this.hostname+this.hostPort+'/template/update';
+
+
+  public alarmlist=this.hostname+this.hostPort+'/alarm/all';
+  public alarm=this.hostname+this.hostPort+'/alarm/key';
+  public alarmStrategy=this.hostname+this.hostPort+'/alarm/strategy';
+  public alarmSummary=this.hostname+this.hostPort+'/alarm/summary';
+  public alarmHistory=this.hostname+this.hostPort+'/alarm/history';
 
   constructor() { }
 }

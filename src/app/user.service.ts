@@ -42,14 +42,15 @@ export class UserService {
       this.http.post(this.userUrl, {key: key}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
-            // user["sigintime"]=user["sigintime"].slice(0,user["sigintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
-            // user["logintime"]=user["logintime"].slice(0,user["logintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
+            user['signtime'] = user['signtime'].slice(0, user['signtime'].indexOf('.')).replace('T', ' '); //去T 去毫秒及末尾时区
+            user['logintime'] = user['logintime'].slice(0, user['logintime'].indexOf('.')).replace('T', ' '); //去T 去毫秒及末尾时区
           } else {
             this.message.error(res['msg']);
           }
           resolve(user);
         },
         msg => {
+          this.message.error(msg.error['msg']);
           reject(user);
         });
     });
@@ -60,12 +61,12 @@ export class UserService {
     let data = [];
     return new Promise((resolve, reject) => {
       this.http.get(this.listUrl).toPromise().then(res => {
-        if (res['status']) {
+        if (res['status'] && res['data']) {
           data = res['data'];
-          data.forEach(e=>{
-            // e["sigintime"]=e["sigintime"].slice(0,e["sigintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
-            // e["logintime"]=e["logintime"].slice(0,e["logintime"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
-          })
+          data.forEach(e => {
+            e['signtime'] = e['signtime'].slice(0, e['signtime'].indexOf('.')).replace('T', ' '); //去T 去毫秒及末尾时区
+            e['logintime'] = e['logintime'].slice(0, e['logintime'].indexOf('.')).replace('T', ' '); //去T 去毫秒及末尾时区
+          });
         }
         resolve(data);
       }, error1 => {
@@ -108,6 +109,46 @@ export class UserService {
           this.message.error(res['msg']);
         } else {
           this.message.success(res['msg']);
+        }
+        resolve(res['status']);
+      }, error1 => {
+        this.message.error(error1.error['msg']);
+        reject(false);
+      });
+    });
+  }
+
+  //修改密码
+  newPwd(key: string, pwd: string): any {
+    let encrypt = this.rsa.Encrypt(pwd);//公钥加密 字符串超长 分段加
+    return new Promise((resolve, reject) => {
+      if (!encrypt) {
+        reject(false);
+      }
+      this.http.post(this.url.newPwd, {key: key, pwd: encrypt}).subscribe(res => {
+        if (!res['status']) {
+          this.message.error(res['msg']);
+          reject(false);
+        }
+        resolve(res['status']);
+      }, error1 => {
+        this.message.error(error1.error['msg']);
+        reject(false);
+      });
+    });
+  }
+
+  //验证用户key与密码匹配
+  authKey(key: string, pwd: string): any {
+    let encrypt = this.rsa.Encrypt(pwd);//公钥加密 字符串超长 分段加
+    return new Promise((resolve, reject) => {
+      if (!encrypt) {
+        reject(false);
+      }
+      this.http.post(this.url.authKey, {key: key, pwd: encrypt}).subscribe(res => {
+        if (!res['status']) {
+          this.message.error(res['msg']);
+          reject(false);
         }
         resolve(res['status']);
       }, error1 => {

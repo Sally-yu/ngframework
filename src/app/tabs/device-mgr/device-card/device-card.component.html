@@ -1,3 +1,75 @@
-<p>
-  device-card works!
-</p>
+<div id="content">
+  <app-device-detail *ngIf="deviceDetail" [device]="device" [option]="option" [parentCom]="'设备卡片'"
+                     (result)="cancel($event)"></app-device-detail>
+  <div style="padding: 24px" *ngIf="!deviceDetail">
+    <div id="toolbar">
+      <ul>
+        <li>
+          <div style="background-color: #1ab768;"></div>
+          运行
+        </li>
+        <li>
+          <div style="background-color: #ff2222;"></div>
+          停机
+        </li>
+        <li>
+          <div style="background-color: gold;"></div>
+          报警
+        </li>
+      </ul>
+      <div id="search">
+        <input nz-input [(ngModel)]="searchValue" placeholder="请输入关键字搜索">
+        <input nz-input [(ngModel)]="group" placeholder="分组">
+        <button nz-button >搜索</button>
+        <button nz-button (click)="add()">新增</button>
+        <button nz-button >图表</button>
+      </div>
+    </div>
+    <nz-list [nzDataSource]="viewList" [nzRenderItem]="item"
+             [nzGrid]="{ gutter: 16, span: 6 ,xs:24 ,sm:12,md:12,lg:12,xl:6,xxl:6}"
+             [nzPagination]="pagination" [nzLoading]="loading">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent">
+          <ng-template #nzContent>
+            <div class="card">
+              <div class="title" [ngStyle]="{'background-color':item.status?'#1ab768':'#ff2222'}">
+                {{item.name}}
+                <i nz-icon nzType="edit" title="编辑设备" nzTheme="outline" style="float: right" (click)="edit(item.key)"></i>
+              </div>
+              <ul [ngStyle]="{'border':item.status?'solid 1px #1ab768':'solid 1px #ff2222'}">
+                <li>
+                  编号:<span>{{item.code}}</span>
+                </li>
+                <li>
+                  状态:<span>
+                  <nz-switch [(ngModel)]="item.status" class="switch"></nz-switch>
+                  </span>
+                </li>
+                <li>
+                  厂商:<span>{{item.manufacturer}}</span>
+                </li>
+                <li>
+                  连接:<span>{{item.connect}}</span>
+                </li>
+                <li>
+                  型号:<span>{{item.model}}</span>
+                </li>
+                <li>
+                  注册:<span>{{item.time}}</span>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+
+    <ng-template #pagination>
+      <nz-pagination [nzPageIndex]="currentIndex" [nzTotal]="deviceList.length"
+                     (nzPageIndexChange)="indexChange($event)" (nzPageSizeChange)="sizeChange($event)" nzShowSizeChanger
+                     [nzPageSize]="pageSize"
+                     [nzPageSizeOptions]="[4,8,16,32]"></nz-pagination>
+    </ng-template>
+
+  </div>
+</div>

@@ -25,8 +25,8 @@ export class UserListComponent implements OnInit {
   cancelAdd(event) {
     if (event) {
       this.addUser = false;
+      this.getList();
     }
-    this.getList();
   }
 
   getList() {

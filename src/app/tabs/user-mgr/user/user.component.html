@@ -1,57 +1,71 @@
 <div id="content">
-  <div id="info">
-    <nz-avatar [nzSize]="100"  [nzText]="'User'" [nzShape]="'square'" [nzSrc]="user['img']"
-               style="background-color:#555d60;box-shadow: 0 0 4px rgba(10,10,10,.5);cursor: pointer;font-size: 40px"></nz-avatar>
-    <div style="font-size: 40px;font-weight: bold;line-height: 80px;float: right;">
-      <ul>
-        <li style="line-height: 60px;font-size: 40px;font-weight: bold">{{user['username']}}</li>
-        <li style="line-height: 40px;font-size: 16px;float: right;">状态:
-          <span *ngIf="user['status']==='0'" style="color: gold;font-weight: bold">未激活</span>
-          <span *ngIf="user['status']==='1'" style="color: #52c41a;font-weight: bold">正常</span>
-          <span *ngIf="user['status']==='2'" style="color: #ff2222;font-weight: bold">禁用中</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <nz-divider nzType="horizontal"></nz-divider>
 
-  <ul id="ul">
-    <li><span>用户角色</span>
-      <div>
-        <span *ngIf="user['role']==='admin'">管理员</span>
-        <span *ngIf="user['role']===''">缺省角色</span>
+  <app-password *ngIf="changePwd" [key]="user['key']" (result)="cancel($event)"></app-password>
+  <app-email *ngIf="changeEmail" [key]="user['key']" (result)="cancel($event)"></app-email>
+  <app-phone *ngIf="changePhone" [key]="user['key']" (result)="cancel($event)"></app-phone>
+
+
+  <div *ngIf="!changeEmail&&!changePwd&&!changePhone">
+    <div id="info">
+      <nz-avatar [nzSize]="100" [nzText]="'User'" [nzShape]="'square'" [nzSrc]="user['img']"
+                 style="background-color:#555d60;box-shadow: 0 0 4px rgba(10,10,10,.5);cursor: pointer;font-size: 40px"></nz-avatar>
+      <div style="font-size: 40px;font-weight: bold;line-height: 80px;float: right;">
+        <ul>
+          <li style="line-height: 60px;font-size: 40px;font-weight: bold">{{user['username']}}</li>
+          <li style="line-height: 40px;font-size: 16px;float: right;">状态:
+            <span *ngIf="user['status']==='0'" style="color: gold;font-weight: bold">未激活</span>
+            <span *ngIf="user['status']==='1'" style="color: #52c41a;font-weight: bold">正常</span>
+            <span *ngIf="user['status']==='2'" style="color: #ff2222;font-weight: bold">禁用中</span>
+          </li>
+        </ul>
       </div>
-      <nz-divider nzType="horizontal"></nz-divider>
-    </li> <li><span>注册日期</span>
-      <div>
-        <span>{{(user['signtime']).slice(0,10)}}</span>
-      </div>
-      <nz-divider nzType="horizontal"></nz-divider>
-    </li>
-    <li><span>登录密码</span>
-      <div>
-        <span class="setted"><i nz-icon nzType="check-circle" nzTheme="outline"></i>已设置</span>
-        <nz-divider nzType="vertical"></nz-divider>
-        <span class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
-      </div>
-      <nz-divider nzType="horizontal"></nz-divider>
-    </li>
-    <li><span>绑定手机</span>
-      <div>
-        <span  *ngIf="user['phone']">{{user['phone']}}</span>
-        <span class="unset" *ngIf="!user['phone']"><i nz-icon nzType="exclamation-circle" nzTheme="outline"></i>未设置</span>
-        <nz-divider nzType="vertical"></nz-divider>
-        <span class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
-      </div>
-      <nz-divider nzType="horizontal"></nz-divider>
-    </li>
-    <li><span>绑定邮箱</span>
-      <div>
-        <span  *ngIf="user['email']">{{user['email']}}</span>
-        <span class="unset" *ngIf="!user['email']"><i nz-icon nzType="exclamation-circle" nzTheme="outline"></i>未设置</span>
-        <nz-divider nzType="vertical"></nz-divider>
-        <span class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
-      </div>
-    </li>
-  </ul>
+    </div>
+    <nz-divider nzType="horizontal"></nz-divider>
+
+    <ul id="ul">
+      <li><span>用户角色</span>
+        <div>
+          <span *ngIf="user['role']==='administrator'">管理员</span>
+          <span *ngIf="user['role']===''">缺省角色</span>
+        </div>
+        <nz-divider nzType="horizontal"></nz-divider>
+      </li>
+      <li><span>注册时间</span>
+        <div>
+          <span>{{user['signtime']}}</span>
+        </div>
+        <nz-divider nzType="horizontal"></nz-divider>
+      </li>
+      <li><span>登录密码</span>
+        <div>
+          <span class="setted"><i nz-icon nzType="check-circle" nzTheme="outline"></i>已设置</span>
+          <nz-divider nzType="vertical"></nz-divider>
+          <span (click)="changePwd=true;" class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
+        </div>
+        <nz-divider nzType="horizontal"></nz-divider>
+      </li>
+      <li><span>绑定手机</span>
+        <div>
+          <span *ngIf="user['phone']">{{user['phone']}}</span>
+          <span class="unset" *ngIf="!user['phone']"><i nz-icon nzType="exclamation-circle"
+                                                        nzTheme="outline"></i>未设置</span>
+          <nz-divider nzType="vertical"></nz-divider>
+          <span (click)="changePhone=true;" class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
+        </div>
+        <nz-divider nzType="horizontal"></nz-divider>
+      </li>
+      <li><span>绑定邮箱</span>
+        <div>
+          <span *ngIf="user['email']">{{user['email']}}</span>
+          <span class="unset" *ngIf="!user['email']"><i nz-icon nzType="exclamation-circle"
+                                                        nzTheme="outline"></i>未设置</span>
+          <nz-divider nzType="vertical"></nz-divider>
+          <span (click)="changeEmail=true;" class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
+
+
+

@@ -15,5 +15,62 @@ button {
   margin: 12px;
   background-color: #ffffff;
   border-radius: 8px;
+  min-height: 660px;
+}
+#info {
+  padding: 0 20%;
+  margin-top: 50px;
+}
+#info ul {
+  padding-left: 50px;
+  font-size: 0;
+}
+#info ul li {
+  color: #000;
+}
+#info .ant-avatar span {
+  font-size: 50px;
+}
+#ul {
+  width: 100%;
+  line-height: 50px;
+  display: grid;
+}
+#ul li {
+  padding: 0 20%;
+}
+#ul li span {
+  font-weight: bold;
+}
+#ul li div {
+  height: 100%;
+  float: right;
+}
+.setted {
+  color: #52c41a;
+}
+.setted i {
+  color: #52c41a;
+}
+.unset {
+  color: gold;
+}
+.unset i {
+  color: gold;
+}
+.edit {
+  color: #0987fe;
+  cursor: pointer;
+}
+.edit i {
+  color: #0987fe;
+}
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
 }
 /*# sourceMappingURL=user.component.css.map */

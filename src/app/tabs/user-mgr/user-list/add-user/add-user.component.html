@@ -1,9 +1,7 @@
-<button nz-button style="margin: 1rem;font-size: 14px;line-height: 14px" (click)="close()">
+<p id="btn" (click)="close()">
   <i nz-icon nzType="left" nzTheme="outline"></i>用户列表
-</button>
-<p style="margin: 0 0 1rem 1rem;font-size: 20px">
-  基本信息
 </p>
+
 <nz-divider [nzType]="'horizontal'"></nz-divider>
 <nz-spin nzSimple [nzSize]="'large'" *ngIf="loading" [nzSpinning]="loading"
          style="margin: auto;width: 100%;text-align: center;padding-top: 100px;"></nz-spin>
@@ -11,44 +9,45 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="7">用户名</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="username" [(ngModel)]="user.username" [disabled]="option=='edit'"/>
+      <input nz-input name="username" [(ngModel)]="user.username" placeholder="请填写用户名" [disabled]="option=='edit'"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>手机</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="phone" placeholder="phone" type="tel" [(ngModel)]="user.phone"/>
+      <input nz-input name="phone" placeholder="请填写手机号" type="tel" [(ngModel)]="user.phone"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="email" placeholder="email" type="email" [(ngModel)]="user.email"/>
+      <input nz-input name="email" placeholder="请填写E-mail" type="email" [(ngModel)]="user.email"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="password" type="password" [(ngModel)]="user.password" (ngModelChange)="valide()"/>
+      <input nz-input name="password" placeholder="请输入密码" type="password" [(ngModel)]="user.password" (ngModelChange)="valide()"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>确认密码</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!confirmOK" [nzValidateStatus]="confirmStatus">
-      <input nz-input name="confirm" type="password" [(ngModel)]="confirm" (ngModelChange)="valide()"/>
+      <input nz-input name="confirm" placeholder="再次输入以确认密码" type="password" [(ngModel)]="confirm" (ngModelChange)="valide()"/>
       <nz-form-explain *ngIf="!confirmOK">两次输入的密码不匹配，请重新确认</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item>
-    <nz-form-control [nzOffset]="7" [nzSpan]="12">
-      <button nz-button nzType="primary" (click)="submit()">提交</button>
-      <button nz-button (click)="reset()">重置</button>
-    </nz-form-control>
-  </nz-form-item>
+  <!--<nz-form-item>-->
+    <!--<nz-form-control [nzOffset]="7" [nzSpan]="12">-->
+      <!--<button nz-button nzType="primary" (click)="submit()">提交</button>-->
+      <!--<button nz-button (click)="reset()">重置</button>-->
+    <!--</nz-form-control>-->
+  <!--</nz-form-item>-->
 
 </form>
 
+<div style="padding-left: 150px;margin: 24px">
+  <button nz-button nzType="primary"  style="margin-right: 8px;width: 100px" (click)="submit()">提交</button>
 
-<ng-template #pwdmodal>
-
-</ng-template>
+  <button nz-button style="width: 100px;" (click)="reset()">重置</button>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Observable, Observer} from 'rxjs';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-signin',
@@ -17,6 +18,9 @@ export class SigninComponent implements OnInit {
       this.validateForm.controls[key].markAsDirty();
       this.validateForm.controls[key].updateValueAndValidity();
     }
+    this.userSrv.newUser(this.validateForm.value).then(res=>{
+
+    })
   };
 
   resetForm(e: MouseEvent): void {
@@ -53,7 +57,8 @@ export class SigninComponent implements OnInit {
     return {};
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private userSrv:UserService) {
     this.validateForm = this.fb.group({
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],
       phone: ['', [Validators.required],],

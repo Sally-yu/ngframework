@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-phone',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PhoneComponent implements OnInit {
 
+  @Input() key:string;
+
+  @Output() result: EventEmitter<any> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  close() {
+    this.result.emit(true);
+  }
 }

@@ -46,7 +46,7 @@
 
   <!--菜单功能栏-->
   <div id="box">
-    <div id="radio">
+    <div class="radio">
       <ul>
         <li [ngClass]="{'radio-active':menuList==='all'}" (click)="menuSwitch('all')" nzTitle="全部" nzPlacement="bottom"
             nz-tooltip>
@@ -110,6 +110,22 @@
       </div>
     </ng-template>
   </nz-tree>
+
+  <div id="menu-footer">
+        <ul>
+          <li nzTitle="3D仿真" nzPlacement="top" nz-tooltip (click)="click('model')">
+            <i nz-icon nzType="global" nzTheme="outline"></i>
+          </li>
+          <li nzTitle="数据监控" nzPlacement="top" nz-tooltip (click)="click('grafana')">
+            <i nz-icon nzType="area-chart" nzTheme="outline"></i>
+          </li>
+          <li nzTitle="拓扑图" nzPlacement="top" nz-tooltip (click)="click('topo')">
+            <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
+          </li>
+
+        </ul>
+  </div>
+
 </div>
 
 <!--内容框-->
@@ -134,28 +150,6 @@
 
   <!--tab条下内容，根据tab页切换-->
   <div id="app-content">
-    <div id="nav">
-      <ul>
-        <li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >
-          <i nz-icon nzType="dashboard" nzTheme="outline"></i>
-        </li>
-        <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('model')">
-          <i nz-icon nzType="global" nzTheme="outline"></i>
-        </li>
-        <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('grafana')">
-          <i nz-icon nzType="area-chart" nzTheme="outline"></i>
-        </li>
-        <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('topo')">
-          <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
-        </li>
-        <li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">
-          <i nz-icon nzType="robot" nzTheme="outline"></i>
-        </li>
-        <li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('datamgr')">
-          <i nz-icon nzType="database" nzTheme="outline"></i>
-        </li>
-      </ul>
-    </div>
 
 
     <!--控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测-->
@@ -168,41 +162,27 @@
     <app-device-template *ngIf="exist('1002')" class="back"
                          [ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>
 
-    <!--operation-->
-    <app-realtime-detection *ngIf="exist('1010')" class="back"
-                            [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-realtime-detection>
-    <app-operation-summary *ngIf="exist('1011')" class="back"
-                           [ngStyle]="{'display':active=='1011'?'block':'none'}"></app-operation-summary>
-    <app-operation-details *ngIf="exist('1012')" class="back"
-                           [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-operation-details>
-    <app-utilization-summary *ngIf="exist('1013')" class="back"
-                             [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-utilization-summary>
-    <app-utilization-detail *ngIf="exist('1014')" class="back"
-                            [ngStyle]="{'display':active=='1014'?'block':'none'}"></app-utilization-detail>
-
     <!--alarm-->
-    <app-alarm-mgr *ngIf="exist('1020')" class="back"
-                   [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-alarm-mgr>
-    <app-alarm-strategy-list *ngIf="exist('1021')" class="back"
-                             [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-alarm-strategy-list>
-    <app-alarm-summary *ngIf="exist('1022')" class="back"
-                       [ngStyle]="{'display':active=='1022'?'block':'none'}"></app-alarm-summary>
-    <app-alarm-detail *ngIf="exist('1023')" class="back"
-                      [ngStyle]="{'display':active=='1023'?'block':'none'}"></app-alarm-detail>
-    <app-alarm-history *ngIf="exist('1024')" class="back"
-                       [ngStyle]="{'display':active=='1024'?'block':'none'}"></app-alarm-history>
+    <app-alarm-mgr *ngIf="exist('1010')" class="back"
+                   [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-alarm-mgr>
+    <app-alarm-strategy-list *ngIf="exist('1011')" class="back"
+                             [ngStyle]="{'display':active=='1011'?'block':'none'}"></app-alarm-strategy-list>
+    <app-alarm-summary *ngIf="exist('1012')" class="back"
+                       [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-alarm-summary>
+    <app-alarm-detail *ngIf="exist('1013')" class="back"
+                      [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-detail>
+    <app-alarm-history *ngIf="exist('1014')" class="back"
+                       [ngStyle]="{'display':active=='1014'?'block':'none'}"></app-alarm-history>
 
-    <!--efficiency-->
-    <app-table-code-analysis *ngIf="exist('1030')" class="back"
-                             [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-table-code-analysis>
-    <app-usage-analysis *ngIf="exist('1031')" class="back"
-                        [ngStyle]="{'display':active=='1031'?'block':'none'}"></app-usage-analysis>
-    <app-trend-analysis *ngIf="exist('1032')" class="back"
-                        [ngStyle]="{'display':active=='1032'?'block':'none'}"></app-trend-analysis>
-    <app-efficiency-analysis *ngIf="exist('1033')" class="back"
-                             [ngStyle]="{'display':active=='1033'?'block':'none'}"></app-efficiency-analysis>
-    <app-price-analysis *ngIf="exist('1034')" class="back"
-                        [ngStyle]="{'display':active=='1034'?'block':'none'}"></app-price-analysis>
+
+    <!--data-mgr-->
+    <app-db-mgr *ngIf="exist('1020')" class="back"
+                       [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>
+
+
+    <!--data-process-->
+    <app-data-define *ngIf="exist('1030')" class="back"
+                [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>
 
     <!--user-->
     <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"></app-user>
@@ -217,9 +197,9 @@
     <!--此处三个自定义菜单，逻辑相同，且细致缠绵，不确定能否简化，建议兄弟们别乱搞-->
     <!--自定义grafana区域，其子菜单存在tab页时渲染-->
     <!--打开的tab页中有grafana自定义菜单，则渲染整个大div（感觉可以去掉，还有显隐控制） // 激活的tab页属于grafana自定义菜单时才display // height必须100%，否则有高度问题，应该源于ant样式-->
-    <div *ngIf="cusExist('grafana')" style="height: 100%;" [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">
+    <div *ngIf="cusExist('grafana')"  [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">
       <!--每个子菜单渲染一个div，height100% 源于ant // 激活的tab页对应显示div（除非关掉tab，内部的iframe持续存在，切换回来不会刷新） // ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of cusGrafana.children" style="height: 100%;"
+      <div *ngFor="let meta of cusGrafana.children"
            [ngStyle]="{'display':active==meta.key?'block':'none'}">
         <!--iframe嵌入，需要safe管道 // tab页打开即渲染，切换不会刷新，关掉tab停止渲染-->
         <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back" ></iframe>
@@ -227,9 +207,9 @@
     </div>
 
     <!--自定义3D区域，其子菜单存在tab页时渲染-->
-    <div *ngIf="cusExist('3d')" style="height: 100%;" [ngStyle]="{'display':activeExist('3d')?'block':'none'}">
+    <div *ngIf="cusExist('3d')" [ngStyle]="{'display':activeExist('3d')?'block':'none'}">
       <!--每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of custom3D.children" style="height: 100%;"
+      <div *ngFor="let meta of custom3D.children"
            [ngStyle]="{'display':active==meta.key?'block':'none'}">
         <!--iframe嵌入，需要safe管道。按tab存在状态控制渲染-->
         <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back" ></iframe>
@@ -237,12 +217,12 @@
     </div>
 
     <!--自定义topo内容区，其子菜单存在tab页时渲染-->
-    <div *ngIf="cusExist('topo')" style="height: 100%;" [ngStyle]="{'display':activeExist('topo')?'block':'none'}">
+    <div *ngIf="cusExist('topo')"  [ngStyle]="{'display':activeExist('topo')?'block':'none'}">
       <!--每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of customTopo.children" style="height: 100%;"
+      <div *ngFor="let meta of customTopo.children"
            [ngStyle]="{'display':active==meta.key?'block':'none'}">
         <!--iframe嵌入，需要safe管道。按tab存在状态控制渲染-->
-        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back" ></iframe>
+        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>
       </div>
     </div>
 
@@ -250,26 +230,26 @@
 </div>
 
 <!--右悬浮导航，绝对定位-->
-<!--<div id="nav">-->
-  <!--<ul>-->
-    <!--<li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >-->
-      <!--<i nz-icon nzType="dashboard" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('model')">-->
-      <!--<i nz-icon nzType="global" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('grafana')">-->
-      <!--<i nz-icon nzType="area-chart" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('topo')">-->
-      <!--<i nz-icon nzType="deployment-unit" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">-->
-      <!--<i nz-icon nzType="robot" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('datamgr')">-->
-      <!--<i nz-icon nzType="database" nzTheme="outline"></i>-->
-    <!--</li>-->
-  <!--</ul>-->
-<!--</div>-->
+<div id="nav">
+  <ul>
+    <li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >
+      <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('model')">
+      <i nz-icon nzType="global" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('grafana')">
+      <i nz-icon nzType="area-chart" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('topo')">
+      <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">
+      <i nz-icon nzType="robot" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('datamgr')">
+      <i nz-icon nzType="database" nzTheme="outline"></i>
+    </li>
+  </ul>
+</div>
 
