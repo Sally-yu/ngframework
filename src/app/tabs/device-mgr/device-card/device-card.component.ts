@@ -9,7 +9,7 @@ import {DeviceService} from '../../../device.service';
 export class DeviceCardComponent implements OnInit {
 
 
-  deviceList;
+  deviceList=[];
   loading=false;
   searchValue;
   group;

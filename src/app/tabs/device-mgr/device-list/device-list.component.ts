@@ -11,7 +11,7 @@ export class DeviceListComponent implements OnInit {
   deviceDetail = false;
   loading = false;
   device;
-  deviceList;
+  deviceList=[];
 
   nullDevice = {
     key: null,

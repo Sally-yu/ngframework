@@ -21,7 +21,7 @@ export class DeviceDetailComponent implements OnInit {
   tempLoading = false;
 
   timeUint = 'ms';
-  t=0;
+  t = 0;
 
   constructor(
     private deviceService: DeviceService,
@@ -30,6 +30,11 @@ export class DeviceDetailComponent implements OnInit {
 
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.key === o2.key : o1 === o2);
 
+  codeError = {
+    unique: true,
+    required: true,
+  };
+
 
   close() {
     this.result.emit(true);
@@ -37,17 +42,17 @@ export class DeviceDetailComponent implements OnInit {
 
   ngOnInit() {
     this.getTemplate();
-    this.t = JSON.parse(JSON.stringify(this.device))['interval'];
-    if (this.t > 1000&&this.t%1000==0) {
+    this.t = this.device['interval']?JSON.parse(JSON.stringify(this.device))['interval']:0;
+    if (this.t > 1000 && this.t % 1000 == 0) {
       this.timeUint = 's';
       this.t = this.t / 1000;
-      if (this.t > 60&&this.t%60==0) {
+      if (this.t > 60 && this.t % 60 == 0) {
         this.timeUint = 'min';
         this.t = this.t / 60;
-        if (this.t > 60&&this.t%60==0) {
+        if (this.t > 60 && this.t % 60 == 0) {
           this.timeUint = 'h';
           this.t = this.t / 60;
-          if (this.t > 24&&this.t%24==0) {
+          if (this.t > 24 && this.t % 24 == 0) {
             this.timeUint = 'd';
             this.t = this.t / 24;
           }
@@ -56,49 +61,68 @@ export class DeviceDetailComponent implements OnInit {
     }
   }
 
+  validate() {
+    if (!this.device.code) {
+      this.codeError.required = false;
+    } else {
+      this.codeError.required = true;
+    }
+    if (this.option == 'new' && this.device.code) {
+      this.deviceService.findDeviceCode(this.device.code).then(res => {
+        if (res['status']) {
+          this.codeError.unique = false;
+        } else {
+          this.codeError.unique = true;
+        }
+      }, res => {
+        this.codeError.unique = true;
+      });
+    }
+  }
+
   submit() {
-    let data = JSON.parse(JSON.stringify(this.device));
-    data.attrs = data.template['attrs'];
-    switch (this.timeUint) {
-      case 'ms':
-        data.interval = this.t;
-        break;
-      case 's':
-        data.interval = this.t * 10000;
-        break;
-      case 'min':
-        data.interval = this.t * 1000 * 60;
-        break;
-      case 'h':
-        data.interval = this.t * 1000 * 60 * 60;
-        break;
-      case 'd':
-        data.interval = this.t * 1000 * 60 * 60 * 24;
-        break;
-      default:
-        data.interval = this.t;
-        break;
+    this.validate();
+    if (this.codeError.required && this.codeError.unique) {
+      let data = JSON.parse(JSON.stringify(this.device));
+      data.attrs = data.template['attrs'];
+      switch (this.timeUint) {
+        case 'ms':
+          break;
+        case 's':
+          this.t = this.t * 10000;
+          break;
+        case 'min':
+          this.t = this.t * 1000 * 60;
+          break;
+        case 'h':
+          this.t = this.t * 1000 * 60 * 60;
+          break;
+        case 'd':
+          this.t = this.t * 1000 * 60 * 60 * 24;
+          break;
+        default:
+          break;
+      }
+      data.interval = this.t.toString();
+      switch (this.option) {
+        case 'new': //新增
+          this.deviceService.newDevice(data).then(res => {
+            this.close();
+          }, err => {
+
+          });
+          break;
+        case 'edit':  //编辑
+          this.deviceService.updateDevice(data).then(res => {
+            this.close();
+          }, err => {
+
+          });
+          break;
+        default:
+          break;
+      }
     }
-    // data.interval = data.interval.toString();
-    switch (this.option) {
-      case 'new': //新增
-        this.deviceService.newDevice(data).then(res => {
-          this.close();
-        }, err => {
-
-        });
-        break;
-      case 'edit':  //编辑
-        this.deviceService.updateDevice(data).then(res => {
-          this.close();
-        }, err => {
-
-        });
-        break;
-      default:
-        break;
-    }
-
   }
 
   reset() {

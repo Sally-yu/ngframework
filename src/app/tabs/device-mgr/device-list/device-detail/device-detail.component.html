@@ -9,8 +9,10 @@
 <form nz-form *ngIf="!loading">
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>设备编号</nz-form-label>
-    <nz-form-control [nzSpan]="12">
+    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeError.unique||!codeError.required"
+                     [nzValidateStatus]="(codeError.unique&&codeError.required)?'success':'error'">
       <input nz-input name="code" [(ngModel)]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"/>
+      <nz-form-explain *ngIf="!codeError.unique">{{'编号已被使用'}}</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -38,7 +40,8 @@
         <nz-option *ngFor="let temp of templateList" [nzValue]="temp" [nzLabel]="temp['name']"></nz-option>
       </nz-select>
     </nz-form-control>
-    <button nz-tooltip nzTitle="刷新设备模板列表" nzPlacement="right" nz-button style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="getTemplate()"
+    <button nz-tooltip nzTitle="刷新设备模板列表" nzPlacement="right" nz-button
+            style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="getTemplate()"
             [nzLoading]="tempLoading">
       <i nz-icon nzType="reload" nzTheme="outline"></i>
     </button>
@@ -84,18 +87,9 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>状态</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <!--<nz-select name="status" [(ngModel)]="device.status">-->
-      <!--<nz-option [nzValue]="true" [nzLabel]="'运行'"></nz-option>-->
-      <!--<nz-option [nzValue]="false" [nzLabel]="'禁用'"></nz-option>-->
-      <!--</nz-select>-->
-
-      <!--<nz-radio-group name="status" [(ngModel)]="device.status">-->
-        <!--<label nz-radio [nzValue]="false">停机</label>-->
-        <!--<label nz-radio [nzValue]="true">运行</label>-->
-      <!--</nz-radio-group>-->
-
       <nz-switch class="switch" name="status" [(ngModel)]="device.status"></nz-switch>
-      <span style="margin-left: 8px">{{device.status?'运行':'停机'}}</span>
+      <span style="margin-left: 8px"
+            [ngStyle]="{'color':device.status?'#1ab768':'#ff2222'}">{{device.status ? '运行' : '停机'}}</span>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -104,7 +98,6 @@
       <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
     </nz-form-control>
   </nz-form-item>
-
 </form>
 
 

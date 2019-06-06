@@ -285,8 +285,12 @@ export class HomeComponent implements OnInit {
       this.tabIndex -= 1;    //删除元素重新检索index有问题，手动修改
     }
     this.tabs.splice(this.tabs.indexOf(tab), 1); //原数组长度缩短，索引改变
-    this.active = this.tabs[this.tabIndex].key; //刷新选中tab的key
-    this.findNode(this.nodes, this.tabs[this.tabIndex].key);
+    try {
+      this.active = this.tabs[this.tabIndex].key; //刷新选中tab的key
+      this.findNode(this.nodes, this.tabs[this.tabIndex].key);
+    }catch (e) {
+
+    }
   }
 
   //判断tab页是否已打开
@@ -361,7 +365,7 @@ export class HomeComponent implements OnInit {
     this.menuList = key;
     switch (this.menuList) {
       case 'all':
-        this.nodes=JSON.parse(JSON.stringify(this.staticNodes));
+        this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
         break;
       case 'fav':
         this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
@@ -437,10 +441,10 @@ export class HomeComponent implements OnInit {
       this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
       this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
       this.loading = false;
-      this.staticNodes=JSON.parse(JSON.stringify(this.nodes));
+      this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
     }, _ => {
       this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-      this.staticNodes=JSON.parse(JSON.stringify(this.nodes));
+      this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
       this.loading = false;
     });
 
@@ -457,10 +461,12 @@ export class HomeComponent implements OnInit {
     if (!cookie) {
       this.router.navigate(['/login']);
     }
-    this.getUser();
-    console.log(cookie);
-    this.reloadTree();
-    console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
+    if (cookie) {
+      this.getUser();
+      console.log(cookie);
+      this.reloadTree();
+      console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
+    }
   }
 
 

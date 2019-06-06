@@ -172,4 +172,15 @@ export class DeviceService {
     });
   }
 
+
+  findDeviceCode(code:string):any{
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.deviceCode, {code:code}).toPromise().then(res => {
+        resolve(res)  //status为true时 data为设备信息，为false时msg为错误信息
+      }, res => {
+        reject(res);
+      });
+    });
+  }
+
 }

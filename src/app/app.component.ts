@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,15 @@ export class AppComponent {
 
   cookie;
 
+  constructor(private router: Router,
+  ) {
+
+  }
+
   ngOnInit() {
     this.cookie = document.cookie;
+    if (!this.cookie) {
+      this.router.navigate(['/login']);
+    }
   }
 }

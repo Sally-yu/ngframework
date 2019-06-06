@@ -22,7 +22,7 @@
         <input nz-input [(ngModel)]="group" placeholder="分组">
         <button nz-button >搜索</button>
         <button nz-button (click)="add()">新增</button>
-        <button nz-button >图表</button>
+        <button nz-button (click)="getList()">刷新</button>
       </div>
     </div>
     <nz-list [nzDataSource]="viewList" [nzRenderItem]="item"
