@@ -12,16 +12,22 @@
 
 
 .card {
+  margin: 8px;
   border-radius: 4px;
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
-
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+  box-shadow: 0 0 4px rgba(10,10,10,.5);
+  cursor: pointer;
   ul {
+    -webkit-transition-duration: 300ms;
+    -moz-transition-duration: 300ms;
+    -o-transition-duration: 300ms;
+    transition-duration: 300ms;
     padding: 16px 20%;
     border-radius: 0 0 4px 4px;
-    line-height: 40px;
+    line-height: 50px;
   }
   span{
     padding-left: 8px;
@@ -29,7 +35,8 @@
 }
 
 .card:hover{
-  box-shadow: 0 0 4px rgba(10,10,10,.5);
+  transform: scale(1.08,1.08);
+
 }
 
 #toolbar {
@@ -69,6 +76,10 @@
 }
 
 .title{
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
   border-radius: 4px 4px 0 0;
   padding: 8px 16px;
   font-size: 20px;
@@ -78,6 +89,9 @@
   i{
     font-size: 20px;
     line-height: 32px;
+    cursor: pointer;
+  }
+  span{
     cursor: pointer;
   }
 }

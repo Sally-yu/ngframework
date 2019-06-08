@@ -16,7 +16,7 @@
             <button nz-button nzType="primary" (click)="add()">新增</button>
           </div>
         </div>
-        <nz-table #list [nzData]="deviceList" [nzLoading]="loading" [nzPageSize]="5">
+        <nz-table #list [nzData]="deviceList" [nzLoading]="loading" [nzPageSize]="pageSize" [nzPageIndex]="currentIndex" [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
           <thead>
           <tr>
             <th nzWidth="100px">#</th>

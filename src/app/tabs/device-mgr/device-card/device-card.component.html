@@ -1,7 +1,7 @@
 <div id="content">
   <app-device-detail *ngIf="deviceDetail" [device]="device" [option]="option" [parentCom]="'设备卡片'"
                      (result)="cancel($event)"></app-device-detail>
-  <div style="padding: 24px" *ngIf="!deviceDetail">
+  <div style="padding: 16px" *ngIf="!deviceDetail">
     <div id="toolbar">
       <ul>
         <li>
@@ -31,19 +31,14 @@
       <ng-template #item let-item>
         <nz-list-item [nzContent]="nzContent">
           <ng-template #nzContent>
-            <div class="card">
-              <div class="title" [ngStyle]="{'background-color':item.status?'#1ab768':'#ff2222'}">
-                {{item.name}}
-                <i nz-icon nzType="edit" title="编辑设备" nzTheme="outline" style="float: right" (click)="edit(item.key)"></i>
+            <div class="card"  (click)="edit(item.key)">
+              <div class="title" [ngStyle]="{'background-color':item.status?'rgba(26,183,104)':'rgba(255,34,34)'}">
+                <span>{{item.name}}</span>
+                <i nz-icon nzType="edit" title="编辑设备" nzTheme="outline" style="float: right"></i>
               </div>
-              <ul [ngStyle]="{'border':item.status?'solid 1px #1ab768':'solid 1px #ff2222'}">
+              <ul [ngStyle]="{'border':item.status?'solid 1px #1ab768':'solid 1px #ff2222','background-color':item.status?'rgba(26,183,104,.05)':'rgba(255,34,34,.05)'}"  >
                 <li>
                   编号:<span>{{item.code}}</span>
-                </li>
-                <li>
-                  状态:<span>
-                  <nz-switch [(ngModel)]="item.status" class="switch"></nz-switch>
-                  </span>
                 </li>
                 <li>
                   厂商:<span>{{item.manufacturer}}</span>
@@ -53,6 +48,13 @@
                 </li>
                 <li>
                   型号:<span>{{item.model}}</span>
+                </li>
+                <li>
+                  状态:
+                  <span style="margin-right: 8px"
+                        [ngStyle]="{'color':item.status?'#1ab768':'#ff2222'}">{{item.status ? '运行' : '停机'}}</span>
+                  <nz-switch (click)="$event.stopPropagation();" [(ngModel)]="item.status" class="switch"></nz-switch>
+
                 </li>
                 <li>
                   注册:<span>{{item.time}}</span>

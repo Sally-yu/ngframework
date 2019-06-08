@@ -16,16 +16,6 @@ export class TemplateDetailComponent implements OnInit {
   @Output() result: EventEmitter<any> = new EventEmitter();
   loading = false;
 
-  newAtt = {
-    key: null,
-    name: null,
-    code: null,
-    unit: null,
-    description: null,
-    valuetype: null,
-    sum: false
-  };
-
   constructor(
     private message: NzMessageService,
     private deviceService: DeviceService,
@@ -37,11 +27,26 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addNullAtt();
   }
 
+  //添加设备属性
   addAttr() {
-    this.template.attrs = [...this.template.attrs, {
+    this.template.attrs = [...this.template.attrs.filter(a=>a.key!='null'), {
       key: uuid.v4(),
+      name: null,
+      code: null,
+      unit: null,
+      description: null,
+      valuetype: null,
+      sum: false
+    }];
+    this.addNullAtt();
+  }
+
+  addNullAtt(){
+    this.template.attrs = [...this.template.attrs, {
+      key: 'null',
       name: null,
       code: null,
       unit: null,
@@ -51,12 +56,15 @@ export class TemplateDetailComponent implements OnInit {
     }];
   }
 
+  //删除设备属性
   remove(key: any) {
     this.template.attrs = this.template.attrs.filter(a => a.key != key);
   }
 
   submit() {
+    this.loading=true;
     let data=JSON.parse(JSON.stringify(this.template));
+    data['attrs']=data['attrs'].filter(a=>a.key!='null');
     switch (this.option) {
       case 'new':
         this.deviceService.newDeviceTemp(data).then(res => {
@@ -64,7 +72,7 @@ export class TemplateDetailComponent implements OnInit {
             this.close();
           }
         }, err => {
-
+          this.loading=false;
         });
         break;
       case 'edit':
@@ -73,10 +81,12 @@ export class TemplateDetailComponent implements OnInit {
             this.close();
           }
         }, err => {
+          this.loading=false;
 
         });
         break;
       default:
+        this.loading=false;
         break;
     }
 

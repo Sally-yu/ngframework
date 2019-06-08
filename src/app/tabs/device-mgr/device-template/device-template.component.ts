@@ -66,9 +66,10 @@ export class DeviceTemplateComponent implements OnInit {
     this.getList();
   }
 
-  edit(key:any) {
+
+  edit(key: any) {
     this.tempDetail = true;
     this.option = 'edit';
-    this.template = JSON.parse(JSON.stringify(this.tempList.filter(t=>t.key===key)[0]));
+    this.template = JSON.parse(JSON.stringify(this.tempList.filter(t => t.key === key)[0]));
   }
 }

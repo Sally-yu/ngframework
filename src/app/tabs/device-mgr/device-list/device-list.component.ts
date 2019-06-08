@@ -32,6 +32,9 @@ export class DeviceListComponent implements OnInit {
     attrs:[],
   };
   option;
+  currentIndex= 1;
+  pageSize=5;
+  sizeOption=[5,10,25,20];
 
   constructor(
     private deviceService: DeviceService,
@@ -64,7 +67,6 @@ export class DeviceListComponent implements OnInit {
     }, err => {
       this.getList();
     });
-
   }
 
   edit(key: any) {
@@ -76,7 +78,7 @@ export class DeviceListComponent implements OnInit {
   cancel($event: any) {
     if (event) {
       this.deviceDetail = false;
+      this.getList();
     }
-    this.getList();
   }
 }

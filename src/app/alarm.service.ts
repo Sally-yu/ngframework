@@ -35,7 +35,6 @@ export class AlarmService {
     });
   }
 
-
   alarmStgList():any{
     let data = [];
     return new Promise((resolve, reject) => {

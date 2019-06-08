@@ -25,7 +25,7 @@ export class DeviceService {
           data = res['data'];
           data.forEach(e => {
             if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
+              e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
             }
             e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
           });
@@ -47,12 +47,12 @@ export class DeviceService {
           data = res['data'];
           data.forEach(e => {      //不处理template时间戳
             if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
+              e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
             }
             e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
 
             if (e['template']['time'].indexOf('.') > 0) {
-              e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
+              e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
             }
             e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
           });
@@ -84,7 +84,9 @@ export class DeviceService {
 
   //新增设备
   newDevice(device: any): any {
-    device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
+    if (device['template']) {
+      device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
+    }
     return new Promise((resolve, reject) => {
       this.http.post(this.url.addDevice, device).toPromise().then(res => {
         if (res['status']) {
@@ -136,9 +138,12 @@ export class DeviceService {
 
   //更新设备，注意时间时区
   updateDevice(device: any): any {
-    device['time'] = device['time'].replace(' ', 'T') + '+08:00';
-    device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
-    // device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
+    if (device['time']) {
+      device['time'] = device['time'].replace(' ', 'T') + '+08:00';
+    }
+    if (device['template']['time']) {
+      device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
+    }
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateDevice, device).toPromise().then(res => {
         if (res['status']) {
@@ -173,10 +178,24 @@ export class DeviceService {
   }
 
 
-  findDeviceCode(code:string):any{
+  findDeviceCode(code: string): any {
+    let data = [];
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.deviceCode, {code:code}).toPromise().then(res => {
-        resolve(res)  //status为true时 data为设备信息，为false时msg为错误信息
+      this.http.post(this.url.deviceCode, {code: code}).toPromise().then(res => {
+        if (res['status'] && res['data']) {
+          let e = res['data'];
+          if (e['time'].indexOf('.') > 0) {
+            e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
+          }
+          e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
+
+          if (e['template']['time'].indexOf('.') > 0) {
+            e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
+          }
+          e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
+          res['data'] = e;
+        }
+        resolve(res);  //status为true时 data为设备信息，为false时msg为错误信息
       }, res => {
         reject(res);
       });
