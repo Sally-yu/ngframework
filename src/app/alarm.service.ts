@@ -23,25 +23,6 @@ export class AlarmService {
       this.http.get(this.url.alarmlist).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
-          data.forEach(e => {
-            if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-            if (e['strategy']['time'].indexOf('.') > 0) {
-              e['strategy']['time'] = e['strategy']['time'].slice(0, e['strategy']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['strategy']['time'] = e['strategy']['time'].slice(0, e['strategy']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-            if (e['strategy']['device']['time'].indexOf('.') > 0) {
-              e['strategy']['device']['time'] = e['strategy']['device']['time'].slice(0, e['strategy']['device']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['strategy']['device']['time'] = e['strategy']['device']['time'].slice(0, e['strategy']['device']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-
-            if (e['strategy']['device']['template']['time'].indexOf('.') > 0) {
-              e['strategy']['device']['template']['time'] = e['strategy']['device']['template']['time'].slice(0, e['strategy']['device']['template']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['strategy']['device']['template']['time'] = e['strategy']['device']['template']['time'].slice(0, e['strategy']['device']['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-          });
         }
         resolve(data);
       }, error1 => {
@@ -57,22 +38,6 @@ export class AlarmService {
       this.http.get(this.url.alarmStgList).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
-          data.forEach(e => {      //不处理template时间戳
-            if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-
-            if (e['device']['time'].indexOf('.') > 0) {
-              e['device']['time'] = e['device']['time'].slice(0, e['device']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['device']['time'] = e['device']['time'].slice(0, e['device']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-
-            if (e['device']['template']['time'].indexOf('.') > 0) {
-              e['device']['template']['time'] = e['device']['template']['time'].slice(0, e['device']['template']['time'].indexOf('.')+1); //去T 去毫秒及末尾时区
-            }
-            e['device']['template']['time'] = e['device']['template']['time'].slice(0, e['device']['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-          });
         }
         resolve(data);
       }, res => {
@@ -83,8 +48,6 @@ export class AlarmService {
   }
 
   addAlarmStg(data):any{
-    data['device']['time'] = data['device']['time'].replace(' ', 'T') + '+08:00';
-    data['device']['template']['time'] = data['device']['template']['time'].replace(' ', 'T') + '+08:00';
     return new Promise((resolve, reject) => {
       this.http.post(this.url.addAlarmStg, data).toPromise().then(res => {
         if (res['status']) {
@@ -133,9 +96,6 @@ export class AlarmService {
   }
 
   updateAlarmStg(data:any):any{
-    data['time'] = data['time'].replace(' ', 'T') + '+08:00';
-    data['device']['time'] = data['device']['time'].replace(' ', 'T') + '+08:00';
-    data['device']['template']['time'] = data['device']['template']['time'].replace(' ', 'T') + '+08:00';
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateAlarmStg, data).toPromise().then(res => {
         if (res['status']) {
@@ -152,10 +112,6 @@ export class AlarmService {
   }
 
   updateAlarm(data:any):any{
-    data['time'] = data['time'].replace(' ', 'T') + '+08:00';
-    data['strategy']['time'] = data['strategy']['time'].replace(' ', 'T') + '+08:00';
-    data['strategy']['device']['time'] = data['strategy']['device']['time'].replace(' ', 'T') + '+08:00';
-    data['strategy']['device']['template']['time'] = data['strategy']['device']['template']['time'].replace(' ', 'T') + '+08:00';
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateAlarmStg, data).toPromise().then(res => {
         if (res['status']) {

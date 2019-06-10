@@ -22,9 +22,6 @@ export class NotifyService {
       this.http.get(this.url.allNotif).toPromise().then(res=>{
         if(res["status"]){
           list=res["data"];
-          list.forEach(e=>{
-            e["time"]=e["time"].slice(0,e["time"].indexOf('.')).replace('T',' '); //去T 去毫秒及末尾时区
-          })
         }
         else{
           this.message.error(res["msg"]);

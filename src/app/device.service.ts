@@ -23,12 +23,6 @@ export class DeviceService {
       this.http.get(this.url.tempList).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
-          data.forEach(e => {
-            if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
-            }
-            e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-          });
         }
         resolve(data);
       }, res => {
@@ -45,17 +39,6 @@ export class DeviceService {
       this.http.get(this.url.deviceList).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
-          data.forEach(e => {      //不处理template时间戳
-            if (e['time'].indexOf('.') > 0) {
-              e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
-            }
-            e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-
-            if (e['template']['time'].indexOf('.') > 0) {
-              e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
-            }
-            e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-          });
         }
         resolve(data);
       }, res => {
@@ -138,12 +121,6 @@ export class DeviceService {
 
   //更新设备，注意时间时区
   updateDevice(device: any): any {
-    if (device['time']) {
-      device['time'] = device['time'].replace(' ', 'T') + '+08:00';
-    }
-    if (device['template']['time']) {
-      device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
-    }
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateDevice, device).toPromise().then(res => {
         if (res['status']) {
@@ -161,7 +138,6 @@ export class DeviceService {
 
   //更新设备模板，注意时间时区
   updateTemplate(temp: any): any {
-    temp['time'] = temp['time'].replace(' ', 'T') + '+08:00'; //处理时间
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateTemp, temp).toPromise().then(res => {
         if (res['status']) {
@@ -182,19 +158,6 @@ export class DeviceService {
     let data = [];
     return new Promise((resolve, reject) => {
       this.http.post(this.url.deviceCode, {code: code}).toPromise().then(res => {
-        if (res['status'] && res['data']) {
-          let e = res['data'];
-          if (e['time'].indexOf('.') > 0) {
-            e['time'] = e['time'].slice(0, e['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
-          }
-          e['time'] = e['time'].slice(0, e['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-
-          if (e['template']['time'].indexOf('.') > 0) {
-            e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('.') + 1); //去T 去毫秒及末尾时区
-          }
-          e['template']['time'] = e['template']['time'].slice(0, e['template']['time'].indexOf('+')).replace('T', ' ');//无毫秒情况
-          res['data'] = e;
-        }
         resolve(res);  //status为true时 data为设备信息，为false时msg为错误信息
       }, res => {
         reject(res);
