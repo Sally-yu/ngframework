@@ -100,6 +100,22 @@ export class AlarmService {
     });
   }
 
+  removeAlarm(key:string):any{
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.removeAlarmStg, {key: key}).toPromise().then(res => {
+        if (res['status']) {
+          this.message.success(res['msg']);
+        } else {
+          this.message.error(res['msg']);
+        }
+        resolve(res['status']);
+      }, res => {
+        this.message.error(res.error['msg']);
+        reject(false);
+      });
+    });
+  }
+
   updateAlarmStg(data:any):any{
     data['time'] = data['time'].replace(' ', 'T') + '+08:00';
     data['device']['time'] = data['device']['time'].replace(' ', 'T') + '+08:00';
@@ -118,5 +134,23 @@ export class AlarmService {
       });
     });
   }
+
+  updateAlarm(data:any):any{
+    data['time'] = data['time'].replace(' ', 'T') + '+08:00';
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.updateAlarmStg, data).toPromise().then(res => {
+        if (res['status']) {
+          this.message.success(res['msg']);
+        } else {
+          this.message.error(res['msg']);
+        }
+        resolve(res['status']);
+      }, res => {
+        this.message.error(res.error['msg']);
+        reject(false);
+      });
+    });
+  }
+
 
 }
