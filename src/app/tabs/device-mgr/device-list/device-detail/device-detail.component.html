@@ -11,7 +11,7 @@
     <nz-form-label [nzSpan]="7" nzRequired>设备编号</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeRequire"
                      [nzValidateStatus]="codeRequire?'success':'error'">
-      <input nz-input name="code" [(ngModel)]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"
+      <input #codeEle nz-input name="code"  [ngModel]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"
              (ngModelChange)="device.code?codeRequire=true:codeRequire=false;"/>
       <nz-form-explain *ngIf="!codeRequire">{{'请输入唯一编号！'}}</nz-form-explain>
     </nz-form-control>
@@ -67,28 +67,35 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7">采样间隔</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
-        <input nz-input name="interval" [(ngModel)]="t" (focus)="t==0?t=null:t;" (blur)="t==null||t==''?t=0:t;"/>
-      </nz-input-group>
+    <nz-form-control [nzSpan]="8">
+      <nz-input-number style="width:100%;" name="interval" [(ngModel)]="t" [nzMin]="0" [nzStep]="1"
+                       (focus)="t==0?t=null:t;" (blur)="t==null||t==''?t=0:t;"></nz-input-number>
     </nz-form-control>
+    <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint" (ngModelChange)="calcTime()">
+      <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>
+      <nz-option [nzLabel]="'秒'" [nzValue]="'s'"></nz-option>
+      <nz-option [nzLabel]="'分'" [nzValue]="'min'"></nz-option>
+      <nz-option [nzLabel]="'时'" [nzValue]="'h'"></nz-option>
+      <nz-option [nzLabel]="'日'" [nzValue]="'d'"></nz-option>
+    </nz-select>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7">GPS</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="gps" [(ngModel)]="device['gps']"/>
+      <input nz-input name="gps" [(ngModel)]="device['gps']" placeholder="请输入GPS位置信息"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7">手机号</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="phone" [(ngModel)]="device['phone']"/>
+      <!--单向绑定可防止change事件后model改变-->
+      <input #telEle (ngModelChange)="telChange($event)" nz-input name="phone" [ngModel]="device['phone']" placeholder="请输入手机号码"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7">厂商</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="manufacturer" [(ngModel)]="device['manufacturer']"/>
+      <input nz-input name="manufacturer" [(ngModel)]="device['manufacturer']" placeholder="请输入设备厂商"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -102,7 +109,7 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="7">备注</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+      <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }" placeholder="设备备注信息"></textarea>
     </nz-form-control>
   </nz-form-item>
 </form>
@@ -150,7 +157,7 @@
         <nz-option [nzValue]="'string'" [nzLabel]="'字符串'"></nz-option>
         <nz-option [nzValue]="'number'" [nzLabel]="'数字'"></nz-option>
         <nz-option [nzValue]="'bool'" [nzLabel]="'布尔'"></nz-option>
-        <nz-option [nzValue]="'option'"  [nzLabel]="'枚举'"></nz-option>
+        <nz-option [nzValue]="'option'" [nzLabel]="'枚举'"></nz-option>
       </nz-select>
     </td>
     <td *ngIf="data.key!='null'">
@@ -171,24 +178,10 @@
   </tbody>
 </nz-table>
 
-
 <div style="margin: 24px;padding-left: 150px;">
   <button nz-button nzType="primary" style="margin-right: 8px;width: 95px" (click)="submit()" [nzLoading]="loading">保存
   </button>
   <button nz-button style="width: 95px;margin-right: 8px" (click)="reset()" [nzLoading]="loading">重置</button>
   <button nz-button style="width: 94px;" (click)="close()">取消</button>
 </div>
-
-
-<ng-template #addOnAfterTemplate>
-  <nz-select [(ngModel)]="timeUint" (ngModelChange)="calcTime()">
-    <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>
-    <nz-option [nzLabel]="'秒'" [nzValue]="'s'"></nz-option>
-    <nz-option [nzLabel]="'分'" [nzValue]="'min'"></nz-option>
-    <nz-option [nzLabel]="'时'" [nzValue]="'h'"></nz-option>
-    <nz-option [nzLabel]="'日'" [nzValue]="'d'"></nz-option>
-  </nz-select>
-</ng-template>
-
-
 

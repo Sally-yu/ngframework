@@ -1,8 +1,9 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DeviceService} from '../../../../device.service';
 import * as uuid from 'uuid';
 import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {NzMessageService} from 'ng-zorro-antd';
+import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-device-detail',
@@ -15,8 +16,6 @@ export class DeviceDetailComponent implements OnInit {
   @Input() device;
   @Input() parentCom;
   @Output() result: EventEmitter<any> = new EventEmitter();
-
-  @ViewChild('inputElement') inputElement: ElementRef;
 
   loading = false;
   templateList;
@@ -37,7 +36,7 @@ export class DeviceDetailComponent implements OnInit {
     status: null,
     note: null,
     time: null,
-    attrs:[],
+    attrs: [],
   };
 
   timeUint = 'ms';
@@ -46,8 +45,11 @@ export class DeviceDetailComponent implements OnInit {
   nameRequire = true;
   templateRequire = true;
 
+  @ViewChild('telEle') telEle: ElementRef;
+  @ViewChild('codeEle') codeEle: ElementRef;
+
   constructor(
-    private message:NzMessageService,
+    private message: NzMessageService,
     private deviceService: DeviceService,
   ) {
   }
@@ -101,12 +103,14 @@ export class DeviceDetailComponent implements OnInit {
   //提交保存
   submit() {
     this.loading = true;
+    console.log(this.device['phone'])
     this.validate();
     if (this.codeRequire && this.nameRequire && this.templateRequire) {
       let data = JSON.parse(JSON.stringify(this.device));
       data.interval = JSON.parse(JSON.stringify(this.t));
       switch (this.timeUint) {
         case 'ms':
+          data.interval = data.interval * 1;
           break;
         case 's':
           data.interval = data.interval * 1000;
@@ -123,8 +127,8 @@ export class DeviceDetailComponent implements OnInit {
         default:
           break;
       }
-      data.interval = data.interval.toString();
-      data.attrs=data.attrs.filter(a=>a.key!='null'); //去除添加尾行
+      // data.interval = data.interval.toString();
+      data.attrs = data.attrs.filter(a => a.key != 'null'); //去除添加尾行
       switch (this.option) {
         case 'new': //新增
           this.deviceService.newDevice(data).then(res => {
@@ -164,15 +168,14 @@ export class DeviceDetailComponent implements OnInit {
           this.device = res['data'];
           this.loading = false;
           this.addNullAtt();
-        }
-        else {
+        } else {
           this.message.error('重置设备信息出错');
-          this.loading=false;
+          this.loading = false;
           this.addNullAtt();
         }
-      },err=>{
+      }, err => {
         this.message.error('重置设备信息出错');
-        this.loading=false;
+        this.loading = false;
         this.addNullAtt();
       });
     }
@@ -181,7 +184,7 @@ export class DeviceDetailComponent implements OnInit {
 
   //添加设备属性
   addAttr() {
-    this.device.attrs = [...this.device.attrs.filter(a=>a.key!='null'), {
+    this.device.attrs = [...this.device.attrs.filter(a => a.key != 'null'), {
       key: uuid.v4(),
       name: null,
       code: null,
@@ -193,7 +196,7 @@ export class DeviceDetailComponent implements OnInit {
     this.addNullAtt();
   }
 
-  addNullAtt(){
+  addNullAtt() {
     this.device.attrs = [...this.device.attrs, {
       key: 'null',
       name: null,
@@ -233,6 +236,7 @@ export class DeviceDetailComponent implements OnInit {
     this.t = this.device['interval'] ? JSON.parse(JSON.stringify(this.device))['interval'] : 0;
     switch (this.timeUint) {
       case 'ms':
+        this.t /= 1;
         break;
       case 's':
         this.t /= 1000;
@@ -249,6 +253,26 @@ export class DeviceDetailComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  telChange(value: string): void {
+    const reg = /^([1-9][0-9]*)?$/;
+    if ((!isNaN(+value) && reg.test(value))) {}
+    else {
+      value=value.toString().slice(0,value.toString().length-1);
+    }
+    this.telEle.nativeElement.value = value
+    this.device['phone'] = this.telEle.nativeElement.value
+  }
+
+  codeChange(value: string): void {
+    const reg =/^([A-Z][0-9]*)$/;
+    if ((!isNaN(+value) && reg.test(value))) {}
+    else {
+      value=value.toString().slice(0,value.toString().length-1);
+    }
+    this.codeEle.nativeElement.value = value
+    this.device['code'] = this.codeEle.nativeElement.value
   }
 
   ngOnInit() {

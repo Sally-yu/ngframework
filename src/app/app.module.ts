@@ -48,6 +48,7 @@ import { TemplateDetailComponent } from './tabs/device-mgr/device-template/templ
 import { DeviceDetailComponent } from './tabs/device-mgr/device-list/device-detail/device-detail.component';
 import { DbMgrComponent } from './tabs/data-mgr/db-mgr/db-mgr.component';
 import { DataDefineComponent } from './tabs/data-process/data-define/data-define.component';
+import { DeviceTableComponent } from './tabs/device-mgr/device-card/device-table/device-table.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -101,6 +102,7 @@ const routes: Routes = [
     DeviceDetailComponent,
     DbMgrComponent,
     DataDefineComponent,
+    DeviceTableComponent,
   ],
   imports: [
     BrowserModule,

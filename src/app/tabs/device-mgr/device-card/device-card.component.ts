@@ -33,7 +33,7 @@ export class DeviceCardComponent implements OnInit {
     gps: null,
     phone: null,
     manufacturer: null,
-    status: null,
+    status: false,
     note: null,
     time: null,
     attrs:[],
@@ -81,6 +81,15 @@ export class DeviceCardComponent implements OnInit {
     if(event){
       this.deviceDetail=false;
       this.getList();
+    }
+  }
+
+  search(){
+    this.getList();
+    if (this.searchValue){
+      this.deviceList=JSON.parse(JSON.stringify(this.deviceList)).filter(d=>{
+        return d.name.indexOf(this.searchValue)>=0||d.code.indexOf(this.searchValue)>=0||d.model.indexOf(this.searchValue)>=0||d.manufacturer.indexOf(this.searchValue)>=0||d.note.indexOf(this.searchValue)>=0
+      })
     }
   }
 
