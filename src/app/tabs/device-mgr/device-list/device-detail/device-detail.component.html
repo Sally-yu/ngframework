@@ -11,7 +11,7 @@
     <nz-form-label [nzSpan]="7" nzRequired>设备编号</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeRequire"
                      [nzValidateStatus]="codeRequire?'success':'error'">
-      <input #codeEle nz-input name="code"  [ngModel]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"
+      <input #codeEle nz-input name="code"  [(ngModel)]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"
              (ngModelChange)="device.code?codeRequire=true:codeRequire=false;"/>
       <nz-form-explain *ngIf="!codeRequire">{{'请输入唯一编号！'}}</nz-form-explain>
     </nz-form-control>

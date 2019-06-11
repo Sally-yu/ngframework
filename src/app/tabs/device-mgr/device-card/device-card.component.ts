@@ -85,12 +85,21 @@ export class DeviceCardComponent implements OnInit {
   }
 
   search(){
-    this.getList();
-    if (this.searchValue){
-      this.deviceList=JSON.parse(JSON.stringify(this.deviceList)).filter(d=>{
-        return d.name.indexOf(this.searchValue)>=0||d.code.indexOf(this.searchValue)>=0||d.model.indexOf(this.searchValue)>=0||d.manufacturer.indexOf(this.searchValue)>=0||d.note.indexOf(this.searchValue)>=0
-      })
-    }
+    this.loading=true;
+    this.deviceService.deviceList().then(res=>{
+      this.deviceList=res;
+      if (this.searchValue){
+        this.deviceList=JSON.parse(JSON.stringify(this.deviceList)).filter(d=>{
+          return d.name.indexOf(this.searchValue)>=0||d.code.indexOf(this.searchValue)>=0||d.model.indexOf(this.searchValue)>=0||d.manufacturer.indexOf(this.searchValue)>=0||d.note.indexOf(this.searchValue)>=0
+        })
+      }
+      this.spliceViewList(this.deviceList);
+      this.loading=false;
+    },err=>{
+      this.spliceViewList(this.deviceList);
+      this.loading=false;
+    })
+
   }
 
   add(){

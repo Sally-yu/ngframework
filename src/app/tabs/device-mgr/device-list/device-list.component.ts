@@ -11,7 +11,8 @@ export class DeviceListComponent implements OnInit {
   deviceDetail = false;
   loading = false;
   device;
-  deviceList=[];
+  deviceList = [];
+  searchValue;
 
   nullDevice = {
     key: null,
@@ -29,12 +30,12 @@ export class DeviceListComponent implements OnInit {
     status: null,
     note: null,
     time: null,
-    attrs:[],
+    attrs: [],
   };
   option;
-  currentIndex= 1;
-  pageSize=5;
-  sizeOption=[5,10,25,20];
+  currentIndex = 1;
+  pageSize = 5;
+  sizeOption = [5, 10, 25, 20];
 
   constructor(
     private deviceService: DeviceService,
@@ -49,6 +50,21 @@ export class DeviceListComponent implements OnInit {
     this.loading = true;
     this.deviceService.deviceList().then(res => {
       this.deviceList = res;
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+
+  search() {
+    this.loading = true;
+    this.deviceService.deviceList().then(res => {
+      this.deviceList = res;
+      if (this.searchValue) {
+        this.deviceList = JSON.parse(JSON.stringify(this.deviceList)).filter(d => {
+          return d.name.indexOf(this.searchValue) >= 0 || d.code.indexOf(this.searchValue) >= 0 || d.type.indexOf(this.searchValue) >= 0;
+        });
+      }
       this.loading = false;
     }, err => {
       this.loading = false;

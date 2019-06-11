@@ -12,12 +12,12 @@ export class UserListComponent implements OnInit {
   userList = [];
   searchValue;
   addUser = false;
-  loading ;
+  loading;
   option;
-  user={};
+  user = {};
 
   constructor(
-    private userSrv:UserService,
+    private userSrv: UserService,
     private message: NzMessageService
   ) {
   }
@@ -30,21 +30,38 @@ export class UserListComponent implements OnInit {
   }
 
   getList() {
-    this.loading=true;
-    this.userSrv.getList().then(res=>{
-      this.userList=res;
-      this.loading=false;
+    this.loading = true;
+    this.userSrv.getList().then(res => {
+      this.userList = res;
+      this.loading = false;
     });
   }
 
-  remove(key:string){
-    this.loading=true;
-    this.userSrv.remove(key).then(res=>{
-      if(res) {
+  remove(key: string) {
+    this.loading = true;
+    this.userSrv.remove(key).then(res => {
+      if (res) {
         this.getList();
       }
-      this.loading=false;
-    })
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+
+  search() {
+    this.loading = true;
+    this.userSrv.getList().then(res => {
+      this.userList = res;
+      if (this.searchValue) {
+        this.userList = JSON.parse(JSON.stringify(this.userList)).filter(u => {
+          return u.username.indexOf(this.searchValue) >= 0 || u.email.indexOf(this.searchValue) >= 0 || u.phone.indexOf(this.searchValue) >= 0;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
   }
 
   ngOnInit() {
