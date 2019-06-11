@@ -1,3 +1,74 @@
-<p>
-  alarm-detail works!
-</p>
+<div id="content">
+  <div style="padding: 16px" *ngIf="!deviceDetail">
+    <div id="toolbar">
+      <ul>
+        <li>
+          <div style="background-color: gold;"></div>
+          提醒
+        </li>
+        <li>
+          <div style="background-color: rgb(253, 152, 0);"></div>
+          警报
+        </li>
+        <li>
+          <div style="background-color: rgb(255, 0, 0);"></div>
+          严重
+        </li>
+      </ul>
+      <div id="search">
+        <input nz-input [(ngModel)]="searchValue" placeholder="请输入关键字搜索">
+        <button nz-button >搜索</button>
+        <button nz-button (click)="getAlarmList()">刷新</button>
+      </div>
+    </div>
+    <nz-list [nzDataSource]="alarmLists" [nzRenderItem]="item"
+             [nzGrid]="{ gutter: 16, span: 6 ,xs:24 ,sm:12,md:12,lg:12,xl:6,xxl:6}"
+             [nzPagination]="pagination" [nzLoading]="loading">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent">
+          <ng-template #nzContent>
+            <div class="card"  (click)="edit(item.key)">
+              <div class="title" [ngStyle]="{'background-color':item.strategy.level==0?'gold':'gold'}">
+                <span>{{item.name}}</span>
+              </div>
+              <ul [ngStyle]="{'border':item.strategy.level==0?'solid 1px gold':'solid 1px gold','background-color':item.status?'rgba(26,183,104,.05)':'rgba(255,34,34,.05)'}"  >
+                <li>
+                  设备名称:<span>{{item.strategy.device.name}}</span>
+                </li>
+                <li>
+                  属性名称:<span>{{item.strategy.attribute.name}}</span>
+                </li>
+                <li>
+                  报警条件:<span>{{ item.strategy.attribute.name }}{{ item.strategy.conditiona.key }}{{ item.strategy.conditiona.value }};
+                    <span *ngIf="item.strategy.conditionb.value">{{ item.strategy.attribute.name }}{{ item.strategy.conditionb.key }}{{ item.strategy.conditionb.value }}</span>
+                    </span>
+                </li>
+                <li>
+                  报警时长:<span>{{item.duration}}</span>
+                </li>
+                <li>
+                  状态:
+                  <span style="margin-right: 8px"
+                        [ngStyle]="{'color':item.status?'#1ab768':'#ff2222'}">{{item.active ? '开启' : '关闭'}}</span>
+                  <nz-switch (click)="$event.stopPropagation();" [(ngModel)]="item.active" class="switch"></nz-switch>
+
+                </li>
+                <li>
+                  报警时间:<span>{{item.endtime}}</span>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+
+    <ng-template #pagination>
+      <nz-pagination [nzPageIndex]="currentIndex" [nzTotal]="alarmList.length"
+                     (nzPageIndexChange)="indexChange($event)" (nzPageSizeChange)="sizeChange($event)" nzShowSizeChanger
+                     [nzPageSize]="pageSize"
+                     [nzPageSizeOptions]="[4,8,16,32]"></nz-pagination>
+    </ng-template>
+
+  </div>
+</div>
