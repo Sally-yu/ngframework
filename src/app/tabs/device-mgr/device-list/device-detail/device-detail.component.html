@@ -69,7 +69,7 @@
     <nz-form-label [nzSpan]="7">采样间隔</nz-form-label>
     <nz-form-control [nzSpan]="8">
       <nz-input-number style="width:100%;" name="interval" [(ngModel)]="t" [nzMin]="0" [nzStep]="1"
-                       (focus)="t==0?t=null:t;" (blur)="t==null||t==''?t=0:t;"></nz-input-number>
+                       (focus)="t==0?t=null:t;" (blur)="t==null?t=0:t;"></nz-input-number>
     </nz-form-control>
     <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint" (ngModelChange)="calcTime()">
       <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>

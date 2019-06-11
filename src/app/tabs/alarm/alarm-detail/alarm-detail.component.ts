@@ -10,7 +10,10 @@ export class AlarmDetailComponent implements OnInit {
   alarmLists;
   loading = false;
   pageSize=8; //起始每页条数
-  currentIndex=1; //其实页数
+  currentIndex=1;
+  searchValue;
+
+  //其实页数
 
   constructor(
     private alarmService :AlarmService

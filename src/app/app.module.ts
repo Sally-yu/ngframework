@@ -49,6 +49,7 @@ import { DeviceDetailComponent } from './tabs/device-mgr/device-list/device-deta
 import { DbMgrComponent } from './tabs/data-mgr/db-mgr/db-mgr.component';
 import { DataDefineComponent } from './tabs/data-process/data-define/data-define.component';
 import { DeviceTableComponent } from './tabs/device-mgr/device-card/device-table/device-table.component';
+import {AddAlarmStrategyComponent} from './tabs/alarm/alarm-strategy-list/add-alarm-strategy/add-alarm-strategy.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -76,6 +77,7 @@ const routes: Routes = [
     OperationSummaryComponent,
     AlarmMgrComponent,
     AlarmStrategyListComponent,
+    AddAlarmStrategyComponent,
     AlarmSummaryComponent,
     AlarmDetailComponent,
     AlarmHistoryComponent,

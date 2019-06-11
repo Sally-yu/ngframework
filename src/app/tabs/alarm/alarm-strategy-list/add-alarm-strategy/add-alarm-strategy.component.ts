@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AlarmService} from '../../../../alarm.service';
 import {DeviceService} from '../../../../device.service';
-import * as uuid from 'uuid';
+
 @Component({
   selector: 'app-add-alarm-strategy',
   templateUrl: './add-alarm-strategy.component.html',
@@ -29,7 +29,7 @@ export class AddAlarmStrategyComponent implements OnInit {
   submit() {
     if (this.codeError.required && this.codeError.unique) {
       let data = JSON.parse(JSON.stringify(this.alarmStg));
-     
+
       switch (this.option) {
         case 'new': //新增
           this.alarmService.addAlarmStg(data).then(res => {

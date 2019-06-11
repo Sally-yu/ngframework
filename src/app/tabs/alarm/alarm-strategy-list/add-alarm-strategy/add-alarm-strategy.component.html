@@ -1,11 +1,11 @@
 <p id="btn" (click)="close()">
     <i nz-icon nzType="left" nzTheme="outline"></i>{{parentCom}}
   </p>
-  
+
   <p style="    padding-left: 24px;
       font-size: 16px;
       border-left: solid #0987fe;">基本信息</p>
-  
+
   <form nz-form *ngIf="!loading">
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>策略编号</nz-form-label>
@@ -101,6 +101,6 @@
   </form>
   <div style="margin: 24px;padding-left: 150px;">
       <button nz-button nzType="primary" style="margin-right: 8px;width: 95px" (click)="submit()">提交</button>
-      <button nz-button style="width: 95px;margin-right: 8px" (click)="reset()">重置</button>
+      <button nz-button style="width: 95px;margin-right: 8px" >重置</button>
       <button nz-button style="width: 94px;" (click)="close()">取消</button>
     </div>
