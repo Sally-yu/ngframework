@@ -1,3 +1,55 @@
-<p>
-  alarm-mgr works!
-</p>
+<div id="content">
+    <nz-layout style="padding:24px 0; background: transparent">
+        <nz-content style="padding: 0 24px; min-height: 280px;">
+        <div id="list-tool">
+          <label>
+            <input type="text" nz-input placeholder="输入关键字搜索">
+          </label>
+          <button nz-button nzType="primary">搜索</button>
+          <div id="btns">
+            <button nz-button (click)="getAlarmList()">刷新</button>
+          </div>
+        </div>
+
+        <nz-table #list [nzData]="alarmList" [nzLoading]="loading" [nzPageSize]="5">
+          <thead>
+          <tr>
+              <th nzWidth="100px">#</th>
+            <th>预警名称</th>
+            <th>设备名称</th>
+            <th>属性名称</th>
+            <th>报警条件</th>
+            <th>报警级别</th>
+            <th>添加时间</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of list.data">
+            <td>{{alarmList.indexOf(data) + 1}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.strategy.device.name}}</td>
+            <td>{{data.strategy.attribute.name}}</td>
+            <td>{{ data.strategy.attribute.name }}{{ data.strategy.conditiona.key }}{{ data.strategy.conditiona.value }};
+              <p *ngIf="data.strategy.conditionb.value">{{ data.strategy.attribute.name }}{{ data.strategy.conditionb.key }}{{ data.strategy.conditionb.value }}</td>
+            <td>
+                <p style="color:gold" *ngIf="data.strategy.level==0">提醒</p>
+                <p style="color:rgb(253, 152, 0)" *ngIf="data.strategy.level==1">警报</p>
+                <p style="color:rgb(255, 0, 0)" *ngIf="data.strategy.level==2">严重</p>
+            </td>
+            <td>{{data.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+              <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              
+              <a (click)="rowSelected(data.key)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-content>
+    </nz-layout>
+</div>
+
+<div id="diagram" ></div>
+
