@@ -12,6 +12,8 @@ export class UrlService {
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
   workUrl = 'http://10.24.20.71:9098/workspace'; //svg 图片等资源服务
 
+  keyUrl=this.hostname+this.hostPort+'/rsakey';
+
   public user = this.hostname + this.hostPort + '/user/key';
   public allUser = this.hostname + this.hostPort + '/user/all';
   public auth = this.hostname + this.hostPort + '/user/login';

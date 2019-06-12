@@ -72,84 +72,104 @@ export class UserService {
 
   //新增用户
   newUser(user: any): any {
-    let encrypt = this.rsa.Encrypt(JSON.stringify(user));//公钥加密 字符串超长 分段加
-    return new Promise((resolve, reject) => {
-      if (!encrypt) {
-        reject(false);
+    this.rsa.Encrypt(JSON.stringify(user)).then(encrypt=>{
+      if (encrypt){
+        return new Promise((resolve, reject) => {
+          if (!encrypt) {
+            reject(false);
+          }
+          this.http.post(this.addUrl, {user: encrypt}).subscribe(res => {
+            if (!res['status']) {
+              this.message.error(res['msg']);
+            } else {
+              this.message.success(res['msg']);
+            }
+            resolve(res['status']);
+          }, error1 => {
+            this.message.error(error1.error['msg']);
+            reject(false);
+          });
+        });
+      } else {
+        return null;
       }
-      this.http.post(this.addUrl, {user: encrypt}).subscribe(res => {
-        if (!res['status']) {
-          this.message.error(res['msg']);
-        } else {
-          this.message.success(res['msg']);
-        }
-        resolve(res['status']);
-      }, error1 => {
-        this.message.error(error1.error['msg']);
-        reject(false);
-      });
-    });
+    },err=>{
+      this.message.error('用户加密验证出错')
+    });//公钥加密 字符串超长 分段加
+
   }
 
   //更新用户信息
   update(user: any): any {
-    let encrypt = this.rsa.Encrypt(JSON.stringify(user));//公钥加密 字符串超长 分段加
-    return new Promise((resolve, reject) => {
-      if (!encrypt) {
-        reject(false);
-      }
-      this.http.post(this.updateUrl, {user: encrypt}).subscribe(res => {
-        if (!res['status']) {
-          this.message.error(res['msg']);
-        } else {
-          this.message.success(res['msg']);
+    this.rsa.Encrypt(JSON.stringify(user)).then(encrypt=>{
+      return new Promise((resolve, reject) => {
+        if (!encrypt) {
+          reject(false);
         }
-        resolve(res['status']);
-      }, error1 => {
-        this.message.error(error1.error['msg']);
-        reject(false);
+        this.http.post(this.updateUrl, {user: encrypt}).subscribe(res => {
+          if (!res['status']) {
+            this.message.error(res['msg']);
+          } else {
+            this.message.success(res['msg']);
+          }
+          resolve(res['status']);
+        }, error1 => {
+          this.message.error(error1.error['msg']);
+          reject(false);
+        });
       });
-    });
+    },err=>{
+      this.message.error('用户加密验证出错')
+    });//公钥加密 字符串超长 分段加
+
   }
 
   //修改密码
   newPwd(key: string, pwd: string): any {
-    let encrypt = this.rsa.Encrypt(pwd);//公钥加密 字符串超长 分段加
-    return new Promise((resolve, reject) => {
-      if (!encrypt) {
-        reject(false);
-      }
-      this.http.post(this.url.newPwd, {key: key, pwd: encrypt}).subscribe(res => {
-        if (!res['status']) {
-          this.message.error(res['msg']);
+    this.rsa.Encrypt(pwd).then(encrypt=>{
+      return new Promise((resolve, reject) => {
+        if (!encrypt) {
           reject(false);
         }
-        resolve(res['status']);
-      }, error1 => {
-        this.message.error(error1.error['msg']);
-        reject(false);
+        this.http.post(this.url.newPwd, {key: key, pwd: encrypt}).subscribe(res => {
+          if (!res['status']) {
+            this.message.error(res['msg']);
+            reject(false);
+          }
+          resolve(res['status']);
+        }, error1 => {
+          this.message.error(error1.error['msg']);
+          reject(false);
+        });
       });
-    });
+    },err=>{
+      this.message.error('用户加密验证出错')
+    });//公钥加密 字符串超长 分段加
+
   }
 
   //验证用户key与密码匹配
   authKey(key: string, pwd: string): any {
-    let encrypt = this.rsa.Encrypt(pwd);//公钥加密 字符串超长 分段加
-    return new Promise((resolve, reject) => {
-      if (!encrypt) {
-        reject(false);
-      }
-      this.http.post(this.url.authKey, {key: key, pwd: encrypt}).subscribe(res => {
-        if (!res['status']) {
-          this.message.error(res['msg']);
+    this.rsa.Encrypt(pwd).then(encrypt=>{
+      return new Promise((resolve, reject) => {
+        if (!encrypt) {
           reject(false);
         }
-        resolve(res['status']);
-      }, error1 => {
-        this.message.error(error1.error['msg']);
-        reject(false);
+        this.http.post(this.url.authKey, {key: key, pwd: encrypt}).subscribe(res => {
+          if (!res['status']) {
+            this.message.error(res['msg']);
+            reject(false);
+          }
+          resolve(res['status']);
+        }, error1 => {
+          this.message.error(error1.error['msg']);
+          reject(false);
+        });
       });
-    });
+    },err=>{
+      this.message.error('用户加密验证出错')
+    });//公钥加密 字符串超长 分段加
+
   }
 
   //移除用户

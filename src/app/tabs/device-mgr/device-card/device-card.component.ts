@@ -12,32 +12,14 @@ export class DeviceCardComponent implements OnInit {
   loading=false;
   searchValue;
   group;
-  pageSize=8; //起始每页条数
+  pageSize=9; //起始每页条数
   currentIndex=1; //其实页数
 
   viewList;
   deviceDetail=false;
+  deviceTable=false;
   option;
   device;
-
-  nullDevice = {
-    key: null,
-    code: null,
-    type: null,
-    group: null,
-    name: null,
-    template: null,
-    connect: null,
-    interval: null,
-    model: null,
-    gps: null,
-    phone: null,
-    manufacturer: null,
-    status: false,
-    note: null,
-    time: null,
-    attrs:[],
-  };
 
   //绑定list用，从deviceList中截取
 
@@ -80,6 +62,7 @@ export class DeviceCardComponent implements OnInit {
   cancel($event: any) {
     if(event){
       this.deviceDetail=false;
+      this.deviceTable=false;
       this.getList();
     }
   }
@@ -103,7 +86,7 @@ export class DeviceCardComponent implements OnInit {
   }
 
   add(){
-    this.device=JSON.parse(JSON.stringify(this.nullDevice));
+    // this.device=JSON.parse(JSON.stringify(this.nullDevice));
     this.option='new';
     this.deviceDetail=true;
   }
@@ -112,5 +95,15 @@ export class DeviceCardComponent implements OnInit {
     this.device=JSON.parse(JSON.stringify(this.deviceList)).filter(d=>d.key===key)[0];
     this.option='edit';
     this.deviceDetail=true;
+  }
+
+  toTable(key:string){
+    this.device=JSON.parse(JSON.stringify(this.deviceList)).filter(d=>d.key===key)[0];
+    this.deviceTable=true;
+  }
+
+  //控制显示属性参数
+  display(item: any) {
+    return item.attrs.filter(a=>a.display);
   }
 }

@@ -1,9 +1,7 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DeviceService} from '../../../../device.service';
 import * as uuid from 'uuid';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {NzMessageService} from 'ng-zorro-antd';
-import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-device-detail',
@@ -19,6 +17,8 @@ export class DeviceDetailComponent implements OnInit {
 
   loading = false;
   templateList;
+
+  presetColors=['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)','#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];//预置颜色选项
 
   nullDevice = {
     key: null,
@@ -37,6 +37,10 @@ export class DeviceDetailComponent implements OnInit {
     note: null,
     time: null,
     attrs: [],
+    display:true,
+    devicesetting:{
+      cardcolor:"#1ab768"
+    }
   };
 
   timeUint = 'ms';
@@ -276,6 +280,9 @@ export class DeviceDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.option=='new'){
+      this.device=JSON.parse(JSON.stringify(this.nullDevice));
+    }
     this.getTemplate();
     this.parseInterval();
     this.addNullAtt();

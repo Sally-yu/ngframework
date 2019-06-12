@@ -11,7 +11,8 @@
     <nz-form-label [nzSpan]="7" nzRequired>设备编号</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeRequire"
                      [nzValidateStatus]="codeRequire?'success':'error'">
-      <input #codeEle nz-input name="code"  [(ngModel)]="device['code']" [disabled]="option=='edit'" placeholder="请输入唯一编号"
+      <input #codeEle nz-input name="code" [(ngModel)]="device['code']" [disabled]="option=='edit'"
+             placeholder="请输入唯一编号"
              (ngModelChange)="device.code?codeRequire=true:codeRequire=false;"/>
       <nz-form-explain *ngIf="!codeRequire">{{'请输入唯一编号！'}}</nz-form-explain>
     </nz-form-control>
@@ -71,7 +72,8 @@
       <nz-input-number style="width:100%;" name="interval" [(ngModel)]="t" [nzMin]="0" [nzStep]="1"
                        (focus)="t==0?t=null:t;" (blur)="t==null?t=0:t;"></nz-input-number>
     </nz-form-control>
-    <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint" (ngModelChange)="calcTime()">
+    <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint"
+               (ngModelChange)="calcTime()">
       <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>
       <nz-option [nzLabel]="'秒'" [nzValue]="'s'"></nz-option>
       <nz-option [nzLabel]="'分'" [nzValue]="'min'"></nz-option>
@@ -89,7 +91,8 @@
     <nz-form-label [nzSpan]="7">手机号</nz-form-label>
     <nz-form-control [nzSpan]="12">
       <!--单向绑定可防止change事件后model改变-->
-      <input #telEle (ngModelChange)="telChange($event)" nz-input name="phone" [ngModel]="device['phone']" placeholder="请输入手机号码"/>
+      <input #telEle (ngModelChange)="telChange($event)" nz-input name="phone" [ngModel]="device['phone']"
+             placeholder="请输入手机号码"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -99,7 +102,25 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7" nzRequired>状态</nz-form-label>
+    <nz-form-label [nzSpan]="7" >展示卡片</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-switch class="switch" name="display" [(ngModel)]="device.display"></nz-switch>
+      <span style="margin-left: 8px"
+            [ngStyle]="{'color':device.display?'#1ab768':'#ff2222'}">{{device.display ? '展示' : '隐藏'}}</span>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >卡片颜色</nz-form-label>
+    <nz-form-control [nzSpan]="10">
+      <input name="color" nz-input [(ngModel)]="device['devicesetting']['cardcolor']">
+    </nz-form-control>
+    <input [cpPresetColors]="presetColors" readonly title="选择颜色"
+           [(colorPicker)]="device['devicesetting']['cardcolor']"
+           style="border: none;outline: none;height: 30px;width: 30px;margin-top: 5px;margin-left: 8px;cursor: pointer;"
+           [style.background]="device['devicesetting']['cardcolor']"/>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >状态</nz-form-label>
     <nz-form-control [nzSpan]="12">
       <nz-switch class="switch" name="status" [(ngModel)]="device.status"></nz-switch>
       <span style="margin-left: 8px"
@@ -109,7 +130,8 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="7">备注</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }" placeholder="设备备注信息"></textarea>
+      <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                placeholder="设备备注信息"></textarea>
     </nz-form-control>
   </nz-form-item>
 </form>
@@ -133,6 +155,7 @@
     <th>描述</th>
     <th>单位</th>
     <th nzWidth="80px">累加值</th>
+    <th nzWidth="80px">卡片展示</th>
     <th nzWidth="80px">操作</th>
   </tr>
   </thead>
@@ -168,6 +191,9 @@
     </td>
     <td *ngIf="data.key!='null'">
       <nz-switch class="switch" [(ngModel)]="data['sum']"></nz-switch>
+    </td>
+    <td *ngIf="data.key!='null'">
+      <nz-switch class="switch" [(ngModel)]="data['display']"></nz-switch>
     </td>
     <td *ngIf="data.key!='null'">
       <a style="color: #ff2222" (click)="remove(data['key'])">

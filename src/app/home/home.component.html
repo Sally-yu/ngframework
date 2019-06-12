@@ -40,9 +40,10 @@
 <!--左菜单-->
 <div [ngClass]="{'menu':menuExp,'menu-mini':!menuExp}">
   <!--三选项组合按钮-->
-  <span id="logo">
+  <div id="logo">
+    <img src="../../assets/src/PlatformLogo.png" alt="inpsur">
     浪潮制造智能分析平台
-  </span>
+  </div>
 
   <!--菜单功能栏-->
   <div id="box">
@@ -163,14 +164,14 @@
                          [ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>
 
     <!--alarm-->
-    <app-alarm-mgr *ngIf="exist('1010')" class="back"
-                   [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-alarm-mgr>
+    <app-alarm-detail *ngIf="exist('1010')" class="back"
+                   [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-alarm-detail>
     <app-alarm-strategy-list *ngIf="exist('1011')" class="back"
                              [ngStyle]="{'display':active=='1011'?'block':'none'}"></app-alarm-strategy-list>
     <app-alarm-summary *ngIf="exist('1012')" class="back"
                        [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-alarm-summary>
-    <app-alarm-detail *ngIf="exist('1013')" class="back"
-                      [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-detail>
+    <app-alarm-mgr *ngIf="exist('1013')" class="back"
+                      [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-mgr>
     <app-alarm-history *ngIf="exist('1014')" class="back"
                        [ngStyle]="{'display':active=='1014'?'block':'none'}"></app-alarm-history>
 

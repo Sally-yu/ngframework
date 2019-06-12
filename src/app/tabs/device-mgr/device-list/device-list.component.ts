@@ -14,24 +14,6 @@ export class DeviceListComponent implements OnInit {
   deviceList = [];
   searchValue;
 
-  nullDevice = {
-    key: null,
-    code: null,
-    type: null,
-    group: null,
-    name: null,
-    template: null,
-    connect: null,
-    interval: null,
-    model: null,
-    gps: null,
-    phone: null,
-    manufacturer: null,
-    status: null,
-    note: null,
-    time: null,
-    attrs: [],
-  };
   option;
   currentIndex = 1;
   pageSize = 5;
@@ -72,7 +54,7 @@ export class DeviceListComponent implements OnInit {
   }
 
   add() {
-    this.device = JSON.parse(JSON.stringify(this.nullDevice));
+    // this.device = JSON.parse(JSON.stringify(this.nullDevice));
     this.option = 'new';
     this.deviceDetail = true;
   }

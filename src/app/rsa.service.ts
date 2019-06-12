@@ -1,28 +1,38 @@
 import {Injectable} from '@angular/core';
 import * as RSA from 'jsencrypt';
+import {UrlService} from './url.service';
+import {HttpClient} from '@angular/common/http';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RsaService {
 
-  publicKey = `-----BEGIN Pubkey-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk+89V7vpOj1rG6bTAKYM
-56qmFLwNCBVDJ3MltVVtxVUUByqc5b6u909MmmrLBqS//PWC6zc3wZzU1+ayh8xb
-UAEZuA3EjlPHIaFIVIz04RaW10+1xnby/RQE23tDqsv9a2jv/axjE/27b62nzvCW
-eItu1kNQ3MGdcuqKjke+LKhQ7nWPRCOd/ffVqSuRvG0YfUEkOz/6UpsPr6vrI331
-hWRB4DlYy8qFUmDsyvvExe4NjZWblXCqkEXRRAhi2SQRCl3teGuIHtDUxCskRIDi
-aMD+Qt2Yp+Vvbz6hUiqIWSIH1BoHJer/JOq2/O6X3cmuppU4AdVNgy8Bq236iXvr
-MQIDAQAB
------END Pubkey-----
-`;
+  constructor(
+    private url: UrlService,
+    private http: HttpClient,
+    private message: NzMessageService
+  ) {
+  }
 
-  constructor() { }
-
-  //加密登录信息
+  //加密登录信息，后台获取key 异步等待
   Encrypt(obj) {
     let encrypt = new RSA.JSEncrypt();
-    encrypt.setPublicKey(this.publicKey);
-    return encrypt.encryptLong(obj);
+    let data;
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url.keyUrl).toPromise().then(res => {
+        if (res['status'] && res['data']) {
+          data = res['data'];
+          encrypt.setPublicKey(data);
+          resolve(encrypt.encryptLong(obj));
+        }
+        else {
+          reject('')
+        }
+      }, res => {
+        reject('');
+      });
+    });
   }
 }

@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'bell',
       children: [
-        {title: '实时报警管理', key: '1010', app: 'alarm-mgr', isLeaf: true, fav: false, share: true},
+        {title: '实时报警监控', key: '1010', app: 'alarm-mgr', isLeaf: true, fav: false, share: true},
         {title: '报警策略列表', key: '1011', app: 'alarm-strategy-list', isLeaf: true, fav: true, share: false},
         {title: '报警信息汇总', key: '1012', app: 'alarm-summary', isLeaf: true, fav: true, share: true},
         {title: '报警信息详情', key: '1013', app: 'alarm-detail', isLeaf: true, fav: true, share: true},
