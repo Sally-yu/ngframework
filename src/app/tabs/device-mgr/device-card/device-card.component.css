@@ -55,10 +55,10 @@
   display: inline-flex;
 }
 #search button {
-  margin-left: 8px;
+  margin-right: 8px;
 }
 #search input {
-  margin-left: 8px;
+  margin-right: 8px;
 }
 .title {
   -webkit-transition-duration: 300ms;
@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 .card-content {
-  height: 200px;
+  height: 240px;
 }
 .card-content div {
   display: inline-block;
@@ -91,11 +91,6 @@
 .card-content div span {
   color: #000000;
   font-weight: bold;
-  font-size: 20px;
-}
-.card-footer {
-  height: 50px;
-  background-color: #1ab76845;
-  margin: 16px;
+  font-size: 24px;
 }
 /*# sourceMappingURL=device-card.component.css.map */

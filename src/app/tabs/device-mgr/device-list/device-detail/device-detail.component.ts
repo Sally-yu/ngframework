@@ -18,7 +18,10 @@ export class DeviceDetailComponent implements OnInit {
   loading = false;
   templateList;
 
-  presetColors=['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)','#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];//预置颜色选项
+  presetColors=['#2ecc71','#1abc9c','#3498db','#f1c40f','#e67e22','#e74c3c',
+    '#78e08f','#4a69bd','#38ada9','#fa983a','#f8c291','#fad390',
+    '#A8EBE1','#FFEAC0','#9FBECC','#EFFFED','#D8AAB9','#F5DFDF',
+  ];//预置颜色选项
 
   nullDevice = {
     key: null,
@@ -39,7 +42,7 @@ export class DeviceDetailComponent implements OnInit {
     attrs: [],
     display:true,
     devicesetting:{
-      cardcolor:"#1ab768"
+      cardcolor:"#2ecc71"
     }
   };
 

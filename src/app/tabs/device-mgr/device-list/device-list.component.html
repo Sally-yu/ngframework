@@ -24,6 +24,7 @@
             <th>设备名称</th>
             <th>设备类型</th>
             <th>注册时间</th>
+            <th>展示卡片</th>
             <th>运行状态</th>
             <th>操作</th>
           </tr>
@@ -35,6 +36,9 @@
             <td>{{ data.name }}</td>
             <td>{{ data.type }}</td>
             <td>{{ data.time }}</td>
+            <td>
+              <nz-switch [(ngModel)]="data.display" (ngModelChange)="save(data)" class="switch"></nz-switch>
+            </td>
             <td>
               <nz-switch [(ngModel)]="data.status" class="switch"></nz-switch>
             </td>

@@ -24,8 +24,8 @@
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
         <!--<input nz-input [(ngModel)]="group" placeholder="分组">-->
         <!--<button nz-button>搜索</button>-->
-        <button nz-button (click)="add()">新增</button>
         <button nz-button (click)="getList()">刷新</button>
+        <button nz-button (click)="add()" nzType="primary">新增</button>
       </div>
     </div>
     <nz-list [nzDataSource]="viewList" [nzRenderItem]="item"
@@ -42,15 +42,16 @@
               </div>
 
               <div class="card-content" >
+                <div style="height: 30px;width: 100%;font-size: 20px;font-weight: bold;">
+                  {{item.code}}
+                </div>
                 <div *ngFor="let att of display(item)"
                      [ngStyle]="{'height':200/(display(item).length%2==0?display(item).length/2:(display(item).length+1)/2)+'px','padding-top':(200/(display(item).length%2==0?display(item).length/2:(display(item).length+1)/2)-36)/2+'px','width':(display(item).length%2!=0&&display(item).indexOf(att)==display(item).length-1)?'100%':'50%'}">
-                  <span>100%</span><br>
+                  <span>{{keyValue(item.key,att.code)}}</span><br>
                   {{att.name}}
                 </div>
               </div>
-              <div class="card-footer">
-
-              </div>
+              <div echarts [options]="chartOption(item.key)" (click)="$event.stopPropagation()" class="chart" style="height: 50px"></div>
 
 
               <!--<ul>-->

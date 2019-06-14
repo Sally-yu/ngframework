@@ -79,4 +79,13 @@ export class DeviceListComponent implements OnInit {
       this.getList();
     }
   }
+
+  save(data: any) {
+    this.loading=true;
+    this.deviceService.updateDevice(data).then(res => {
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
 }

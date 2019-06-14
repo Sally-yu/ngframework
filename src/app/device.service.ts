@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {NzMessageService} from 'ng-zorro-antd';
 import {UrlService} from './url.service';
 import {Injectable} from '@angular/core';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Injectable({
   providedIn: 'root'
@@ -161,6 +162,20 @@ export class DeviceService {
         resolve(res);  //status为true时 data为设备信息，为false时msg为错误信息
       }, res => {
         reject(res);
+      });
+    });
+  }
+
+  deviceValue(codes:any): any {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.deviceValue, {keys: codes}).toPromise().then(res => {
+        if (res['status'] && res['data']) {
+          resolve(res['data']);  //status为true时 data为设备信息，为false时msg为错误信息
+        } else {
+          reject(res['msg']);
+        }
+      }, res => {
+        reject(res['msg']);
       });
     });
   }

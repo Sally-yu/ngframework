@@ -36,6 +36,7 @@ export class UrlService {
   public removeDevice = this.hostname + this.hostPort + '/device/remove';
   public addDevice = this.hostname + this.hostPort + '/device/add';
   public updateDevice = this.hostname + this.hostPort + '/device/update';
+  public deviceValue = this.hostname + this.hostPort + '/device/value';
 
 
   public tempList = this.hostname + this.hostPort + '/template/all';

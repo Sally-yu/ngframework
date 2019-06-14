@@ -21,6 +21,7 @@ export class DeviceTemplateComponent implements OnInit {
     attrs: []
   };
   tempList = [];
+  searchValue;
 
   constructor(
     private deviceService: DeviceService,
@@ -66,6 +67,20 @@ export class DeviceTemplateComponent implements OnInit {
     this.getList();
   }
 
+  search(){
+    this.loading = true;
+    this.deviceService.deviceTempList().then(res => {
+      this.tempList = res;
+      if (this.searchValue) {
+        this.tempList = JSON.parse(JSON.stringify(this.tempList)).filter(d => {
+          return d.name.indexOf(this.searchValue) >= 0 || d.code.indexOf(this.searchValue) >= 0;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
 
   edit(key: any) {
     this.tempDetail = true;
