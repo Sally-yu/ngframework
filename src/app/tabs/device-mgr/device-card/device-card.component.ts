@@ -22,7 +22,7 @@ export class DeviceCardComponent implements OnInit {
 
   attValue;
 
-  presetColors=['#2ecc71','#1abc9c','#3498db','#f1c40f','#e67e22','#e74c3c' ];
+  presetColors = ['#2ecc71', '#1abc9c', '#3498db', '#f1c40f', '#e67e22', '#e74c3c'];
 
   //绑定list用，从deviceList中截取
 
@@ -34,7 +34,7 @@ export class DeviceCardComponent implements OnInit {
   getList() {
     this.loading = true;
     this.deviceService.deviceList().then(res => {
-      this.deviceList = res.filter(d=>d.display);
+      this.deviceList = res.filter(d => d.display);
       this.spliceViewList(this.deviceList);
       this.loading = false;
     }, err => {
@@ -130,11 +130,15 @@ export class DeviceCardComponent implements OnInit {
     if (!this.attValue) {
       return;
     }
-    let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
-    if (data) {
-      return data.filter(d => d['attcode'] === att)[0]['value'];
-    } else {
-      return;
+    try {
+      let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
+      if (data) {
+        return data.filter(d => d['attcode'] === att)[0]['value'];
+      } else {
+        return;
+      }
+    } catch (e) {
+
     }
   }
 
@@ -152,7 +156,7 @@ export class DeviceCardComponent implements OnInit {
         containLabel: false
       },
       xAxis: {
-        max:0,
+        max: 0,
         type: 'value',
         show: false
       },
@@ -164,7 +168,7 @@ export class DeviceCardComponent implements OnInit {
       series: []
     };
     for (i = 0; i < length; i++) {
-      let r=Math.ceil(Math.random() * 100);
+      let r = Math.ceil(Math.random() * 100);
       option.series = [...option.series, {
         type: 'bar',
         stack: '总量',
@@ -175,9 +179,9 @@ export class DeviceCardComponent implements OnInit {
           }
         }
       }];
-      sum+=r;
+      sum += r;
     }
-    option.xAxis.max=sum;
+    option.xAxis.max = sum;
 
     return option;
   }

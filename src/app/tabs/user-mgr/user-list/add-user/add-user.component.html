@@ -1,8 +1,10 @@
 <p id="btn" (click)="close()">
-  <i nz-icon nzType="left" nzTheme="outline"></i>用户列表
+  <i nz-icon nzType="left" nzTheme="outline" title="返回用户列表"></i>用户列表
 </p>
 
-<nz-divider [nzType]="'horizontal'"></nz-divider>
+<p style="    padding-left: 24px;
+    font-size: 16px;
+    border-left: solid #0987fe;">用户信息</p>
 <nz-spin nzSimple [nzSize]="'large'" *ngIf="loading" [nzSpinning]="loading"
          style="margin: auto;width: 100%;text-align: center;padding-top: 100px;"></nz-spin>
 <form nz-form *ngIf="!loading">
@@ -25,29 +27,31 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
+    <nz-form-label [nzSpan]="7" [nzRequired]="option=='new'" >密码</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="password" placeholder="请输入密码" type="password" [(ngModel)]="user.password" (ngModelChange)="valide()"/>
+      <input nz-input name="password" placeholder="请输入密码" type="password" [(ngModel)]="user.password"
+             (ngModelChange)="valide()"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7" nzRequired>确认密码</nz-form-label>
+    <nz-form-label [nzSpan]="7" [nzRequired]="option=='new'">确认密码</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!confirmOK" [nzValidateStatus]="confirmStatus">
-      <input nz-input name="confirm" placeholder="再次输入以确认密码" type="password" [(ngModel)]="confirm" (ngModelChange)="valide()"/>
+      <input nz-input name="confirm" placeholder="再次输入以确认密码" type="password" [(ngModel)]="confirm"
+             (ngModelChange)="valide()"/>
       <nz-form-explain *ngIf="!confirmOK">两次输入的密码不匹配，请重新确认</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <!--<nz-form-item>-->
-    <!--<nz-form-control [nzOffset]="7" [nzSpan]="12">-->
-      <!--<button nz-button nzType="primary" (click)="submit()">提交</button>-->
-      <!--<button nz-button (click)="reset()">重置</button>-->
-    <!--</nz-form-control>-->
+  <!--<nz-form-control [nzOffset]="7" [nzSpan]="12">-->
+  <!--<button nz-button nzType="primary" (click)="submit()">提交</button>-->
+  <!--<button nz-button (click)="reset()">重置</button>-->
+  <!--</nz-form-control>-->
   <!--</nz-form-item>-->
 
 </form>
 
 <div style="padding-left: 150px;margin: 24px">
-  <button nz-button nzType="primary"  style="margin-right: 8px;width: 100px" (click)="submit()">保存</button>
+  <button nz-button nzType="primary" style="margin-right: 8px;width: 100px" (click)="submit()">保存</button>
 
   <button nz-button style="width: 100px;" (click)="reset()">重置</button>
 </div>

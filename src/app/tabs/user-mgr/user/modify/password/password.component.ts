@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserService} from '../../../../../user.service';
 import {NzMessageService} from 'ng-zorro-antd';
+import {RsaService} from '../../../../../rsa.service';
+import {HttpClient} from '@angular/common/http';
+import {UrlService} from '../../../../../url.service';
 
 @Component({
   selector: 'app-password',
@@ -13,10 +16,10 @@ export class PasswordComponent implements OnInit {
 
   @Output() result: EventEmitter<any> = new EventEmitter();
 
-  pwdLength=true;
+  pwdLength = true;
   lenStatus;
   confirmOK = true;
-  confirmStatus ;
+  confirmStatus;
 
   current = 0;
   oldpwd = '';
@@ -25,6 +28,9 @@ export class PasswordComponent implements OnInit {
 
   constructor(
     private userSrv: UserService,
+    private rsaService: RsaService,
+    private http: HttpClient,
+    private url: UrlService,
     private message: NzMessageService,
   ) {
   }
@@ -40,6 +46,7 @@ export class PasswordComponent implements OnInit {
     this.current += 1;
   }
 
+  //验证旧密码
   authyKey() {
     this.userSrv.authKey(this.key, this.oldpwd).then(res => {
       if (res) {
@@ -49,35 +56,36 @@ export class PasswordComponent implements OnInit {
     });
   }
 
+  //确认新密码
   ensure() {
     this.valideLen();
-    if(this.newpwd.length>0&&this.pwdLength) {
+    if (this.newpwd.length > 0 && this.pwdLength) {
       this.userSrv.newPwd(this.key, this.newpwd).then(res => {
         if (res) {
           this.next();
         }
-      }, msg => {
+      }, err => {
       });
     }
   }
 
   valide() {
-    if(this.newpwd!=this.confirm){
-      this.confirmOK=false;
-      this.confirmStatus="error";
-    }else{
-      this.confirmOK=true;
-      this.confirmStatus="success";
+    if (this.newpwd != this.confirm) {
+      this.confirmOK = false;
+      this.confirmStatus = 'error';
+    } else {
+      this.confirmOK = true;
+      this.confirmStatus = 'success';
     }
   }
 
-  valideLen(){
-    if(this.newpwd.length<6||this.newpwd.length>16){
-      this.pwdLength=false;
-      this.lenStatus="error";
-    }else{
-      this.pwdLength=true;
-      this.lenStatus="success";
+  valideLen() {
+    if (this.newpwd.length < 6 || this.newpwd.length > 16) {
+      this.pwdLength = false;
+      this.lenStatus = 'error';
+    } else {
+      this.pwdLength = true;
+      this.lenStatus = 'success';
     }
   }
 

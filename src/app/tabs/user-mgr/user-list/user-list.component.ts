@@ -18,7 +18,6 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private userSrv: UserService,
-    private message: NzMessageService
   ) {
   }
 
@@ -67,6 +66,5 @@ export class UserListComponent implements OnInit {
   ngOnInit() {
     this.getList();
   }
-
 
 }

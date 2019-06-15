@@ -73,6 +73,7 @@ export class AddUserComponent implements OnInit {
     switch (this.option) {
       case 'edit':
         this.getUser();
+        this.confirm='';
         break;
       case 'new':
         this.user = {};

@@ -7,12 +7,9 @@
       <nz-content style="padding: 0 24px; min-height: 280px;">
         <div id="list-tool">
           <label>
-            <input type="text" nz-input placeholder="搜索关键字" >
+            <input type="text" nz-input placeholder="搜索关键字" [(ngModel)]="searchValue" (ngModelChange)="search()">
           </label>
-          <button nz-button nzType="primary">搜索</button>
-          <div id="btns">
-            <button nz-button (click)="getList()">刷新</button>
-          </div>
+          <button nz-button (click)="getList()" nzType="primary">刷新</button>
         </div>
         <nz-table #list [nzData]="notifList" [nzLoading]="loading" [nzPageSize]="5">
           <thead>
@@ -25,20 +22,21 @@
           </thead>
           <tbody>
           <tr *ngFor="let data of list.data">
-            <td>{{notifList.indexOf(data)+1}}</td>
+            <td>{{notifList.indexOf(data) + 1}}</td>
             <td>
-              <a (click)="view(data.key)" *ngIf="data.new">{{ data.title }} &nbsp;<nz-tag nzColor="#52c41a">新通知</nz-tag></a>
+              <a (click)="view(data.key)" *ngIf="data.new">{{ data.title }} &nbsp;<nz-tag nzColor="#52c41a">新通知</nz-tag>
+              </a>
               <a (click)="view(data.key)" *ngIf="!data.new" style="color: #000000;">{{ data.title }} </a>
             </td>
             <td>{{ data.time }}</td>
             <td>
               <!--<a *ngIf="data.new">-->
-                <!--<i nz-icon nzType="star" nzTheme="outline"></i>-->
-                <!--标为已读-->
+              <!--<i nz-icon nzType="star" nzTheme="outline"></i>-->
+              <!--标为已读-->
               <!--</a>-->
               <!--<a *ngIf="!data.new">-->
-                <!--<i nz-icon nzType="star" nzTheme="fill"></i>-->
-                <!--标为未读-->
+              <!--<i nz-icon nzType="star" nzTheme="fill"></i>-->
+              <!--标为未读-->
               <!--</a>-->
               <!--<nz-divider nzType="vertical"></nz-divider>-->
               <a (click)="remove(data.key)" style="color: #ff2222;">

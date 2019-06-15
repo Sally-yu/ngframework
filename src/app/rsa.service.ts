@@ -25,7 +25,8 @@ export class RsaService {
         if (res['status'] && res['data']) {
           data = res['data'];
           encrypt.setPublicKey(data);
-          resolve(encrypt.encryptLong(obj));
+          let msg=encrypt.encryptLong(obj);
+          resolve(msg);
         }
         else {
           reject('')

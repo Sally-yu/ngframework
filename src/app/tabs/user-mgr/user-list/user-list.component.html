@@ -40,10 +40,8 @@
             <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
           </label>
           <!--<button nz-button nzType="primary">搜索</button>-->
-          <div id="btns">
             <button nz-button (click)="getList()">刷新</button>
             <button nz-button nzType="primary" (click)="addUser=true;option='new';user={};">新增</button>
-          </div>
         </div>
         <nz-table #list [nzData]="userList" [nzLoading]="loading" [nzPageSize]="5">
           <thead>
@@ -59,7 +57,9 @@
           <tbody>
           <tr *ngFor="let data of list.data">
             <td>{{userList.indexOf(data)+1}}</td>
-            <td>{{ data.username }}</td>
+            <td>
+              <a (click)="addUser=true;option='edit';user=data;user['password']='';">{{ data.username }}</a>
+            </td>
             <td>{{ data.email }}</td>
             <td>{{ data.phone }}</td>
             <td *ngIf="data.status==='0'" style="color:gold">未认证</td>

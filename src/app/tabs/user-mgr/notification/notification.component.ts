@@ -13,6 +13,7 @@ export class NotificationComponent implements OnInit {
   notifList:[];
   detail=false;
   notify;
+  searchValue;
 
   constructor(
     private notifyService:NotifyService,
@@ -52,5 +53,20 @@ export class NotificationComponent implements OnInit {
       this.detail=false;
       this.getList();
     }
+  }
+
+  search() {
+    this.loading = true;
+    this.notifyService.allNotif().then(res => {
+      this.notifList = res;
+      if (this.searchValue) {
+        this.notifList = JSON.parse(JSON.stringify(this.notifList)).filter(d => {
+          return d.title.indexOf(this.searchValue) >= 0 ;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
   }
 }

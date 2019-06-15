@@ -7,6 +7,7 @@
   margin: 12px;
   background-color: #ffffff;
   border-radius: 8px;
+  min-height: 600px;
 }
 #list-tool {
   height: 48px;
@@ -15,9 +16,6 @@
 }
 #list-tool label {
   display: inline-block;
-}
-#btns {
-  float: right;
 }
 button {
   margin-left: 8px;
