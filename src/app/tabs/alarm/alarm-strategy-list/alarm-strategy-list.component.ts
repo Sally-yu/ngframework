@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AlarmService} from '../../../alarm.service';
+
 @Component({
   selector: 'app-alarm-strategy-list',
   templateUrl: './alarm-strategy-list.component.html',
@@ -10,7 +11,7 @@ export class AlarmStrategyListComponent implements OnInit {
   alarmStgDetail = false;
   loading = false;
   alarmStg;
-  alarmStgList=[];
+  alarmStgList = [];
 
   nullAlarmStg = {
     key: null,
@@ -19,16 +20,17 @@ export class AlarmStrategyListComponent implements OnInit {
     time: null,
     device: null,
     attribute: null,
-    conditiona: {"key":null,"value":null},
-    conditionb: {"key":null,"value":null},
+    conditiona: {'key': null, 'value': null},
+    conditionb: {'key': null, 'value': null},
     level: null,
     interval: null,
     note: null
   };
   option;
+  searchValue;
 
   constructor(
-    private alarmService :AlarmService
+    private alarmService: AlarmService
   ) {
   }
 
@@ -40,7 +42,6 @@ export class AlarmStrategyListComponent implements OnInit {
     this.loading = true;
     this.alarmService.alarmStgList().then(res => {
       this.alarmStgList = res;
-      console.log(this.alarmStgList);
       this.loading = false;
     }, err => {
       this.loading = false;
@@ -59,13 +60,27 @@ export class AlarmStrategyListComponent implements OnInit {
     }, err => {
       this.getList();
     });
-
   }
 
   edit(key: any) {
     this.alarmStg = JSON.parse(JSON.stringify(this.alarmStgList)).filter(t => t.key === key)[0];
     this.option = 'edit';
     this.alarmStgDetail = true;
+  }
+
+  search() {
+    this.loading = true;
+    this.alarmService.alarmStgList().then(res => {
+      this.alarmStgList = res;
+      if (this.searchValue) {
+        this.alarmStgList = JSON.parse(JSON.stringify(this.alarmStgList)).filter(d => {
+          return d.name.indexOf(this.searchValue) >= 0 || d.code.indexOf(this.searchValue) >= 0;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
   }
 
   cancel($event: any) {

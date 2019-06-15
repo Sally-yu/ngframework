@@ -9,12 +9,13 @@ import {load} from '@angular/core/src/render3';
   styleUrls: ['./notification.component.less']
 })
 export class NotificationComponent implements OnInit {
-  addUser: boolean;
   loading: any;
   notifList:[];
+  detail=false;
+  notify;
 
   constructor(
-    private notify:NotifyService,
+    private notifyService:NotifyService,
     private message:NzMessageService,
   ) { }
 
@@ -24,7 +25,7 @@ export class NotificationComponent implements OnInit {
 
   getList() {
     this.loading=true;
-    this.notify.allNotif().then(res=>{
+    this.notifyService.allNotif().then(res=>{
       this.notifList=res;
       this.loading=false;
     },error=>{
@@ -34,12 +35,22 @@ export class NotificationComponent implements OnInit {
 
   remove(key: any) {
     this.loading=true;
-    this.notify.removeNotif(key).then(res=>{
+    this.notifyService.removeNotif(key).then(res=>{
       this.getList();
     },error=>{
       this.getList();
     });
   }
 
+  view(key: any) {
+    this.notify=this.notifList.filter(n=>n['key']==key)[0];
+    this.detail=true;
+    this.getList();
+  }
 
+  cancel(event: any) {
+    if (event) {
+      this.detail=false;
+    }
+  }
 }

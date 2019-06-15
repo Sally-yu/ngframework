@@ -45,12 +45,8 @@ export class AlarmDetailComponent implements OnInit {
 
   spliceViewList(list){
     this.alarmLists=JSON.parse(JSON.stringify(list)).splice((this.currentIndex-1)*this.pageSize,this.pageSize);
-    console.log(this.alarmLists);
   }
-  //查询
-  rowSelected(name,attribute){
-      console.log(name+attribute);
-  }
+
   ngOnInit() {
     this.getAlarmList();
   }

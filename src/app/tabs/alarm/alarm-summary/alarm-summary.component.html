@@ -1,44 +1,38 @@
 <div *ngIf="alarmList" id="content">
-    <nz-layout style="padding:24px 0; background: transparent">
-        <nz-content style="padding: 0 24px; min-height: 280px;">
-        <div id="list-tool">
-          <label>
-            <input type="text" nz-input placeholder="输入关键字搜索">
-          </label>
-          <button nz-button nzType="primary">搜索</button>
-          <div id="btns">
-            <button nz-button (click)="getAlarmList()">刷新</button>
-          </div>
-        </div>
+  <nz-layout style="padding:24px 0; background: transparent">
+    <nz-content style="padding: 0 24px; min-height: 280px;">
+      <div id="list-tool">
+        <label>
+          <input type="text" nz-input placeholder="输入关键字搜索">
+        </label>
+        <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
+      </div>
 
-        <nz-table #list [nzData]="alarmJson" [nzLoading]="loading" [nzPageSize]="5">
-          <thead>
-          <tr>
-            <th nzWidth="100px">#</th>
-            <th>设备名称</th>
-            <th>报警数量（次）</th>
-            <th>报警总时长（s）</th>
-            <th>操作</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let data of list.data">
-            <td>{{alarmJson.indexOf(data) + 1}}</td>
-            <td>{{data.devicename}}</td>
-            <td>{{data.sum}}</td>
-            <td>{{data.timesum}}</td>
-            <td>
-              <a (mouseenter)="preview(data.devicename)" (mouseleave)="preview(null)"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              
-              <a (click)="rowSelected(data.devicename)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
-            </td>
-          </tr>
-          </tbody>
-        </nz-table>
-      </nz-content>
-    </nz-layout>
+      <nz-table #list [nzData]="alarmJson" [nzLoading]="loading" [nzPageSize]="5">
+        <thead>
+        <tr>
+          <th nzWidth="100px">#</th>
+          <th>设备名称</th>
+          <th>报警数量（次）</th>
+          <th>报警总时长（s）</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of list.data">
+          <td>{{alarmJson.indexOf(data) + 1}}</td>
+          <td>{{data.devicename}}</td>
+          <td>{{data.sum}}</td>
+          <td>{{data.timesum}}</td>
+          <td>
+            <a><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="rowSelected(data.devicename)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-content>
+  </nz-layout>
 </div>
-
-<div id="diagram" ></div>
 

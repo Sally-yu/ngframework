@@ -1,14 +1,12 @@
+<!--报警信息详情 列表-->
 <div id="content">
     <nz-layout style="padding:24px 0; background: transparent">
         <nz-content style="padding: 0 24px; min-height: 280px;">
         <div id="list-tool">
           <label>
-            <input type="text" nz-input placeholder="输入关键字搜索">
+            <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
           </label>
-          <button nz-button nzType="primary">搜索</button>
-          <div id="btns">
-            <button nz-button (click)="getAlarmList()">刷新</button>
-          </div>
+            <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
         </div>
 
         <nz-table #list [nzData]="alarmList" [nzLoading]="loading" [nzPageSize]="5">
@@ -41,7 +39,7 @@
             <td>
               <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
               <nz-divider nzType="vertical"></nz-divider>
-              
+
               <a (click)="rowSelected(data.key)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
             </td>
           </tr>

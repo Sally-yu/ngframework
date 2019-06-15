@@ -1,11 +1,13 @@
 <div id="content">
 
-  <div>
+  <app-notif-detial *ngIf="detail" [notif]="notify" (result)="cancel($event)"></app-notif-detial>
+
+  <div *ngIf="!detail">
     <nz-layout style="padding:24px 0; background: transparent">
       <nz-content style="padding: 0 24px; min-height: 280px;">
         <div id="list-tool">
           <label>
-            <input type="text" nz-input placeholder="搜索关键字">
+            <input type="text" nz-input placeholder="搜索关键字" >
           </label>
           <button nz-button nzType="primary">搜索</button>
           <div id="btns">
@@ -15,7 +17,7 @@
         <nz-table #list [nzData]="notifList" [nzLoading]="loading" [nzPageSize]="5">
           <thead>
           <tr>
-            <th nzWidth="60px">#</th>
+            <th nzWidth="100px">#</th>
             <th>标题内容</th>
             <th nzWidth="300px">时间</th>
             <th nzWidth="200px">操作</th>
@@ -25,9 +27,8 @@
           <tr *ngFor="let data of list.data">
             <td>{{notifList.indexOf(data)+1}}</td>
             <td>
-
-              <a *ngIf="data.new">{{ data.title }} &nbsp;<nz-tag nzColor="#52c41a">新通知</nz-tag></a>
-              <a *ngIf="!data.new" style="color: #000000;">{{ data.title }} </a>
+              <a (click)="view(data.key)" *ngIf="data.new">{{ data.title }} &nbsp;<nz-tag nzColor="#52c41a">新通知</nz-tag></a>
+              <a (click)="view(data.key)" *ngIf="!data.new" style="color: #000000;">{{ data.title }} </a>
             </td>
             <td>{{ data.time }}</td>
             <td>

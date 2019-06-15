@@ -16,7 +16,8 @@
             <button nz-button nzType="primary" (click)="add()">新增</button>
           </div>
         </div>
-        <nz-table #list [nzData]="deviceList" [nzLoading]="loading" [nzPageSize]="pageSize" [nzPageIndex]="currentIndex" [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
+        <nz-table #list [nzData]="deviceList" [nzLoading]="loading" [nzPageSize]="pageSize" [nzPageIndex]="currentIndex"
+                  [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
           <thead>
           <tr>
             <th nzWidth="100px">#</th>
@@ -32,8 +33,12 @@
           <tbody>
           <tr *ngFor="let data of list.data">
             <td>{{deviceList.indexOf(data) + 1}}</td>
-            <td>{{ data.code }}</td>
-            <td>{{ data.name }}</td>
+            <td>
+              <a (click)="edit(data.key)">{{ data.code }}</a>
+            </td>
+            <td>
+              {{data.name}}
+            </td>
             <td>{{ data.type }}</td>
             <td>{{ data.time }}</td>
             <td>

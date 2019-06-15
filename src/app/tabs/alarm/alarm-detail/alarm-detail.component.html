@@ -1,3 +1,4 @@
+<!--预警管理 卡片-->
 <div id="content">
   <div style="padding: 16px">
     <div id="toolbar">
@@ -16,9 +17,9 @@
         </li>
       </ul>
       <div id="search">
-        <input nz-input [(ngModel)]="searchValue" placeholder="请输入关键字搜索">
-        <button nz-button >搜索</button>
-        <button nz-button (click)="getAlarmList()">刷新</button>
+        <input type="text" nz-input placeholder="输入关键字搜索">
+        <button nz-button>搜索</button>
+        <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
       </div>
     </div>
     <nz-list [nzDataSource]="alarmLists" [nzRenderItem]="item"
@@ -27,11 +28,11 @@
       <ng-template #item let-item>
         <nz-list-item [nzContent]="nzContent">
           <ng-template #nzContent>
-            <div class="card"  (click)="edit(item.key)">
-              <div class="title" [ngStyle]="{'background-color':item.strategy.level==0?'gold':'gold'}">
+            <div class="card">
+              <div class="title" [ngStyle]="{'background-color':item.strategy.level==0?'#2ecc71':'#f1c40f'}">
                 <span>{{item.name}}</span>
               </div>
-              <ul [ngStyle]="{'border':item.strategy.level==0?'solid 1px gold':'solid 1px gold','background-color':item.status?'rgba(26,183,104,.05)':'rgba(255,34,34,.05)'}"  >
+              <ul [ngStyle]="{'border':item.strategy.level=='0'?'solid 1px #2ecc71':'solid 1px #f1c40f'}">
                 <li>
                   设备名称:<span>{{item.strategy.device.name}}</span>
                 </li>
@@ -39,22 +40,20 @@
                   属性名称:<span>{{item.strategy.attribute.name}}</span>
                 </li>
                 <li>
-                  报警条件:<span>{{ item.strategy.attribute.name }}{{ item.strategy.conditiona.key }}{{ item.strategy.conditiona.value }};
-                    <span *ngIf="item.strategy.conditionb.value">{{ item.strategy.attribute.name }}{{ item.strategy.conditionb.key }}{{ item.strategy.conditionb.value }}</span>
+                  报警条件:<span>{{ item.strategy.attribute.name }}{{ item.strategy.conditiona.key }}{{ item.strategy.conditiona.value }}
+                  ;
+                    <span
+                      *ngIf="item.strategy.conditionb.value">{{ item.strategy.attribute.name }}{{ item.strategy.conditionb.key }}{{ item.strategy.conditionb.value }}</span>
                     </span>
                 </li>
                 <li>
+                  开始时间:<span>{{item.time}}</span>
+                </li>
+                <li>
+                  结束时间:<span>{{item.endtime}}</span>
+                </li>
+                <li>
                   报警时长:<span>{{item.duration}}</span>
-                </li>
-                <li>
-                  状态:
-                  <span style="margin-right: 8px"
-                        [ngStyle]="{'color':item.status?'#1ab768':'#ff2222'}">{{item.active ? '开启' : '关闭'}}</span>
-                  <nz-switch (click)="$event.stopPropagation();" [(ngModel)]="item.active" class="switch"></nz-switch>
-
-                </li>
-                <li>
-                  报警时间:<span>{{item.endtime}}</span>
                 </li>
               </ul>
             </div>

@@ -6,8 +6,9 @@ import {AlarmService} from '../../../alarm.service';
   styleUrls: ['./alarm-mgr.component.less']
 })
 export class AlarmMgrComponent implements OnInit {
-  alarmList;
+  alarmList=[];
   loading = false;
+  searchValue;
   constructor(
     private alarmService :AlarmService
   ) { }
@@ -25,6 +26,22 @@ export class AlarmMgrComponent implements OnInit {
   rowSelected(name,attribute){
       console.log(name+attribute);
   }
+
+  search() {
+    this.loading = true;
+    this.alarmService.alarmList().then(res => {
+      this.alarmList = res;
+      if (this.searchValue) {
+        this.alarmList = JSON.parse(JSON.stringify(this.alarmList)).filter(d => {
+          return d.name.indexOf(this.searchValue) >= 0 || d.strategy.device.name.indexOf(this.searchValue) >= 0||d.strategy.attribute.name.indexOf(this.searchValue) >= 0;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+
   ngOnInit() {
     this.getAlarmList();
   }

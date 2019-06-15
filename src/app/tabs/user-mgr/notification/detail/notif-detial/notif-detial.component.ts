@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {NotifyService} from '../../../../../notify.service';
 
 @Component({
   selector: 'app-notif-detial',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotifDetialComponent implements OnInit {
 
-  constructor() { }
+  @Input() notif:any;
+  @Output() result: EventEmitter<any> = new EventEmitter();
+
+  constructor(
+    private notifyService:NotifyService,
+  ) { }
 
   ngOnInit() {
+    if (this.notif.new){
+      this.notif.new=false;
+    }
   }
+
+  close() {
+    this.result.emit(true);
+  }
+
 
 }
