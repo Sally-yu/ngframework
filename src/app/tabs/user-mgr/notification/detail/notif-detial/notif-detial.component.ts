@@ -18,6 +18,12 @@ export class NotifDetialComponent implements OnInit {
   ngOnInit() {
     if (this.notif.new){
       this.notif.new=false;
+      console.log(this.notif);
+      this.notifyService.updateNotif(this.notif).then(res=>{
+
+      },err=>{
+
+      })
     }
   }
 

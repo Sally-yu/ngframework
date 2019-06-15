@@ -45,12 +45,12 @@ export class NotificationComponent implements OnInit {
   view(key: any) {
     this.notify=this.notifList.filter(n=>n['key']==key)[0];
     this.detail=true;
-    this.getList();
   }
 
   cancel(event: any) {
     if (event) {
       this.detail=false;
+      this.getList();
     }
   }
 }

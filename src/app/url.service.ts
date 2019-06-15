@@ -27,6 +27,7 @@ export class UrlService {
   public allNotif = this.hostname + this.hostPort + '/notif/all';
   public newNotif = this.hostname + this.hostPort + '/notif/new';
   public removeNotif = this.hostname + this.hostPort + '/notif/remove';
+  public updateNotif = this.hostname + this.hostPort + '/notif/update';
 
 
   public deviceList = this.hostname + this.hostPort + '/device/all';
@@ -48,6 +49,7 @@ export class UrlService {
 
   public alarmlist = this.hostname + this.hostPort + '/alarm/all';
   public alarm = this.hostname + this.hostPort + '/alarm/key';
+
 
   public alarmStgList = this.hostname + this.hostPort + '/alarmStg/all';
   public updateAlarmStg = this.hostname + this.hostPort + '/alarmStg/update';

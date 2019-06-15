@@ -37,7 +37,7 @@
             </td>
             <td>{{data.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>
-              <a (mouseenter)="preview(data.key)" (mouseleave)="preview(null)"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
+              <a><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
               <nz-divider nzType="vertical"></nz-divider>
 
               <a (click)="rowSelected(data.key)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
@@ -48,6 +48,4 @@
       </nz-content>
     </nz-layout>
 </div>
-
-<div id="diagram" ></div>
 
