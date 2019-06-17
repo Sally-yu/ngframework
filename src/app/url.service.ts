@@ -16,7 +16,7 @@ export class UrlService {
 
   public user = this.hostname + this.hostPort + '/user/key';
   public allUser = this.hostname + this.hostPort + '/user/all';
-  public auth = this.hostname + this.hostPort + '/user/login';
+  loginUrl = this.hostname + this.hostPort + '/user/login';
   public addUser = this.hostname + this.hostPort + '/user/add';
   public updateUser = this.hostname + this.hostPort + '/user/update';
   public removeUser = this.hostname + this.hostPort + '/user/remove';

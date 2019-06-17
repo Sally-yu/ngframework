@@ -121,7 +121,7 @@ export class UserService {
   }
 
   //修改密码
-  newPwd(key: string, pwd: string): any {
+  public newPwd(key: string, pwd: string): any {
     return new Promise((resolve, reject) => {
       this.rsa.Encrypt(pwd).then(encrypt => {
         if (!encrypt) {
@@ -156,10 +156,36 @@ export class UserService {
             this.message.error(res['msg']);
             reject(false);
           } else {
-            resolve(res['status']);
+            resolve(res);
           }
         }, error1 => {
           this.message.error(error1.error['msg']);
+          reject(false);
+        });
+      }, err => {
+        reject(false);
+      });
+    });
+  }
+
+  //验证用户key与密码匹配
+  public login(name: string, pwd: string): any {
+    return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
+      this.rsa.Encrypt(pwd).then(res => {
+        if (!res) {
+          reject(false);
+        }
+        let data={name: name, pwd: res};
+        console.log(data)
+        this.http.post(this.url.loginUrl, data).toPromise().then(res => {
+          if (!res['status']) {
+            this.message.error(res['msg']);
+            reject(false);
+          } else {
+            resolve(res);
+          }
+        }, error1 => {
+          console.log(error1);
           reject(false);
         });
       }, err => {

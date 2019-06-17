@@ -49,7 +49,7 @@ export class PasswordComponent implements OnInit {
   //验证旧密码
   authyKey() {
     this.userSrv.authKey(this.key, this.oldpwd).then(res => {
-      if (res) {
+      if (res["status"]) {
         this.next();
       }
     }, msg => {
