@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {Observable, Observer} from 'rxjs';
+import {FormBuilder} from '@angular/forms';
 import {RsaService} from '../../../../rsa.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {HttpClient} from '@angular/common/http';
 import {UrlService} from '../../../../url.service';
 import {UserService} from '../../../../user.service';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-add-user',
@@ -20,12 +20,11 @@ export class AddUserComponent implements OnInit {
 
   loading = false;
 
-  pwdOK=true;
-  pwdStatus;
-
-  confirm;
+  confirm='';
   confirmOK = true;
-  confirmStatus ;
+  confirmStatus;
+  lengthOK = true;
+  lengthStatus;
 
   constructor(private fb: FormBuilder,
               private rsa: RsaService,
@@ -46,26 +45,31 @@ export class AddUserComponent implements OnInit {
 
   //提交更新用户
   submit() {
-    this.loading = true;
-    switch (this.option) {
-      case 'edit':
-        this.userSrv.update(this.user).then(msg => {
+    this.valide();
+    if (this.confirmOK && this.lengthOK) {
+      this.loading = true;
+      switch (this.option) {
+        case 'edit':
+          this.userSrv.update(this.user).then(msg => {
+            this.loading = false;
+          }, msg => {
+            this.loading = false;
+          });
+          break;
+        case 'new':
+          this.userSrv.newUser(this.user).then(msg => {
+            this.loading = false;
+            this.close();
+          }, error => {
+            this.loading = false;
+          });
+          break;
+        default:
           this.loading = false;
-        },msg=>{
-          this.loading=false;
-        });
-        break;
-      case 'new':
-        this.userSrv.newUser(this.user).then(msg => {
-          this.loading = false;
-          this.close();
-        },error=>{
-          this.loading=false;
-        });
-        break;
-      default:
-        this.loading=false;
-        break;
+          break;
+      }
+    }else{
+      this.message.warning("用户信息验证未通过，请确认")
     }
   }
 
@@ -73,7 +77,7 @@ export class AddUserComponent implements OnInit {
     switch (this.option) {
       case 'edit':
         this.getUser();
-        this.confirm='';
+        this.confirm = '';
         break;
       case 'new':
         this.user = {};
@@ -89,12 +93,21 @@ export class AddUserComponent implements OnInit {
 
   //验证
   valide() {
-    if(this.user["password"]!=this.confirm){
-      this.confirmOK=false;
-      this.confirmStatus="error";
-    }else{
-      this.confirmOK=true;
-      this.confirmStatus="success";
+    if (this.user['password'] != this.confirm) {
+      this.confirmOK = false;
+      this.confirmStatus = 'error';
+    } else {
+      this.confirmOK = true;
+      this.confirmStatus = 'success';
+    }
+    if (this.user['password']) {
+      if (this.user['password'].length > 16 || this.user['password'].length < 6) {
+        this.lengthOK = false;
+        this.lengthStatus = 'error';
+      } else {
+        this.lengthOK = true;
+        this.lengthStatus = 'success';
+      }
     }
   }
 

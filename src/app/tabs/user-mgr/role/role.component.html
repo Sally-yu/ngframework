@@ -1,3 +1,47 @@
-<p>
-  role works!
-</p>
+<div id="content">
+  <nz-tabset
+    style="height:100%;"
+    [nzTabPosition]="'left'"
+    [(nzSelectedIndex)]="selectedIndex"
+    (nzSelectChange)="tabChange()"
+  >
+    <nz-tab *ngFor="let tab of tabs"
+            [nzTitle]="tab.name">
+      <div id="list-tool">
+        <label>
+          <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
+        </label>
+        <button nz-button (click)="tabChange()" nzType="primary">刷新</button>
+      </div>
+      <nz-table #userlist [nzData]="users" [nzLoading]="loading" [nzPageSize]="pageSize" [nzPageIndex]="currentIndex"
+                [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
+        <thead>
+        <tr>
+          <th nzWidth="100px">#</th>
+          <th>用户名</th>
+          <th>邮箱</th>
+          <th>手机号</th>
+          <th>注册时间</th>
+          <th>登录时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of userlist.data">
+          <td>{{users.indexOf(user) + 1}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{user.signtime}}</td>
+          <td>{{user.logintime}}</td>
+          <td>
+            <a nz-popconfirm nzTitle="确认修改用户角色？" (nzOnConfirm)="updateRole(user)">
+              <i nz-icon nzType="user" nzTheme="outline"></i>
+              {{user.role === 'user' ? '设置为管理员' : '设置为普通用户'}}</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+  </nz-tabset>
+</div>

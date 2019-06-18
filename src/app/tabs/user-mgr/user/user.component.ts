@@ -35,8 +35,6 @@ export class UserComponent implements OnInit {
   ) {
   }
 
-
-
   //验证
   valide() {
     if(this.user["password"]!=this.confirm){

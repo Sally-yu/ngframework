@@ -22,8 +22,6 @@
       </ul>
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
-        <!--<input nz-input [(ngModel)]="group" placeholder="分组">-->
-        <!--<button nz-button>搜索</button>-->
         <button nz-button (click)="getList()">刷新</button>
         <button nz-button (click)="add()" nzType="primary">新增</button>
       </div>
@@ -35,7 +33,7 @@
         <nz-list-item [nzContent]="nzContent">
           <ng-template #nzContent>
             <div class="card" (click)="edit(item.key)">
-              <div class="title" [ngStyle]="{'background-color':item['devicesetting']['cardcolor']}">
+              <div class="title" [title]="'备注  '+item.note" [ngStyle]="{'background-color':item['devicesetting']['cardcolor']}">
                 {{item.name}}
                 <i nz-icon (click)="$event.stopPropagation();toTable(item.key)" nzType="pie-chart" title="设备图表"
                    nzTheme="outline" style="float: right"></i>

@@ -3,7 +3,7 @@
     <nz-content style="padding: 0 24px; min-height: 280px;">
       <div id="list-tool">
         <label>
-          <input type="text" nz-input placeholder="输入关键字搜索">
+          <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
         </label>
         <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
       </div>

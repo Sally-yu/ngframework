@@ -65,7 +65,7 @@ export class UserService {
         }
         resolve(data);
       }, error1 => {
-        this.message.error(error1.error['msg']);
+        this.message.error(error1["msg"]);
         reject(data);
       });
     });
@@ -168,7 +168,7 @@ export class UserService {
     });
   }
 
-  //验证用户key与密码匹配
+  //验证用户key与密码匹配  pubic有奇效，toLowerCase报错时请找。url，方法等
   public login(name: string, pwd: string): any {
     return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
       this.rsa.Encrypt(pwd).then(res => {
@@ -176,7 +176,6 @@ export class UserService {
           reject(false);
         }
         let data={name: name, pwd: res};
-        console.log(data)
         this.http.post(this.url.loginUrl, data).toPromise().then(res => {
           if (!res['status']) {
             this.message.error(res['msg']);

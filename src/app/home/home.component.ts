@@ -254,6 +254,34 @@ export class HomeComponent implements OnInit {
     }).indexOf(obj.key) : this.tabs.push(obj);
   }
 
+  topoClick(key:string){
+    this.active = key;
+    var obj =  {title: '拓扑设计', key: '1050', app: 'topo', isLeaf: true, fav: true, share: true};
+    this.tabIndex = this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) : this.tabs.push(obj);
+  }
+  modelClick(key:string){
+    this.active = key;
+    var obj =  {title: '三维设计', key: '1060', app: '3Dmodel', isLeaf: true, fav: true, share: true};
+    this.tabIndex = this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) : this.tabs.push(obj);
+  }
+  grafanaClick(key:string){
+    this.active = key;
+    var obj =  {title: '监控设计', key: '1070', app: 'grafana', isLeaf: true, fav: true, share: true};
+    this.tabIndex = this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(obj.key) : this.tabs.push(obj);
+  }
+
   //激活tab页改变事件
   selectChange($event) {
     this.tabIndex = $event.index;
@@ -427,8 +455,7 @@ export class HomeComponent implements OnInit {
           msg => {
             reject(msg);
           }
-        )
-      ;
+        );
     });
   }
 
@@ -447,7 +474,6 @@ export class HomeComponent implements OnInit {
       this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
       this.loading = false;
     });
-
   }
 
   getUser() {
@@ -463,11 +489,9 @@ export class HomeComponent implements OnInit {
     }
     if (cookie) {
       this.getUser();
-      console.log(cookie);
       this.reloadTree();
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
     }
   }
-
 
 }

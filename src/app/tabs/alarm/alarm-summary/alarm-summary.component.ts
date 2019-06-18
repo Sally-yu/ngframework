@@ -11,6 +11,7 @@ export class AlarmSummaryComponent implements OnInit {
   alarmJson;
   deviceidList;
   loading = false;
+  searchValue;
 
   constructor(
     private alarmService: AlarmService
@@ -56,5 +57,40 @@ export class AlarmSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.getAlarmList();
+  }
+
+  search() {
+    this.alarmJson = new Array;
+    this.deviceidList = new Array;
+    this.loading = true;
+    this.alarmService.alarmList().then(res => {
+      this.alarmList = res;
+      for (var a of this.alarmList) {
+        if (this.deviceidList.indexOf(a.strategy.device.key) == -1) {
+          this.alarmJson = [...this.alarmJson, {
+            devicename: a.strategy.device.name,
+            deviceid: a.strategy.device.key,
+            sum: 1,
+            timesum: a.duration
+          }];
+          this.deviceidList = [...this.deviceidList, a.strategy.device.key];
+        } else {
+          for (var b in this.alarmJson) {
+            if (this.alarmJson[b].deviceid == a.strategy.device.key) {
+              this.alarmJson[b].sum += 1;
+              this.alarmJson[b].timesum += a.duration;
+            }
+          }
+        }
+      }
+      if(this.searchValue){
+        this.alarmJson=this.alarmJson.filter(a=>{
+          return a.devicename.indexOf(this.searchValue)>=0;
+        });
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
   }
 }

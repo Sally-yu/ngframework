@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {da_DK, NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService} from 'ng-zorro-antd';
 import {RsaService} from '../rsa.service';
 import {UrlService} from '../url.service';
 import {UserService} from '../user.service';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.userSrv.login(this.validateForm.value.username, this.validateForm.value.password).then(res => {
       if (res['status']) {
-        document.cookie = res['data'];
+        document.cookie = res["data"];
         this.router.navigate(['/']);
       } else {
         console.log(res);

@@ -19,13 +19,13 @@
           <a class="head-example" style="margin-right: 24px"></a>
           <i nz-icon nzType="notification" nzTheme="outline"></i>
           消息通知
-        </nz-badge>
+        </nz-badge>s
       </li>
-      <li (click)="optionClick('1043')">
+      <li (click)="optionClick('1043')" *ngIf="user['role']==='admin'">
         <i nz-icon nzType="team" nzTheme="outline"></i>
         用户列表
       </li>
-      <li (click)="optionClick('1044')">
+      <li (click)="optionClick('1044')" *ngIf="user['role']==='admin'">
         <i nz-icon nzType="safety" nzTheme="outline"></i>
         角色管理
       </li>
@@ -114,13 +114,13 @@
 
   <div id="menu-footer">
         <ul>
-          <li nzTitle="3D仿真" nzPlacement="top" nz-tooltip (click)="click('model')">
+          <li nzTitle="3D仿真" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
             <i nz-icon nzType="global" nzTheme="outline"></i>
           </li>
-          <li nzTitle="数据监控" nzPlacement="top" nz-tooltip (click)="click('grafana')">
+          <li nzTitle="数据监控" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
             <i nz-icon nzType="area-chart" nzTheme="outline"></i>
           </li>
-          <li nzTitle="拓扑图" nzPlacement="top" nz-tooltip (click)="click('topo')">
+          <li nzTitle="拓扑图" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
             <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
           </li>
 
@@ -193,6 +193,11 @@
     <app-user-list *ngIf="exist('1043')" class="back"
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
     <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
+
+
+    <app-topo *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"></app-topo>
+    <app-model-design *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"></app-model-design>
+    <app-grafana *ngIf="exist('1070')" class="back" [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana>
 
 
     <!--此处三个自定义菜单，逻辑相同，且细致缠绵，不确定能否简化，建议兄弟们别乱搞-->
