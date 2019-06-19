@@ -144,8 +144,10 @@ export class DeviceCardComponent implements OnInit {
 
   //生成随机匹配的echarts柱状图
   chartOption(key: any) {
-    let length = Math.ceil(Math.random() * 5) + 3;
-    let i = 0;
+    if(!this.attValue){
+      return
+    }
+    let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
     let sum = 0;
     let option = {
       grid: {
@@ -167,20 +169,21 @@ export class DeviceCardComponent implements OnInit {
       },
       series: []
     };
-    for (i = 0; i < length; i++) {
-      let r = Math.ceil(Math.random() * 100);
+    data.forEach(r => {
+      var colorindex=Math.ceil(r["value"]/20);
+
       option.series = [...option.series, {
         type: 'bar',
         stack: '总量',
-        data: [r],
+        data: [r["value"]],
         itemStyle: {
           normal: {
-            color: this.presetColors[Math.ceil(Math.random() * 5)]
+            color: this.presetColors[colorindex]
           }
         }
       }];
-      sum += r;
-    }
+      sum += r["value"];
+    });
     option.xAxis.max = sum;
 
     return option;

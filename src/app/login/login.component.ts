@@ -36,7 +36,12 @@ export class LoginComponent implements OnInit {
   login() {
     this.userSrv.login(this.validateForm.value.username, this.validateForm.value.password).then(res => {
       if (res['status']) {
-        document.cookie = res["data"];
+        // var c={
+        //   token:res["data"]["token"],
+        //   key:res["data"]["user"]["key"],
+        // }
+        // document.cookie = JSON.stringify(c);
+        document.cookie=res["data"];
         this.router.navigate(['/']);
       } else {
         console.log(res);

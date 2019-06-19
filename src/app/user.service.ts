@@ -193,6 +193,30 @@ export class UserService {
     });
   }
 
+  // public authToken(token:string):any{
+  //   return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
+  //     this.rsa.Encrypt(pwd).then(res => {
+  //       if (!res) {
+  //         reject(false);
+  //       }
+  //       let data={name: name, pwd: res};
+  //       this.http.post(this.url.loginUrl, data).toPromise().then(res => {
+  //         if (!res['status']) {
+  //           this.message.error(res['msg']);
+  //           reject(false);
+  //         } else {
+  //           resolve(res);
+  //         }
+  //       }, error1 => {
+  //         console.log(error1);
+  //         reject(false);
+  //       });
+  //     }, err => {
+  //       reject(false);
+  //     });
+  //   });
+  // }
+
   //移除用户
   remove(key: string): any {
     return new Promise((resolve, reject) => {

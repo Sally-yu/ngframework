@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AlarmService} from '../../../../alarm.service';
 import {DeviceService} from '../../../../device.service';
+import {NgZorroAntdModule, NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-add-alarm-strategy',
@@ -17,17 +18,20 @@ export class AddAlarmStrategyComponent implements OnInit {
   loading = false;
   deviceList;
   tempLoading = false;
-  codeError = {
-    unique: true,
-    required: true,
-  };
+  codeRequired = true;
+  nameRequired = true;
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.key === o2.key : o1 === o2);
+
   constructor(
     private deviceService: DeviceService,
-    private alarmService :AlarmService
-  ) { }
+    private alarmService: AlarmService,
+    private message: NzMessageService,
+  ) {
+  }
+
   submit() {
-    if (this.codeError.required && this.codeError.unique) {
+    this.valide();
+    if (this.codeRequired && this.nameRequired) {
       let data = JSON.parse(JSON.stringify(this.alarmStg));
 
       switch (this.option) {
@@ -48,8 +52,11 @@ export class AddAlarmStrategyComponent implements OnInit {
         default:
           break;
       }
+    } else {
+      this.message.warning("请完善表单信息");
     }
   }
+
   getDevice() {
     this.tempLoading = true;
     this.deviceService.deviceList().then(res => {
@@ -59,11 +66,25 @@ export class AddAlarmStrategyComponent implements OnInit {
       this.tempLoading = false;
     });
   }
+
   close() {
     this.result.emit(true);
   }
+
   ngOnInit() {
     this.getDevice();
   }
 
+  valide() {
+    if (this.alarmStg.code) {
+      this.codeRequired = true;
+    } else {
+      this.codeRequired = false;
+    }
+    if (this.alarmStg.name) {
+      this.nameRequired = true;
+    } else {
+      this.nameRequired = false;
+    }
+  }
 }
