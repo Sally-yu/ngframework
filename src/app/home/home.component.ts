@@ -80,9 +80,9 @@ export class HomeComponent implements OnInit {
     expanded: false,
     icon: 'line-chart',
     children: [
-      {title: '设备数字运维Max', key: 'jgq_eofiz', url: 'http://10.24.20.45:8080/d/jgq_eofiz', isLeaf: true, fav: false, share: false},
-      {title: '设备数字运维Mini', key: 'f3478uifv', url: 'http://10.24.20.45:8080/d/f3478uifv', isLeaf: true, fav: false, share: false},
-      {title: '设备数字运维IE', key: 'W884LJ3mz', url: 'http://10.24.20.45:8080/d/W884LJ3mz', isLeaf: true, fav: false, share: false},
+      {title: '设备数字运维Max', key: 'jgq_eofiz', url: 'http://10.24.20.45:8080/d/jgq_eofiz', isLeaf: true, fav: false, share: false,icon:'project'},
+      {title: '设备数字运维Mini', key: 'f3478uifv', url: 'http://10.24.20.45:8080/d/f3478uifv', isLeaf: true, fav: false, share: false,icon:'project'},
+      {title: '设备数字运维IE', key: 'W884LJ3mz', url: 'http://10.24.20.45:8080/d/W884LJ3mz', isLeaf: true, fav: false, share: false,icon:'project'},
     ]
   }; //自定义菜单，仿照树节点结构
 
@@ -92,18 +92,24 @@ export class HomeComponent implements OnInit {
     expanded: false,
     icon: 'bulb',
     children: [
-      {title: '模拟设备运转', key: '9001', url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html', isLeaf: true, fav: false, share: false},
+      {title: '模拟设备运转', key: '9001', url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html', isLeaf: true, fav: false, share: false,icon:'project'},
     ]
   }; //自定义菜单，仿照树节点结构
 
-  dropdown: NzDropdownContextComponent;
+  setting = {
+    title: '系统管理',
+    key: '104',
+    expanded: false,
+    icon: 'setting',
+    children: []
+  }; //自定义菜单，仿照树节点结构
 
   options = [
-    {title: '个人中心', key: '1040', app: 'user',},
-    {title: '基本设置', key: '1041', app: 'setting',},
-    {title: '消息通知', key: '1042', app: 'notification',},
-    {title: '用户列表', key: '1043', app: 'user-list',},
-    {title: '角色管理', key: '1044', app: 'role',}
+    {title: '个人中心', key: '1040', app: 'user',isLeaf: true, fav: false, share: false},
+    // {title: '基本设置', key: '1041', app: 'setting',isLeaf: true, fav: false, share: false},
+    {title: '消息通知', key: '1042', app: 'notification',isLeaf: true, fav: false, share: false},
+    {title: '用户列表', key: '1043', app: 'user-list',isLeaf: true, fav: false, share: false},
+    {title: '角色管理', key: '1044', app: 'role',isLeaf: true, fav: false, share: false}
   ]; //用户工具下拉菜单
 
   // actived node
@@ -129,7 +135,7 @@ export class HomeComponent implements OnInit {
         {title: '报警策略列表', key: '1011', app: 'alarm-strategy-list', isLeaf: true, fav: true, share: false},
         {title: '报警信息汇总', key: '1012', app: 'alarm-summary', isLeaf: true, fav: true, share: true},
         {title: '报警信息详情', key: '1013', app: 'alarm-detail', isLeaf: true, fav: true, share: true},
-        {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
+        // {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
       ]
     },
     {
@@ -160,6 +166,8 @@ export class HomeComponent implements OnInit {
   grafanaUrl = this.url.gafanaUrl;
   topoUrl = this.url.topoUrl;
   loading = false;
+  key;
+  token;
 
   constructor(
     private userSrv: UserService,
@@ -196,9 +204,6 @@ export class HomeComponent implements OnInit {
       var index=keys.indexOf(this.activedNode["key"]);
       this.active=this.activedNode["key"];
       this.tabIndex =  index>= 0 ? index : this.tabs.push(this.activedNode)-1;
-      // console.log("active:"+this.active);
-      // console.log("index:"+this.tabIndex);
-      // console.log("tabs:"+JSON.stringify(this.tabs));
     }else{
 
     }
@@ -456,7 +461,8 @@ export class HomeComponent implements OnInit {
                     editUrl: 'http://10.24.20.71:9099/topo/item/' + w.key,
                     isLeaf: true,
                     fav: false,
-                    share: false
+                    share: false,
+                    icon:'project'
                   };//url匹配见topo项目
                   this.customTopo.children.push(c);
                 }
@@ -479,6 +485,8 @@ export class HomeComponent implements OnInit {
       this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义 深复制防联动
       this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
       this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
+      this.setting.children=JSON.parse(JSON.stringify(this.options));
+      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
       this.loading = false;
       this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
     }, _ => {
@@ -489,19 +497,20 @@ export class HomeComponent implements OnInit {
   }
 
   getUser() {
-    this.userSrv.getUser(document.cookie).then(user => {
+    this.userSrv.getUser(this.key).then(user => {
       this.user = user;
     });
   }
 
   ngOnInit() {
+    // var cookie = document.cookie;
     var cookie = document.cookie;
-    // var cookie = JSON.parse(document.cookie);
-
     if (!cookie) {
       this.router.navigate(['/login']);
     }
     if (cookie) {
+      this.key=this.url.key();
+      // console.log(this.key);
       this.getUser();
       this.reloadTree();
       this.tabs.push(    {title: '设备卡片', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: true},

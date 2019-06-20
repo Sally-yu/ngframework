@@ -61,4 +61,12 @@ export class UrlService {
   constructor() {
   }
 
+  token():any{
+    return JSON.parse(document.cookie)["token"];
+  }
+
+  key():any{
+    return JSON.parse(document.cookie)["key"];
+  }
+
 }

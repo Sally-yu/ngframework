@@ -305,10 +305,13 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+:host ::ng-deep .ant-tree li ul {
+  padding-left: 36px;
+}
 .custom-node {
-  padding: 8px 0 8px 36px;
-  margin-left: -18px;
-  width: 260px;
+  padding: 8px 0 8px 54px;
+  margin-left: -36px;
+  width: 276px;
   font-size: 14px;
   color: #bdbdbd;
   cursor: pointer;
@@ -331,6 +334,9 @@
   color: #fff;
 }
 .active {
+  color: #0987fe;
+}
+.active i {
   color: #0987fe;
 }
 .ant-tabs {
