@@ -31,7 +31,8 @@ export class UserService {
   getUser(key: string): any {
     let user = {};
     return new Promise((resolve, reject) => {
-      console.log(this.header)
+      console.log(this.header);
+      console.log(key)
       this.http.post(this.userUrl, {key: key},{headers:this.header}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
@@ -41,7 +42,7 @@ export class UserService {
           resolve(user);
         },
         msg => {
-          this.message.error(msg.error['msg']);
+          this.message.error(msg['msg']);
           reject(user);
         });
     });

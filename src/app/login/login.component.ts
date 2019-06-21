@@ -39,10 +39,12 @@ export class LoginComponent implements OnInit {
         var c={
           token:res["data"]["token"],
           key:res["data"]["user"]["key"],
-        }
+        };
         document.cookie = JSON.stringify(c);
         // document.cookie=res["data"];
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
+        this.message.success("验证成功，请稍后…");
+        window.location.href="/" //该跳转后获取的cookie是最新存储的
       } else {
         console.log(res);
       }
@@ -50,7 +52,6 @@ export class LoginComponent implements OnInit {
       console.log(err);
     });
   }
-
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
