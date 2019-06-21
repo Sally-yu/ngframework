@@ -26,21 +26,12 @@ export class UserService {
     this.header=new HttpHeaders({token:this.url.token()});
   }
 
-  sleep(numberMillis) {
-    var now = new Date();
-    var exitTime = now.getTime() + numberMillis;
-    while (true) {
-      now = new Date();
-      if (now.getTime() > exitTime) {
-        return;
-      }
-    }
-  }
 
   //获取user完整信息
   getUser(key: string): any {
     let user = {};
     return new Promise((resolve, reject) => {
+      console.log(this.header)
       this.http.post(this.userUrl, {key: key},{headers:this.header}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
@@ -146,7 +137,7 @@ export class UserService {
   }
 
   //验证用户key与密码匹配
-  authKey(key: string, pwd: string): any {
+  public authKey(key: string, pwd: string): any {
     return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
       this.rsa.Encrypt(pwd).then(res => {
         if (!res) {

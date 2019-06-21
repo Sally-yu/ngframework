@@ -10,10 +10,10 @@
         <i nz-icon nzType="user" nzTheme="outline"></i>
         个人中心
       </li>
-<!--      <li (click)="optionClick('1041')">
-        <i nz-icon nzType="setting" nzTheme="outline"></i>
-        基本设置
-      </li>-->
+      <!--      <li (click)="optionClick('1041')">
+              <i nz-icon nzType="setting" nzTheme="outline"></i>
+              基本设置
+            </li>-->
       <li (click)="optionClick('1042')">
         <nz-badge [nzCount]="50">
           <a class="head-example" style="margin-right: 24px"></a>
@@ -182,7 +182,8 @@
                      [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>
 
     <!--user-->
-    <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}" [key]="key"></app-user>
+    <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"
+              [key]="key"></app-user>
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
                       [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>

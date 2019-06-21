@@ -14,11 +14,10 @@ export class UrlService {
   modelUrl = 'http://10.24.20.42:9999';
 
   keyUrl = this.hostname + this.hostPort + '/rsakey';
-  public tokenUrl = this.hostname + this.hostPort + 'token';
+  public loginUrl = this.hostname + this.hostPort + '/login';
 
   public user = this.hostname + this.hostPort + '/user/key';
   public allUser = this.hostname + this.hostPort + '/user/all';
-  public loginUrl = this.hostname + this.hostPort + '/user/login';
   public addUser = this.hostname + this.hostPort + '/user/add';
   public updateUser = this.hostname + this.hostPort + '/user/update';
   public removeUser = this.hostname + this.hostPort + '/user/remove';
@@ -62,7 +61,8 @@ export class UrlService {
   constructor() {
   }
 
-  token(): any {
+  //取token
+  public token(): any {
     if (document.cookie) {
       return JSON.parse(document.cookie)['token'];
     } else {
@@ -70,7 +70,8 @@ export class UrlService {
     }
   }
 
-  key(): any {
+  //取用户的key
+  public key(): any {
     if (document.cookie) {
       return JSON.parse(document.cookie)['key'];
     } else {

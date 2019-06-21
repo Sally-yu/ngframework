@@ -14,23 +14,22 @@ export class DeviceCardComponent implements OnInit {
   pageSize = 6; //起始每页条数
   currentIndex = 1; //起始页数
 
-  viewList;
+  viewList;  //显示的device，和页码页条数有关
   deviceDetail = false;
   deviceTable = false;
-  option;
+  option;//标识新增或编辑
   device;
 
-  attValue;
+  attValue;//设备属性（参数）的值
 
-  presetColors = ['#2ecc71', '#1abc9c', '#3498db', '#f1c40f', '#e67e22', '#e74c3c'];
-
-  //绑定list用，从deviceList中截取
+  presetColors = ['#2ecc71', '#1abc9c', '#3498db', '#f1c40f', '#e67e22', '#e74c3c']; //预置卡片颜色选项
 
   constructor(
     private deviceService: DeviceService,
   ) {
   }
 
+  //获取所有device，按页码切分
   getList() {
     this.loading = true;
     this.deviceService.deviceList().then(res => {
@@ -58,10 +57,6 @@ export class DeviceCardComponent implements OnInit {
   spliceViewList(list) {
     this.viewList = JSON.parse(JSON.stringify(list)).splice((this.currentIndex - 1) * this.pageSize, this.pageSize);
     this.deviceValue();
-  }
-
-  ngOnInit() {
-    this.getList();
   }
 
   cancel($event: any) {
@@ -144,48 +139,58 @@ export class DeviceCardComponent implements OnInit {
 
   //生成随机匹配的echarts柱状图
   chartOption(key: any) {
-    if(!this.attValue){
-      return
+    if (!this.attValue) {
+      return;
     }
-    let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
-    let sum = 0;
-    let option = {
-      grid: {
-        left: '1%',
-        right: '1%',
-        bottom: '0%',
-        top: '0%',
-        containLabel: false
-      },
-      xAxis: {
-        max: 0,
-        type: 'value',
-        show: false
-      },
-      yAxis: {
-        type: 'category',
-        show: false,
-        data: ['']
-      },
-      series: []
-    };
-    data.forEach(r => {
-      var colorindex=Math.ceil(r["value"]/20);
+    try {
+      let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
+      let sum = 0;
+      let option = {
+        grid: {
+          left: '1%',
+          right: '1%',
+          bottom: '0%',
+          top: '0%',
+          containLabel: false
+        },
+        xAxis: {
+          max: 0,
+          type: 'value',
+          show: false
+        },
+        yAxis: {
+          type: 'category',
+          show: false,
+          data: ['']
+        },
+        series: []
+      };
+      data.forEach(r => {
+        var colorindex = Math.ceil(r['value'] / 20);
 
-      option.series = [...option.series, {
-        type: 'bar',
-        stack: '总量',
-        data: [r["value"]],
-        itemStyle: {
-          normal: {
-            color: this.presetColors[colorindex]
+        option.series = [...option.series, {
+          type: 'bar',
+          stack: '总量',
+          data: [r['value']],
+          itemStyle: {
+            normal: {
+              color: this.presetColors[colorindex]
+            }
           }
-        }
-      }];
-      sum += r["value"];
-    });
-    option.xAxis.max = sum;
+        }];
+        sum += r['value'];
+      });
+      option.xAxis.max = sum;
 
-    return option;
+      return option;
+    } catch (e) {
+
+    }
   }
+
+
+  ngOnInit() {
+    this.getList();
+  }
+
 }
