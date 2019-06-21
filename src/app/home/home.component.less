@@ -49,10 +49,10 @@
 
 
 #user-menu {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
+  //-webkit-transition-duration: 400ms;
+  //-moz-transition-duration: 400ms;
+  //-o-transition-duration: 400ms;
+  //transition-duration: 400ms;
   display: none;
   left: -100px;
   position: relative;
@@ -70,10 +70,10 @@
   }
 
   li {
-    -webkit-transition-duration: 400ms;
-    -moz-transition-duration: 400ms;
-    -o-transition-duration: 400ms;
-    transition-duration: 400ms;
+    //-webkit-transition-duration: 400ms;
+    //-moz-transition-duration: 400ms;
+    //-o-transition-duration: 400ms;
+    //transition-duration: 400ms;
     font-size: 14px;
     margin: 4px 0;
     line-height: 30px;
@@ -87,10 +87,10 @@
   }
 
   li:hover {
-    -webkit-transition-duration: 400ms;
-    -moz-transition-duration: 400ms;
-    -o-transition-duration: 400ms;
-    transition-duration: 400ms;
+    //-webkit-transition-duration: 400ms;
+    //-moz-transition-duration: 400ms;
+    //-o-transition-duration: 400ms;
+    //transition-duration: 400ms;
     background-color: #0987fe;
     color: #fff;
   }
@@ -181,10 +181,10 @@
         display: inline-block;
         border-radius: 15px;
         cursor: pointer;
-        -webkit-transition-duration: 400ms;
-        -moz-transition-duration: 400ms;
-        -o-transition-duration: 400ms;
-        transition-duration: 400ms;
+        //-webkit-transition-duration: 400ms;
+        //-moz-transition-duration: 400ms;
+        //-o-transition-duration: 400ms;
+        //transition-duration: 400ms;
 
         i {
           font-size: 16px;
@@ -374,14 +374,17 @@
   overflow-x: hidden;
 
   li {
+    ul{
+      padding-left: 36px;
+    }
     //padding: 4px 0 0 0;
   }
 }
 
 .custom-node {
-  padding: 8px 0 8px 36px;
-  margin-left: -18px;
-  width: 260px;
+  padding: 8px 0 8px 54px;
+  margin-left: -36px;
+  width: 276px;
   font-size: 14px;
   color: #bdbdbd;
   cursor: pointer;
@@ -391,10 +394,10 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
+  //-webkit-transition-duration: 400ms;
+  //-moz-transition-duration: 400ms;
+  //-o-transition-duration: 400ms;
+  //transition-duration: 400ms;
 
   i {
     font-size: 16px;
@@ -414,6 +417,9 @@
 
 .active {
   color: #0987fe;
+  i{
+    color: #0987fe;
+  }
 }
 
 .ant-tabs {
@@ -421,6 +427,7 @@
   margin-top: -3px;
   background: #ffffff;
   padding-left: 40px;
+  padding-right: 70px;
   box-shadow: 0 0 4px rgba(10, 10, 10, .5);
   z-index: 1;
 }
@@ -499,7 +506,6 @@
 
   ul {
     list-style: none;
-    line-height: 30px;
     background: #096dd945;
     border-radius: 15px;
     width: 100%;
@@ -518,8 +524,8 @@
       color: #fff;
 
       i {
-        font-size: 16px;
-        padding-top: 7px;
+        font-size: 20px;
+        padding-top: 5px;
       }
     }
 

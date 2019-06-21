@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NzMessageService} from 'ng-zorro-antd';
 import {UrlService} from './url.service';
 import {Injectable} from '@angular/core';
@@ -10,18 +10,21 @@ import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 export class DeviceService {
 
+  header;
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
     private url: UrlService,
   ) {
+    this.header=new HttpHeaders({token:this.url.token()});
   }
+
 
   //设备模板list
   deviceTempList(): any {
     let data = [];
     return new Promise((resolve, reject) => {
-      this.http.get(this.url.tempList).toPromise().then(res => {
+      this.http.get(this.url.tempList,{headers:this.header}).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
         }
@@ -37,7 +40,7 @@ export class DeviceService {
   deviceList(): any {
     let data = [];
     return new Promise((resolve, reject) => {
-      this.http.get(this.url.deviceList).toPromise().then(res => {
+      this.http.get(this.url.deviceList,{headers:this.header}).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
         }
@@ -72,7 +75,7 @@ export class DeviceService {
       device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
     }
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.addDevice, device).toPromise().then(res => {
+      this.http.post(this.url.addDevice, device,{headers:this.header}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -106,7 +109,7 @@ export class DeviceService {
   //删除设备
   removeDevice(key: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.removeDevice, {key: key}).toPromise().then(res => {
+      this.http.post(this.url.removeDevice, {key: key},{headers:this.header}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -123,7 +126,7 @@ export class DeviceService {
   //更新设备，注意时间时区
   updateDevice(device: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.updateDevice, device).toPromise().then(res => {
+      this.http.post(this.url.updateDevice, device,{headers:this.header}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {

@@ -158,6 +158,7 @@ export class DeviceDetailComponent implements OnInit {
           break;
       }
     } else {
+      this.message.warning('请完善表单信息');
       this.loading = false;
     }
   }
@@ -197,7 +198,7 @@ export class DeviceDetailComponent implements OnInit {
       code: null,
       unit: null,
       description: null,
-      valuetype: null,
+      valuetype: 'number',
       sum: false
     }];
     this.addNullAtt();

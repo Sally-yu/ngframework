@@ -89,7 +89,6 @@ export class PasswordComponent implements OnInit {
     }
   }
 
-
   logout() {
     document.cookie = '';
     window.location.href = '/';

@@ -22,9 +22,10 @@ export class AlarmStrategyListComponent implements OnInit {
     attribute: null,
     conditiona: {'key': null, 'value': null},
     conditionb: {'key': null, 'value': null},
-    level: null,
+    level: '0',
     interval: null,
-    note: null
+    note: null,
+    status:true
   };
   option;
   searchValue;

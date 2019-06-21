@@ -37,10 +37,6 @@
   display: block;
 }
 #user-menu {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   display: none;
   left: -100px;
   position: relative;
@@ -57,10 +53,6 @@
   border-radius: 4px;
 }
 #user-menu li {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   font-size: 14px;
   margin: 4px 0;
   line-height: 30px;
@@ -72,10 +64,6 @@
   font-size: 14px;
 }
 #user-menu li:hover {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   background-color: #0987fe;
   color: #fff;
 }
@@ -159,10 +147,6 @@
   display: inline-block;
   border-radius: 15px;
   cursor: pointer;
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
 }
 #box .radio ul li i {
   font-size: 16px;
@@ -321,10 +305,13 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+:host ::ng-deep .ant-tree li ul {
+  padding-left: 36px;
+}
 .custom-node {
-  padding: 8px 0 8px 36px;
-  margin-left: -18px;
-  width: 260px;
+  padding: 8px 0 8px 54px;
+  margin-left: -36px;
+  width: 276px;
   font-size: 14px;
   color: #bdbdbd;
   cursor: pointer;
@@ -334,10 +321,6 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
 }
 .custom-node i {
   font-size: 16px;
@@ -353,11 +336,15 @@
 .active {
   color: #0987fe;
 }
+.active i {
+  color: #0987fe;
+}
 .ant-tabs {
   height: 44px;
   margin-top: -3px;
   background: #ffffff;
   padding-left: 40px;
+  padding-right: 70px;
   box-shadow: 0 0 4px rgba(10, 10, 10, 0.5);
   z-index: 1;
 }
@@ -422,7 +409,6 @@
 }
 #menu-footer ul {
   list-style: none;
-  line-height: 30px;
   background: #096dd945;
   border-radius: 15px;
   width: 100%;
@@ -441,8 +427,8 @@
   color: #fff;
 }
 #menu-footer ul li i {
-  font-size: 16px;
-  padding-top: 7px;
+  font-size: 20px;
+  padding-top: 5px;
 }
 #menu-footer ul li:hover {
   background-color: #ffffff;

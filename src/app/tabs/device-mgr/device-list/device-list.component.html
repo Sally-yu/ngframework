@@ -11,10 +11,8 @@
             <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
           </label>
           <!--<button nz-button nzType="primary">搜索</button>-->
-          <div id="btns">
             <button nz-button (click)="getList()">刷新</button>
             <button nz-button nzType="primary" (click)="add()">新增</button>
-          </div>
         </div>
         <nz-table #list [nzData]="deviceList" [nzLoading]="loading" [nzPageSize]="pageSize" [nzPageIndex]="currentIndex"
                   [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>

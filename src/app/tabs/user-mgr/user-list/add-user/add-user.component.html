@@ -28,16 +28,17 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" [nzRequired]="option=='new'" >密码</nz-form-label>
-    <nz-form-control [nzSpan]="12">
+    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!lengthOK" [nzValidateStatus]="lengthStatus">
       <input nz-input name="password" placeholder="请输入密码" type="password" [(ngModel)]="user.password"
-             (ngModelChange)="valide()"/>
+             />
+      <nz-form-explain *ngIf="!lengthOK">密码长度6至16位</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" [nzRequired]="option=='new'">确认密码</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!confirmOK" [nzValidateStatus]="confirmStatus">
       <input nz-input name="confirm" placeholder="再次输入以确认密码" type="password" [(ngModel)]="confirm"
-             (ngModelChange)="valide()"/>
+             />
       <nz-form-explain *ngIf="!confirmOK">两次输入的密码不匹配，请重新确认</nz-form-explain>
     </nz-form-control>
   </nz-form-item>

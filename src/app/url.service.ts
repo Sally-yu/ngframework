@@ -11,12 +11,14 @@ export class UrlService {
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
   workUrl = 'http://10.24.20.71:9098/workspace'; //svg 图片等资源服务
+  modelUrl = 'http://10.24.20.42:9999';
 
-  keyUrl=this.hostname+this.hostPort+'/rsakey';
+  keyUrl = this.hostname + this.hostPort + '/rsakey';
+  public tokenUrl = this.hostname + this.hostPort + 'token';
 
   public user = this.hostname + this.hostPort + '/user/key';
   public allUser = this.hostname + this.hostPort + '/user/all';
-  loginUrl = this.hostname + this.hostPort + '/user/login';
+  public loginUrl = this.hostname + this.hostPort + '/user/login';
   public addUser = this.hostname + this.hostPort + '/user/add';
   public updateUser = this.hostname + this.hostPort + '/user/update';
   public removeUser = this.hostname + this.hostPort + '/user/remove';
@@ -58,6 +60,22 @@ export class UrlService {
   public removeAlarmStg = this.hostname + this.hostPort + '/alarmStg/remove';
 
   constructor() {
+  }
+
+  token(): any {
+    if (document.cookie) {
+      return JSON.parse(document.cookie)['token'];
+    } else {
+      return;
+    }
+  }
+
+  key(): any {
+    if (document.cookie) {
+      return JSON.parse(document.cookie)['key'];
+    } else {
+      return;
+    }
   }
 
 }

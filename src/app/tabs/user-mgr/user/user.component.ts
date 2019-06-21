@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {HttpClient} from '@angular/common/http';
 import {UrlService} from '../../../url.service';
@@ -26,6 +26,7 @@ export class UserComponent implements OnInit {
   changePwd= false;
   changeEmail= false;
   changePhone= false;
+  @Input() key:string;
 
   constructor(private rsa: RsaService,
               private http: HttpClient,
@@ -34,8 +35,6 @@ export class UserComponent implements OnInit {
               private userSrv:UserService,
   ) {
   }
-
-
 
   //验证
   valide() {
@@ -50,7 +49,7 @@ export class UserComponent implements OnInit {
 
   getUser() {
     this.loading=true;
-    this.userSrv.getUser(document.cookie).then(user=>{
+    this.userSrv.getUser(this.key).then(user=>{
       this.user=user;
       this.loading=false;
     });

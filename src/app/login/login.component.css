@@ -1,0 +1,26 @@
+.login-form {
+  max-width: 300px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+#logindiv {
+  position: absolute;
+  background: rgba(208, 216, 226, 0.5);
+  top: 15%;
+  left: 50%;
+  margin-left: -200px;
+  width: 400px;
+  height: 400px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 0 20px rgba(10, 10, 10, 0.1);
+  -moz-box-shadow: 0 0 20px rgba(10, 10, 10, 0.1);
+  box-shadow: 0 0 20px rgba(10, 10, 10, 0.1);
+}
+#logindiv form {
+  margin: 20px auto;
+}
+/*# sourceMappingURL=login.component.css.map */

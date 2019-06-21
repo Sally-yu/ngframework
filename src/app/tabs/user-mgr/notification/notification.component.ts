@@ -9,10 +9,10 @@ import {load} from '@angular/core/src/render3';
   styleUrls: ['./notification.component.less']
 })
 export class NotificationComponent implements OnInit {
-  loading: any;
-  notifList:[];
+  loading=false;
+  notifList=[];
   detail=false;
-  notify;
+  notify={};
   searchValue;
 
   constructor(
