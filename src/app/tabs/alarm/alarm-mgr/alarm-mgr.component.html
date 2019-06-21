@@ -1,5 +1,9 @@
+<!--跳转 报警信息详情-编辑、预览 页面-->
+<app-edit-alarm-mgr *ngIf="editFlag"  [selectEditData]="selectEditData" [option]="option" parentCom="报警信息详情"
+(result)="cancel($event)"></app-edit-alarm-mgr>
+
 <!--报警信息详情 列表-->
-<div id="content">
+<div id="content" *ngIf="!editFlag">
     <nz-layout style="padding:24px 0; background: transparent">
         <nz-content style="padding: 0 24px; min-height: 280px;">
         <div id="list-tool">
@@ -37,10 +41,9 @@
             </td>
             <td>{{data.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>
-              <a><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
+              <a (click)="editOrPreview(data.key,'preview')"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
               <nz-divider nzType="vertical"></nz-divider>
-
-              <a (click)="rowSelected(data.key)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
+              <a (click)="editOrPreview(data.key,'edit')"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
             </td>
           </tr>
           </tbody>

@@ -17,8 +17,8 @@
         </li>
       </ul>
       <div id="search">
-        <input type="text" nz-input placeholder="输入关键字搜索">
-        <button nz-button>搜索</button>
+        <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
+        <!-- <button nz-button>搜索</button> -->
         <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
       </div>
     </div>

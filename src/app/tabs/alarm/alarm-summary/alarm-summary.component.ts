@@ -11,6 +11,11 @@ export class AlarmSummaryComponent implements OnInit {
   alarmJson;
   deviceidList;
   loading = false;
+  searchValue;
+  selectEditData;//选中要编辑的数据
+  editFlag = false;//编辑标志
+  option;//编辑或者是添加的标记
+
 
   constructor(
     private alarmService: AlarmService
@@ -48,9 +53,41 @@ export class AlarmSummaryComponent implements OnInit {
     });
   }
 
-  //查询
-  rowSelected(name, attribute) {
-    console.log(name + attribute);
+  //编辑or预览
+  editOrPreview(deviceid, e) {
+    this.selectEditData = JSON.parse(JSON.stringify(this.alarmJson)).filter(t => t.deviceid === deviceid);
+    this.editFlag = true;
+    if(e === 'edit'){
+      this.option = 'edit';
+    }else if(e === 'preview'){
+      this.option = 'preview';
+    }
+  }
+  // 搜索
+  search(){
+    this.loading = true;
+    this.alarmService.alarmList().then(res => {
+      this.alarmList = res;
+      for (var a of this.alarmList) {
+        if (this.searchValue) {
+          
+          // this.alarmList = JSON.parse(JSON.stringify(this.alarmList)).filter(d => {
+          //   // return d.name.indexOf(this.searchValue) >= 0 || d.strategy.device.name.indexOf(this.searchValue) >= 0||d.strategy.attribute.name.indexOf(this.searchValue) >= 0;
+          //   return d.strategy.device.name.indexOf(this.searchValue) >= 0;
+          // });
+        }
+      }
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+  
+  cancel($event: any) {
+    if (event) {
+      this.editFlag = false;
+    }
+    this.getAlarmList();
   }
 
 

@@ -52,6 +52,8 @@ import { DeviceTableComponent } from './tabs/device-mgr/device-card/device-table
 import {AddAlarmStrategyComponent} from './tabs/alarm/alarm-strategy-list/add-alarm-strategy/add-alarm-strategy.component';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {NgxEchartsModule} from 'ngx-echarts';
+import { EditAlarmSummaryComponent } from './tabs/alarm/alarm-summary/edit-alarm-summary/edit-alarm-summary.component';
+import { EditAlarmMgrComponent } from './tabs/alarm/alarm-mgr/edit-alarm-mgr/edit-alarm-mgr.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -107,6 +109,8 @@ const routes: Routes = [
     DbMgrComponent,
     DataDefineComponent,
     DeviceTableComponent,
+    EditAlarmSummaryComponent,
+    EditAlarmMgrComponent,
   ],
   imports: [
     BrowserModule,

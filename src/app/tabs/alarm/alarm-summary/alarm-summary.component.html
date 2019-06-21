@@ -1,9 +1,13 @@
-<div *ngIf="alarmList" id="content">
+<!--跳转 报警信息汇总-编辑 页面-->
+<app-edit-alarm-summary *ngIf="editFlag"  [selectEditData]="selectEditData" [option]="option" [parentCom]="'报警信息汇总'"
+(result)="cancel($event)"></app-edit-alarm-summary>
+
+<div *ngIf="alarmList && !editFlag" id="content">
   <nz-layout style="padding:24px 0; background: transparent">
     <nz-content style="padding: 0 24px; min-height: 280px;">
       <div id="list-tool">
         <label>
-          <input type="text" nz-input placeholder="输入关键字搜索">
+          <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
         </label>
         <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
       </div>
@@ -25,9 +29,9 @@
           <td>{{data.sum}}</td>
           <td>{{data.timesum}}</td>
           <td>
-            <a><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
+            <a (click)="editOrPreview(data.deviceid, 'preview')"><i nz-icon nzType="zoom-in" nzTheme="outline"></i>预览</a>
             <nz-divider nzType="vertical"></nz-divider>
-            <a (click)="rowSelected(data.devicename)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
+            <a (click)="editOrPreview(data.deviceid, 'edit')"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</a>
           </td>
         </tr>
         </tbody>
