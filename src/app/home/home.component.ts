@@ -497,6 +497,8 @@ export class HomeComponent implements OnInit {
   }
 
   getUser() {
+    this.key=this.url.key();
+    console.log(this.key)
     this.userSrv.getUser(this.key).then(user => {
       this.user = user;
     });
@@ -509,7 +511,6 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     if (cookie) {
-      this.key=this.url.key();
       // console.log(this.key);
       this.getUser();
       this.reloadTree();
