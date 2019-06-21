@@ -12,13 +12,10 @@ export class AlarmSummaryComponent implements OnInit {
   deviceidList;
   loading = false;
   searchValue;
-<<<<<<< HEAD
   selectEditData;//选中要编辑的数据
   editFlag = false;//编辑标志
   option;//编辑或者是添加的标记
 
-=======
->>>>>>> eb04f249a916b7359eb2979355a3a0091c84a495
 
   constructor(
     private alarmService: AlarmService
@@ -66,26 +63,7 @@ export class AlarmSummaryComponent implements OnInit {
       this.option = 'preview';
     }
   }
-  // 搜索
-  search(){
-    this.loading = true;
-    this.alarmService.alarmList().then(res => {
-      this.alarmList = res;
-      for (var a of this.alarmList) {
-        if (this.searchValue) {
-          
-          // this.alarmList = JSON.parse(JSON.stringify(this.alarmList)).filter(d => {
-          //   // return d.name.indexOf(this.searchValue) >= 0 || d.strategy.device.name.indexOf(this.searchValue) >= 0||d.strategy.attribute.name.indexOf(this.searchValue) >= 0;
-          //   return d.strategy.device.name.indexOf(this.searchValue) >= 0;
-          // });
-        }
-      }
-      this.loading = false;
-    }, err => {
-      this.loading = false;
-    });
-  }
-  
+
   cancel($event: any) {
     if (event) {
       this.editFlag = false;
