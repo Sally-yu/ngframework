@@ -32,6 +32,7 @@ export class NotifyService {
         resolve(list);
       }, error => {
         this.message.error(error.error['msg']);
+        this.url.logout(error);
         reject(list);
       });
     });

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {forEach} from '@angular/router/src/utils/collection';
+import {Router, RouterModule} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +77,9 @@ export class UrlService {
   public workUrl = this.host + '/workspace';
   public findName = this.host + '/workspace/findname';//查找同名布局是否已存在
   public codeUrl = this.host + '/code';//最大编号
-  constructor() {
+  constructor(
+    private router:Router
+  ) {
   }
 
   //取token
@@ -99,7 +102,7 @@ export class UrlService {
 
   public logout(res:any):any{
     if (res["status"]==401){
-      window.location.href="/login"
+      this.router.navigate(['/login']);
     }
   }
 
