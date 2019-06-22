@@ -17,7 +17,7 @@ export class DeviceService {
     private message: NzMessageService,
     private url: UrlService,
   ) {
-    this.header = new HttpHeaders({token: this.url.token()});
+    this.header=new HttpHeaders({token:this.url.token(),user:this.url.key()});
   }
 
 

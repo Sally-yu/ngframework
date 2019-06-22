@@ -6,7 +6,7 @@
     font-size: 16px;
     border-left: solid #0987fe;">基本信息</p>
 
-<form nz-form *ngIf="!loading">
+<form nz-form>
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>预警编号</nz-form-label>
     <nz-form-control [nzSpan]="12" >
@@ -65,7 +65,7 @@
       <input nz-input name="name" [(ngModel)]="selectEditData[0].endtime " [disabled]="option == 'preview'" placeholder="请输入预警名称"/>
     </nz-form-control>
   </nz-form-item>
- 
+
 </form>
 <div style="margin: 24px;padding-left: 150px;" *ngIf="option == 'edit'" >
     <button nz-button nzType="primary" style="margin-right: 8px;width: 95px" (click)="submit()">提交</button>
