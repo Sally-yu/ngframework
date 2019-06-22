@@ -31,6 +31,7 @@ export class NotifyService {
         }
         resolve(list);
       }, error => {
+        this.message.error(error.error['msg']);
         reject(list);
       });
     });
@@ -47,6 +48,7 @@ export class NotifyService {
         resolve(res['status']);
       }, error => {
         this.message.error(error['msg']);
+        this.url.logout(error);
         reject(false);
       });
     });
@@ -59,6 +61,7 @@ export class NotifyService {
         resolve(true);
       }, err => {
         console.log('更新通知状态失败');
+        this.url.logout(err);
         reject(false);
       });
     });

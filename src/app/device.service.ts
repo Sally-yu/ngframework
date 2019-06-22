@@ -32,6 +32,7 @@ export class DeviceService {
         resolve(data);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(data);
       });
     });
@@ -49,6 +50,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -66,6 +68,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -83,6 +86,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -111,6 +115,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -128,6 +133,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -145,6 +151,7 @@ export class DeviceService {
         resolve(res['status']);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(false);
       });
     });
@@ -161,6 +168,7 @@ export class DeviceService {
         resolve(data);
       }, res => {
         this.message.error(res.error['msg']);
+        this.url.logout(res);
         reject(data);
       });
     });
@@ -174,6 +182,7 @@ export class DeviceService {
         resolve(res);  //status为true时 data为设备信息，为false时msg为错误信息
       }, res => {
         reject(res);
+        this.url.logout(res);
       });
     });
   }
@@ -189,6 +198,7 @@ export class DeviceService {
         }
       }, res => {
         reject(res['msg']);
+        this.url.logout(res);
       });
     });
   }

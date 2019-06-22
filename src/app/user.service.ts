@@ -42,7 +42,8 @@ export class UserService {
           resolve(user);
         },
         msg => {
-          this.message.error(msg['msg']);
+          this.message.error(msg.error['msg']);
+          this.url.logout(msg);
           reject(user);
         });
     });
@@ -58,7 +59,8 @@ export class UserService {
         }
         resolve(data);
       }, error1 => {
-        this.message.error(error1["msg"]);
+        this.message.error(error1.error["msg"]);
+        this.url.logout(error1);
         reject(data);
       });
     });
@@ -80,6 +82,7 @@ export class UserService {
           resolve(res['status']);
         }, error1 => {
           this.message.error(error1.error['msg']);
+          this.url.logout(error1);
           reject(false);
         });
       }, err => {
@@ -104,6 +107,7 @@ export class UserService {
           resolve(res['status']);
         }, error1 => {
           this.message.error(error1.error['msg']);
+          this.url.logout(error1);
           reject(false);
         });
       }, err => {
@@ -129,6 +133,7 @@ export class UserService {
           }
         }, error1 => {
           this.message.error(error1.error['msg']);
+          this.url.logout(error1)
           reject(false);
         });
       }, err => {
@@ -153,6 +158,7 @@ export class UserService {
           }
         }, error1 => {
           this.message.error(error1.error['msg']);
+          this.url.logout(error1)
           reject(false);
         });
       }, err => {
@@ -181,7 +187,7 @@ export class UserService {
           reject(false);
         });
       }, err => {
-        this.message.error(err["msg"]);
+        this.message.error(err.error["msg"]);
         reject(false);
       });
     });
@@ -226,6 +232,7 @@ export class UserService {
         resolve(res['status']);
       }, error1 => {
         this.message.error(error1.error['msg']);
+        this.url.logout(error1)
         resolve(false);
       });
     });

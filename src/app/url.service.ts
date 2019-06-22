@@ -97,4 +97,10 @@ export class UrlService {
     }
   }
 
+  public logout(res:any):any{
+    if (res["status"]==401){
+      window.location.href="/login"
+    }
+  }
+
 }
