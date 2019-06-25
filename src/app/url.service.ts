@@ -11,17 +11,18 @@ export class UrlService {
   hostPort = ':9060';
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
-  modelUrl = 'http://10.24.20.42:9999';
+  modelUrl = 'http://10.24.20.42:8800';
 
   keyUrl = this.hostname + this.hostPort + '/rsakey';
   public loginUrl = this.hostname + this.hostPort + '/login';
 
   public user = this.hostname + this.hostPort + '/user/key';
+  public userPhone = this.hostname + this.hostPort + '/phone';
   public allUser = this.hostname + this.hostPort + '/user/all';
   public addUser = this.hostname + this.hostPort + '/user/add';
   public updateUser = this.hostname + this.hostPort + '/user/update';
   public removeUser = this.hostname + this.hostPort + '/user/remove';
-  public newPwd = this.hostname + this.hostPort + '/user/newpwd';
+  public newPwd = this.hostname + this.hostPort + '/newpwd';
   public authKey = this.hostname + this.hostPort + '/user/authkey';
 
 
@@ -100,6 +101,7 @@ export class UrlService {
     }
   }
 
+  //token验证不通过即退出
   public logout(res:any):any{
     if (res["status"]==401){
       this.router.navigate(['/login']);

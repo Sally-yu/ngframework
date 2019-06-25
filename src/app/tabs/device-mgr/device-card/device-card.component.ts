@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DeviceService} from '../../../device.service';
 
 @Component({
@@ -103,7 +103,40 @@ export class DeviceCardComponent implements OnInit {
 
   //控制显示属性参数
   display(item: any) {
-    return item.attrs.filter(a => a.display);
+    var display=item.attrs.filter(a => a.display);
+    if (display.length>16){
+      display=display.slice(0,16);
+    }
+    return display;
+  }
+
+  length(item){
+    return this.display(item).length;
+  }
+
+  column(item){
+    const length = this.length(item);
+    const d = Math.ceil(length / 4);
+    if (d<=2){
+      return 2;
+    } else {
+      return d;
+    }
+  }
+
+  row(item){
+    return Math.ceil(this.length(item) / this.column(item));
+  }
+
+  width(item,att){
+    var display=this.display(item);
+    var tail=display.slice(this.column(item)*(this.row(item)-1),display.length);
+    if (tail.indexOf(att)<0){
+      return 100/this.column(item)+'%';
+    } else{
+      return 100/tail.length+'%';
+    }
+
   }
 
   //获取所有设备属性值

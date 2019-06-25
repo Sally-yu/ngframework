@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {NgZorroAntdModule, NZ_I18N, zh_CN, NZ_ICONS} from 'ng-zorro-antd';
@@ -57,6 +57,8 @@ import { EditAlarmMgrComponent } from './tabs/alarm/alarm-mgr/edit-alarm-mgr/edi
 import { TopoComponent } from './tabs/topo/topo.component';
 import { ModelDesignComponent } from './tabs/model-design/model-design.component';
 import { GrafanaComponent } from './tabs/grafana/grafana.component';
+import { IndexComponent } from './index/index.component';
+import { ForgetComponent } from './forget/forget.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -69,6 +71,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signin', component: SigninComponent},
+  {path: 'forget', component: ForgetComponent},
 ];
 
 @NgModule({
@@ -117,6 +120,8 @@ const routes: Routes = [
     TopoComponent,
     ModelDesignComponent,
     GrafanaComponent,
+    IndexComponent,
+    ForgetComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,12 +133,16 @@ const routes: Routes = [
     ColorPickerModule,
     NgxEchartsModule,
     RouterModule.forRoot(routes),
+
   ],
   providers: [
     {provide: NZ_I18N, useValue: zh_CN},
     {provide: NZ_ICONS, useValue: icons}
   ],
   bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA // Added for custom elements support
+  ]
 
 })
 export class AppModule {

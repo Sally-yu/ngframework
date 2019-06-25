@@ -28,10 +28,6 @@ export class PasswordComponent implements OnInit {
 
   constructor(
     private userSrv: UserService,
-    private rsaService: RsaService,
-    private http: HttpClient,
-    private url: UrlService,
-    private message: NzMessageService,
   ) {
   }
 

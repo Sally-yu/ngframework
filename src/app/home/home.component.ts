@@ -32,13 +32,11 @@
  *    又看源码，看你**呀
  */
 
-import {Component, OnInit, TemplateRef} from '@angular/core';
-import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
+import {Component, OnInit} from '@angular/core';
+import {NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
-import {error} from 'selenium-webdriver';
-import {reject} from 'q';
 import {UserService} from '../user.service';
 
 @Component({
@@ -62,7 +60,7 @@ export class HomeComponent implements OnInit {
 
   activedNode: {}; //激活选中的树节点
 
-  active = '1000'; //当前激活tab页的key 默认设备卡片
+  active = '000'; //当前激活tab页的key 默认首页
 
   tabs = []; //tab页内容数组，元素格式是数的子节点
 
@@ -86,8 +84,8 @@ export class HomeComponent implements OnInit {
         url: 'http://10.24.20.45:8080/d/jgq_eofiz',
         isLeaf: true,
         fav: false,
-        share: false,
-        icon: 'project'
+        share: true,
+        icon: 'dashboard'
       },
       {
         title: '设备数字运维Mini',
@@ -96,22 +94,22 @@ export class HomeComponent implements OnInit {
         isLeaf: true,
         fav: false,
         share: false,
-        icon: 'project'
+        icon: 'dashboard'
       },
       {
         title: '设备数字运维IE',
         key: 'W884LJ3mz',
         url: 'http://10.24.20.45:8080/d/W884LJ3mz',
         isLeaf: true,
-        fav: false,
+        fav: true,
         share: false,
-        icon: 'project'
+        icon: 'dashboard'
       },
     ]
   }; //自定义菜单，仿照树节点结构
 
   custom3D = {
-    title: '三维监控',
+    title: '仿真监控',
     key: '900',
     expanded: false,
     icon: 'bulb',
@@ -121,9 +119,9 @@ export class HomeComponent implements OnInit {
         key: '9001',
         url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html',
         isLeaf: true,
-        fav: false,
+        fav: true,
         share: false,
-        icon: 'project'
+        icon: 'dashboard'
       },
     ]
   }; //自定义菜单，仿照树节点结构
@@ -137,21 +135,31 @@ export class HomeComponent implements OnInit {
   }; //自定义菜单，仿照树节点结构
 
   options = [
-    {title: '个人中心', key: '1040', app: 'user', isLeaf: true, fav: false, share: false},
+    {title: '个人中心', key: '1040', app: 'user', icon: 'control', isLeaf: true, fav: false, share: false},
     // {title: '基本设置', key: '1041', app: 'setting',isLeaf: true, fav: false, share: false},
-    {title: '消息通知', key: '1042', app: 'notification', isLeaf: true, fav: false, share: false},
-    {title: '用户列表', key: '1043', app: 'user-list', isLeaf: true, fav: false, share: false},
-    {title: '角色管理', key: '1044', app: 'role', isLeaf: true, fav: false, share: false}
+    {title: '消息通知', key: '1042', app: 'notification', icon: 'control', isLeaf: true, fav: false, share: true},
+    {title: '用户列表', key: '1043', app: 'user-list', icon: 'control', isLeaf: true, fav: false, share: false},
+    {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false}
   ]; //用户工具下拉菜单
 
   allNodes = [
+    {
+      title: '首页',
+      key: '000',
+      expanded: false,
+      icon: 'home',
+      children: [],
+      isLeaf: false,
+      fav: true,
+      share: true
+    },
     {
       title: '设备管理',
       key: '100',
       expanded: false,
       icon: 'appstore',
       children: [
-        {title: '设备卡片', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: true},
+        {title: '设备卡片', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: false},
         {title: '设备列表', key: '1001', app: 'device-list', isLeaf: true, fav: false, share: false},
         {title: '设备模板', key: '1002', app: 'device-template', isLeaf: true, fav: true, share: true},
       ]
@@ -164,18 +172,9 @@ export class HomeComponent implements OnInit {
       children: [
         {title: '实时报警监控', key: '1010', app: 'alarm-mgr', isLeaf: true, fav: false, share: true},
         {title: '报警策略列表', key: '1011', app: 'alarm-strategy-list', isLeaf: true, fav: true, share: false},
-        {title: '报警信息汇总', key: '1012', app: 'alarm-summary', isLeaf: true, fav: true, share: true},
-        {title: '报警信息详情', key: '1013', app: 'alarm-detail', isLeaf: true, fav: true, share: true},
+        {title: '报警信息汇总', key: '1012', app: 'alarm-summary', isLeaf: true, fav: false, share: true},
+        {title: '报警信息详情', key: '1013', app: 'alarm-detail', isLeaf: true, fav: true, share: false},
         // {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
-      ]
-    },
-    {
-      title: '数据管理',
-      key: '102',
-      expanded: false,
-      icon: 'database',
-      children: [
-        {title: '数据库管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: true},
       ]
     },
     {
@@ -186,7 +185,17 @@ export class HomeComponent implements OnInit {
       children: [
         {title: '数据定义', key: '1030', app: 'data-define', isLeaf: true, fav: false, share: true},
       ]
-    }
+    },
+    {
+      title: '数据管理',
+      key: '102',
+      expanded: false,
+      icon: 'database',
+      children: [
+        {title: '数据库管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+
   ]; //所有预置节点，渲染菜单结构
 
   nodes = []; //用于树列表绑定
@@ -198,7 +207,6 @@ export class HomeComponent implements OnInit {
   topoUrl = this.url.topoUrl;
   loading = false;
   key;
-  token;
 
   constructor(
     private userSrv: UserService,
@@ -228,7 +236,7 @@ export class HomeComponent implements OnInit {
 
   // 激活节点，赋类，调整样式，tab页响应
   activeNode(data: NzFormatEmitEvent): void {
-    if (data.node.origin.isLeaf) {     //仅子节点可选中
+    if (data.node.origin.isLeaf || data.node.children.length < 1) {     //仅子节点可选中
       this.activedNode = data.node.origin;
       // var obj = this.activedNode;
       var keys = this.tabs.map(e => e['key']);
@@ -254,7 +262,7 @@ export class HomeComponent implements OnInit {
     let url;
     switch (key) {
       case 'model':
-        url = 'http://10.24.20.42:9999/';
+        url = 'http://10.24.20.42:8800';
         break;
       case 'grafana':
         url = this.grafanaUrl;
@@ -303,7 +311,7 @@ export class HomeComponent implements OnInit {
 
   modelClick(key: string) {
     this.active = key;
-    var obj = {title: '三维设计', key: '1060', app: '3Dmodel', isLeaf: true, fav: true, share: true};
+    var obj = {title: '仿真设计', key: '1060', app: '3Dmodel', isLeaf: true, fav: true, share: true};
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -338,7 +346,17 @@ export class HomeComponent implements OnInit {
   findNode(nodes, key) {
     nodes.forEach(node => {
       if (!node.isLeaf) {
-        this.findNode(node.children, key);
+        if (node.children.length > 0) {
+          this.findNode(node.children, key);
+        } else {
+          if (node.key == key) {
+            this.activedNode = node;
+            node.selected = true;
+            // console.log(this.nodes);
+          } else {
+            node.selected = false;
+          }
+        }
       } else if (node.isLeaf) {
         if (node.key == key) {
           this.activedNode = node;
@@ -442,22 +460,20 @@ export class HomeComponent implements OnInit {
       case 'fav':
         this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
         this.nodes.forEach(e => {
-          e.children.forEach(c => {
-            if (!c.fav) {
-              e.children.splice(e.children.indexOf(c), 1);
-            }
-          });
+          if (e.children.length > 0) {
+            e.children = e.children.filter(n => n.fav);
+          }
         });
+        this.nodes = this.nodes.filter(n => n.fav || n.children.length > 0); //还是filter比较易用
         break;
       case 'share':
         this.nodes = JSON.parse(JSON.stringify(this.staticNodes));
         this.nodes.forEach(e => {
-          e.children.forEach(c => {
-            if (!c.share) {
-              e.children.splice(e.children.indexOf(c), 1);
-            }
-          });
+          if (e.children.length > 0) {
+            e.children = e.children.filter(n => n.share);
+          }
         });
+        this.nodes = this.nodes.filter(n => n.share || n.children.length > 0);
         break;
       default:
         break;
@@ -491,7 +507,7 @@ export class HomeComponent implements OnInit {
                     isLeaf: true,
                     fav: false,
                     share: false,
-                    icon: 'project'
+                    icon: 'dashboard'
                   };//url匹配见topo项目
                   this.customTopo.children.push(c);
                 }
@@ -549,39 +565,9 @@ export class HomeComponent implements OnInit {
       // console.log(this.key);
       this.getUser();
       this.reloadTree();
-      this.tabs.push({title: '设备卡片', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: true},
+      this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
-      // console.log(
-      //   '                                         ,s555SB@@&\n' +
-      //   '                                       :9H####@@@@@Xi\n' +
-      //   '                                      1@@@@@@@@@@@@@@8\n' +
-      //   '                                    ,8@@@@@@@@@B@@@@@@8\n' +
-      //   '                                   :B@@@@X3hi8Bs;B@@@@@Ah,\n' +
-      //   '              ,8i                  r@@@B:     1S ,M@@@@@@#8;\n' +
-      //   '             1AB35.i:               X@@8 .   SGhr ,A@@@@@@@@S\n' +
-      //   '             1@h31MX8                18Hhh3i .i3r ,A@@@@@@@@@5\n' +
-      //   '             ;@&i,58r5                 rGSS:     :B@@@@@@@@@@A\n' +
-      //   '              1#i  . 9i                 hX.  .: .5@@@@@@@@@@@1\n' +
-      //   '               sG1,  ,G53s.              9#Xi;hS5 3B@@@@@@@B1\n' +
-      //   '                .h8h.,A@@@MXSs,           #@H1:    3ssSSX@1\n' +
-      //   '                s ,@@@@@@@@@@@@Xhi,       r#@@X1s9M8    .GA981\n' +
-      //   '                ,. rS8H#@@@@@@@@@@#HG51;.  .h31i;9@r    .8@@@@BS;i;\n' +
-      //   '                 .19AXXXAB@@@@@@@@@@@@@@#MHXG893hrX#XGGXM@@@@@@@@@@MS\n' +
-      //   '                 s@@MM@@@hsX#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,\n' +
-      //   '               :GB@#3G@@Brs ,1GM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@B,\n' +
-      //   '             .hM@@@#@@#MX 51  r;iSGAM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@8\n' +
-      //   '           :3B@@@@@@@@@@@&9@h :Gs   .;sSXH@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:\n' +
-      //   '       s&HA#@@@@@@@@@@@@@@M89A;.8S.       ,r3@@@@@@@@@@@@@@@@@@@@@@@@@@@r\n' +
-      //   '    ,13B@@@@@@@@@@@@@@@@@@@5 5B3 ;.         ;@@@@@@@@@@@@@@@@@@@@@@@@@@@i\n' +
-      //   '   5#@@#&@@@@@@@@@@@@@@@@@@9  .39:          ;@@@@@@@@@@@@@@@@@@@@@@@@@@@;\n' +
-      //   '   9@@@X:MM@@@@@@@@@@@@@@@#;    ;31.         H@@@@@@@@@@@@@@@@@@@@@@@@@@:\n' +
-      //   '    SH#@B9.rM@@@@@@@@@@@@@B       :.         3@@@@@@@@@@@@@@@@@@@@@@@@@@5\n' +
-      //   '      ,:.   9@@@@@@@@@@@#HB5                 .M@@@@@@@@@@@@@@@@@@@@@@@@@B\n' +
-      //   '            ,ssirhSM@&1;i19911i,.             s@@@@@@@@@@@@@@@@@@@@@@@@@@S\n' +
-      //   '               ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:\n' +
-      //   '             .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.');
-      // console.log('又看log\n还看log\n就知道看log\n看log有啥用？');
     }
   }
 

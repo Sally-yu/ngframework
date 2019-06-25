@@ -1,10 +1,10 @@
 <!--右上用户下拉选项，绝对定位-->
 <div id="ava">
   <nz-badge nzDot>
-    <nz-avatar nzText="User" [nzSrc]="user['img']" style="background-color:#555d60;"></nz-avatar>
+    <nz-avatar (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']" style="background-color:#555d60;"></nz-avatar>
   </nz-badge>
 
-  <div id="user-menu">
+  <div id="user-menu" >
     <ul>
       <li (click)="optionClick('1040')">
         <i nz-icon nzType="user" nzTheme="outline"></i>
@@ -42,7 +42,7 @@
   <!--三选项组合按钮-->
   <div id="logo">
     <img src="../../assets/src/PlatformLogo.png" alt="inpsur">
-    浪潮智能制造分析平台
+    INSPUR Insight
   </div>
 
   <!--菜单功能栏-->
@@ -88,7 +88,7 @@
     <ng-template #nzTreeTemplate let-node>
       <div (click)="openFolder(node)" class="custom-node"
            [class.active]="activedNode?(activedNode.key == node.key):false">
-        <div *ngIf="!node.isLeaf">
+        <div *ngIf="node.children.length>=1">
           <i nz-icon [type]="node.icon"
              style="display: inline-block;"></i>
           <div class="folder-name"
@@ -105,20 +105,26 @@
           <div class="file-name"
                style="display:inline-flex;padding-left: 8px;width:156px;overflow-x: hidden">{{ node.title }}</div>
         </div>
+        <div *ngIf="!node.isLeaf&&node.children.length<1">
+          <i nz-icon [type]="node.icon"
+             style="display: inline-block;"></i>
+          <div class="folder-name"
+               style="display: inline-flex;padding-left: 8px;width: 160px;margin-right: 10px;overflow-x: hidden;">{{ node.title }}</div>
+        </div>
       </div>
     </ng-template>
   </nz-tree>
 
   <div id="menu-footer">
     <ul>
-      <li nzTitle="3D仿真" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
+      <li nzTitle="仿真设计" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
         <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
         <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
       </li>
-      <li nzTitle="数据监控" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
+      <li nzTitle="监控设计" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
         <i nz-icon nzType="area-chart" nzTheme="outline"></i>
       </li>
-      <li nzTitle="拓扑图" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
+      <li nzTitle="拓扑设计" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
         <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
       </li>
 
@@ -139,8 +145,9 @@
     <nz-tab (nzClick)="selectChange(tab['key'])" *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
       <ng-template #titleTemplate>
         <div [ngStyle]="{'user-select':'none'}">
+          <i nz-icon nzTheme="outline" [nzType]="tab['icon']?tab['icon']:'tag'"></i>
           {{ tab["title"] }}
-          <i *ngIf="tabs.length>1" nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
+          <i *ngIf="tab['key']!='000'" nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
         </div>
       </ng-template>
     </nz-tab>
@@ -150,6 +157,9 @@
   <div id="app-content">
 
     <!--控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测-->
+    <!--首页-->
+    <app-index *ngIf="exist('000')" class="back"
+               [ngStyle]="{'display':active=='000'?'block':'none'}"></app-index>
 
     <!--device mgr-->
     <app-device-card *ngIf="exist('1000')" class="back"
@@ -239,15 +249,15 @@
     <!--<li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >-->
     <!--<i nz-icon nzType="dashboard" nzTheme="outline"></i>-->
     <!--</li>-->
-    <li nzTitle="3D仿真" nzPlacement="left" nz-tooltip (click)="click('model')">
+    <li nzTitle="仿真设计" nzPlacement="left" nz-tooltip (click)="click('model')">
       <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
       <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
     </li>
 
-    <li nzTitle="数据监控" nzPlacement="left" nz-tooltip (click)="click('grafana')">
+    <li nzTitle="监控设计" nzPlacement="left" nz-tooltip (click)="click('grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
     </li>
-    <li nzTitle="拓扑图" nzPlacement="left" nz-tooltip (click)="click('topo')">
+    <li nzTitle="拓扑设计" nzPlacement="left" nz-tooltip (click)="click('topo')">
       <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
     </li>
     <!--<li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">-->

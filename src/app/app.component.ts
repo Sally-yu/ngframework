@@ -16,9 +16,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.cookie = document.cookie;
-    if (!this.cookie) {
-      this.router.navigate(['/login']);
-    }
+    // this.cookie = document.cookie;
+    // if (!this.cookie) {
+    //   this.router.navigate(['/login']);
+    // }
   }
 }

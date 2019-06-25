@@ -49,6 +49,27 @@ export class UserService {
     });
   }
 
+  //获取user完整信息
+  userPhone(phone: string): any {
+    let user = {};
+    return new Promise((resolve, reject) => {
+      console.log(this.header);
+      this.http.post(this.url.userPhone, {phone: phone}).toPromise().then(res => {
+          if (res['status']) {
+            user = res['data'];
+          } else {
+            this.message.error(res['msg']);
+          }
+          resolve(user);
+        },
+        msg => {
+          this.message.error(msg.error['msg']);
+          this.url.logout(msg);
+          reject(user);
+        });
+    });
+  }
+
   //全部用户
   getList(): any {
     let data = [];
@@ -124,7 +145,7 @@ export class UserService {
         if (!encrypt) {
           reject(false);
         }
-        this.http.post(this.url.newPwd, {key: key, pwd: encrypt},{headers:this.header}).toPromise().then(res => {
+        this.http.post(this.url.newPwd, {key: key, pwd: encrypt}).toPromise().then(res => {
           if (!res['status']) {
             this.message.error(res['msg']);
             reject(false);
@@ -133,7 +154,6 @@ export class UserService {
           }
         }, error1 => {
           this.message.error(error1.error['msg']);
-          this.url.logout(error1)
           reject(false);
         });
       }, err => {
@@ -145,11 +165,11 @@ export class UserService {
   //验证用户key与密码匹配
   public authKey(key: string, pwd: string): any {
     return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
-      this.rsa.Encrypt(pwd).then(res => {
-        if (!res) {
+      this.rsa.Encrypt(pwd).then(encrypt => {
+        if (!encrypt) {
           reject(false);
         }
-        this.http.post(this.url.authKey, {key: key, pwd: res},{headers:this.header}).toPromise().then(res => {
+        this.http.post(this.url.authKey, {key: key, pwd: encrypt},{headers:this.header}).toPromise().then(res => {
           if (!res['status']) {
             this.message.error(res['msg']);
             reject(false);
@@ -158,7 +178,7 @@ export class UserService {
           }
         }, error1 => {
           this.message.error(error1.error['msg']);
-          this.url.logout(error1)
+          this.url.logout(error1);
           reject(false);
         });
       }, err => {

@@ -25,7 +25,8 @@
     <ul id="ul">
       <li><span>用户角色</span>
         <div>
-          <span *ngIf="user['role']==='administrator'">管理员</span>
+          <span *ngIf="user['role']==='admin'">管理员</span>
+          <span *ngIf="user['role']==='user'">普通用户</span>
           <span *ngIf="user['role']===''">缺省角色</span>
         </div>
         <nz-divider nzType="horizontal"></nz-divider>
