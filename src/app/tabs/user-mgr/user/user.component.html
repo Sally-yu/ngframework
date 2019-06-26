@@ -1,11 +1,9 @@
 <div id="content">
 
   <app-password *ngIf="changePwd" [key]="user['key']" (result)="cancel($event)"></app-password>
-  <app-email *ngIf="changeEmail" [key]="user['key']" (result)="cancel($event)"></app-email>
   <app-phone *ngIf="changePhone" [key]="user['key']" (result)="cancel($event)"></app-phone>
 
-
-  <div *ngIf="!changeEmail&&!changePwd&&!changePhone">
+  <div *ngIf="!changePwd&&!changePhone">
     <div id="info">
       <nz-avatar [nzSize]="100" [nzText]="'User'" [nzShape]="'square'" [nzSrc]="user['img']"
                  style="background-color:#555d60;box-shadow: 0 0 4px rgba(10,10,10,.5);cursor: pointer;font-size: 40px"></nz-avatar>
@@ -60,8 +58,8 @@
           <span *ngIf="user['email']">{{user['email']}}</span>
           <span class="unset" *ngIf="!user['email']"><i nz-icon nzType="exclamation-circle"
                                                         nzTheme="outline"></i>未设置</span>
-          <nz-divider nzType="vertical"></nz-divider>
-          <span (click)="changeEmail=true;" class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>
+          <!--<nz-divider nzType="vertical"></nz-divider>-->
+          <!--<span (click)="changeEmail=true;" class="edit"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</span>-->
         </div>
       </li>
     </ul>

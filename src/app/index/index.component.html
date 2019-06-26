@@ -1,0 +1,19 @@
+<div id="content">
+  <span style=" margin-left: -16px;padding-left: 24px;
+    font-size: 16px;
+    border-left: solid #0987fe;">首页展示</span>
+
+  <div id="search">
+    <button nz-button nz-tooltip nzTitle="新增" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+    <button nz-button nz-tooltip nzTitle="保存" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon nzType="save" nzTheme="outline"></i></button>
+    <button nz-button nz-tooltip nzTitle="刷新" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon nzType="reload" nzTheme="outline"></i></button>
+    <button nz-button nz-tooltip nzTitle="大屏展示" nzPlacement="bottom" (click)="add()" nzType="primary"><i nz-icon nzType="desktop" nzTheme="outline"></i></button>
+  </div>
+
+  <div style="width: calc(100% - 16px);margin-left: 16px;margin-top: 16px;">
+    <div echarts [options]="initBar()" (click)="$event.stopPropagation()" class="chart" style="height: 500px;width: 50%;display: inline-block"></div>
+    <div echarts [options]="initPi()" (click)="$event.stopPropagation()" class="chart" style="height: 400px;width: 50%;display: inline-block"></div>
+    <div echarts [options]="initDashboard()" (click)="$event.stopPropagation()" class="chart" style="height: 400px;width: 40%;display: inline-block"></div>
+  </div>
+
+</div>

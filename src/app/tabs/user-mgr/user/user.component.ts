@@ -12,19 +12,10 @@ import {UserService} from '../../../user.service';
 })
 export class UserComponent implements OnInit {
 
-  login = false;
   loading = false;
-
   user = {};
 
-  pwdOK=true;
-  pwdStatus;
-
-  confirm;
-  confirmOK = true;
-  confirmStatus ;
   changePwd= false;
-  changeEmail= false;
   changePhone= false;
   @Input() key:string;
 
@@ -36,17 +27,6 @@ export class UserComponent implements OnInit {
   ) {
   }
 
-  //验证
-  valide() {
-    if(this.user["password"]!=this.confirm){
-      this.confirmOK=false;
-      this.confirmStatus="error";
-    }else{
-      this.confirmOK=true;
-      this.confirmStatus="success";
-    }
-  }
-
   getUser() {
     this.loading=true;
     this.userSrv.getUser(this.key).then(user=>{
@@ -55,26 +35,12 @@ export class UserComponent implements OnInit {
     });
   }
 
-  //提交更新用户
-  submit() {
-    this.loading = true;
-    this.userSrv.update(this.user).then(msg=>{
-      this.loading=false;
-    });
-  }
-
-  //重置，重新获取user
-  reset(){
-    this.getUser()
-  }
-
   ngOnInit() {
     this.getUser();
   }
 
   cancel($event: any) {
     if(event){
-      this.changeEmail=false;
       this.changePhone=false;
       this.changePwd=false;
     }

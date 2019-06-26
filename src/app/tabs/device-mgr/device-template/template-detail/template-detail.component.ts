@@ -93,7 +93,6 @@ export class TemplateDetailComponent implements OnInit {
             }
           }, err => {
             this.loading = false;
-
           });
           break;
         default:

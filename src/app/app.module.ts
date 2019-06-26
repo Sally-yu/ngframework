@@ -133,7 +133,6 @@ const routes: Routes = [
     ColorPickerModule,
     NgxEchartsModule,
     RouterModule.forRoot(routes),
-
   ],
   providers: [
     {provide: NZ_I18N, useValue: zh_CN},

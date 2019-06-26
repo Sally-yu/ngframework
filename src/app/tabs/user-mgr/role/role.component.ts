@@ -36,7 +36,6 @@ export class RoleComponent implements OnInit {
     this.userSrv.getList().then(res => {
       this.users = JSON.parse(JSON.stringify(res)).filter(u => u.role == role);
       this.loading = false;
-      console.log(this.users);
     }, err => {
       this.loading = false;
     });

@@ -1,0 +1,23 @@
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  min-height: calc(100% - 24px);
+}
+#search {
+  float: right;
+  display: inline-flex;
+}
+#search button {
+  margin-right: 8px;
+  width: 60px;
+}
+#search input {
+  margin-right: 8px;
+}
+/*# sourceMappingURL=index.component.css.map */

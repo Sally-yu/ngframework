@@ -51,31 +51,6 @@
               </div>
               <div echarts [options]="chartOption(item.key)" (click)="$event.stopPropagation()" class="chart" style="height: 50px"></div>
 
-
-              <!--<ul>-->
-              <!--<li>-->
-              <!--编号:<span>{{item.code}}</span>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--厂商:<span>{{item.manufacturer}}</span>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--连接:<span>{{item.connect}}</span>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--型号:<span>{{item.model}}</span>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--状态:-->
-              <!--<span style="margin-right: 8px"-->
-              <!--[ngStyle]="{'color':item.status?'#1ab768':'#ff2222'}">{{item.status ? '运行' : '停机'}}</span>-->
-              <!--<nz-switch (click)="$event.stopPropagation();" [(ngModel)]="item.status" class="switch"></nz-switch>-->
-
-              <!--</li>-->
-              <!--<li>-->
-              <!--注册:<span>{{item.time}}</span>-->
-              <!--</li>-->
-              <!--</ul>-->
             </div>
           </ng-template>
         </nz-list-item>

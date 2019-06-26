@@ -3,7 +3,6 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UrlService} from './url.service';
 import {RsaService} from './rsa.service';
-import {reject} from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +30,6 @@ export class UserService {
   getUser(key: string): any {
     let user = {};
     return new Promise((resolve, reject) => {
-      console.log(this.header);
-      console.log(key)
       this.http.post(this.userUrl, {key: key},{headers:this.header}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
@@ -53,7 +50,6 @@ export class UserService {
   userPhone(phone: string): any {
     let user = {};
     return new Promise((resolve, reject) => {
-      console.log(this.header);
       this.http.post(this.url.userPhone, {phone: phone}).toPromise().then(res => {
           if (res['status']) {
             user = res['data'];
@@ -212,30 +208,6 @@ export class UserService {
       });
     });
   }
-
-  // public authToken(token:string):any{
-  //   return new Promise((resolve, reject) => { //promise嵌套，注意调用次序
-  //     this.rsa.Encrypt(pwd).then(res => {
-  //       if (!res) {
-  //         reject(false);
-  //       }
-  //       let data={name: name, pwd: res};
-  //       this.http.post(this.url.loginUrl, data).toPromise().then(res => {
-  //         if (!res['status']) {
-  //           this.message.error(res['msg']);
-  //           reject(false);
-  //         } else {
-  //           resolve(res);
-  //         }
-  //       }, error1 => {
-  //         console.log(error1);
-  //         reject(false);
-  //       });
-  //     }, err => {
-  //       reject(false);
-  //     });
-  //   });
-  // }
 
   //移除用户
   remove(key: string): any {
