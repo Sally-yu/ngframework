@@ -28,7 +28,6 @@ export class RoleComponent implements OnInit {
 
   constructor(
     private userSrv: UserService,
-    private message: NzMessageService,
   ) {
   }
 
@@ -59,6 +58,7 @@ export class RoleComponent implements OnInit {
     } else if (user.role == 'admin') {
       user.role = 'user';
     }
+    user.password='';
     this.loading=true;
     this.userSrv.update(user).then(res => {
       this.tabChange()

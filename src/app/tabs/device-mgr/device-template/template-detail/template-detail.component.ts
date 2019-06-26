@@ -16,6 +16,9 @@ export class TemplateDetailComponent implements OnInit {
   @Output() result: EventEmitter<any> = new EventEmitter();
   loading = false;
 
+  codeRequired = true;
+  nameRequired = true;
+
   constructor(
     private message: NzMessageService,
     private deviceService: DeviceService,
@@ -32,7 +35,7 @@ export class TemplateDetailComponent implements OnInit {
 
   //添加设备属性
   addAttr() {
-    this.template.attrs = [...this.template.attrs.filter(a=>a.key!='null'), {
+    this.template.attrs = [...this.template.attrs.filter(a => a.key != 'null'), {
       key: uuid.v4(),
       name: null,
       code: null,
@@ -44,7 +47,7 @@ export class TemplateDetailComponent implements OnInit {
     this.addNullAtt();
   }
 
-  addNullAtt(){
+  addNullAtt() {
     this.template.attrs = [...this.template.attrs, {
       key: 'null',
       name: null,
@@ -61,34 +64,42 @@ export class TemplateDetailComponent implements OnInit {
     this.template.attrs = this.template.attrs.filter(a => a.key != key);
   }
 
+  validate() {
+    this.codeRequired = this.template['code'] ? true : false;
+    this.nameRequired = this.template['name'] ? true : false;
+  }
+
   submit() {
-    this.loading=true;
-    let data=JSON.parse(JSON.stringify(this.template));
-    data['attrs']=data['attrs'].filter(a=>a.key!='null');
-    switch (this.option) {
-      case 'new':
-        this.deviceService.newDeviceTemp(data).then(res => {
-          if (res) {
-            this.close();
-          }
-        }, err => {
-          this.loading=false;
-        });
-        break;
-      case 'edit':
-        this.deviceService.updateTemplate(data).then(res => {
-          if (res) {
-            this.close();
-          }
-        }, err => {
-          this.loading=false;
+    this.validate();
+    if (this.codeRequired && this.nameRequired) {
+      this.loading = true;
+      let data = JSON.parse(JSON.stringify(this.template));
+      data['attrs'] = data['attrs'].filter(a => a.key != 'null');
 
-        });
-        break;
-      default:
-        this.loading=false;
-        break;
+      switch (this.option) {
+        case 'new':
+          this.deviceService.newDeviceTemp(data).then(res => {
+            if (res) {
+              this.close();
+            }
+          }, err => {
+            this.loading = false;
+          });
+          break;
+        case 'edit':
+          this.deviceService.updateTemplate(data).then(res => {
+            if (res) {
+              this.close();
+            }
+          }, err => {
+            this.loading = false;
+
+          });
+          break;
+        default:
+          this.loading = false;
+          break;
+      }
     }
-
   }
 }

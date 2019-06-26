@@ -10,14 +10,16 @@
   <form nz-form>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>模板编号</nz-form-label>
-      <nz-form-control [nzSpan]="12">
+      <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeRequired" [nzValidateStatus]="codeRequired?'success':'error'">
         <input nz-input name="code" [(ngModel)]="template['code']" [disabled]="option=='edit'"/>
+        <nz-form-explain *ngIf="!codeRequired">请输入编号！</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>模板名称</nz-form-label>
-      <nz-form-control [nzSpan]="12">
+      <nz-form-control [nzSpan]="12" [nzHasFeedback]="!nameRequired" [nzValidateStatus]="nameRequired?'success':'error'">
         <input nz-input name="name" [(ngModel)]="template['name']" [disabled]="option=='edit'"/>
+        <nz-form-explain *ngIf="!nameRequired">请输入名称！</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
