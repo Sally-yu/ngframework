@@ -1,4 +1,7 @@
 <div id="content">
+  <!--<div data-bind="component: {name: 'dashboard-grid', params: $data}"></div>-->
+
+
   <span style=" margin-left: -16px;padding-left: 24px;
     font-size: 16px;
     border-left: solid #0987fe;">首页展示</span>
@@ -9,11 +12,36 @@
     <button nz-button nz-tooltip nzTitle="刷新" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon nzType="reload" nzTheme="outline"></i></button>
     <button nz-button nz-tooltip nzTitle="大屏展示" nzPlacement="bottom" (click)="add()" nzType="primary"><i nz-icon nzType="desktop" nzTheme="outline"></i></button>
   </div>
+  <div data-bind="component: {name: 'dashboard-grid', params: $data}"></div>
 
-  <div style="width: calc(100% - 16px);margin-left: 16px;margin-top: 16px;">
-    <div echarts [options]="initBar()" (click)="$event.stopPropagation()" class="chart" style="height: 500px;width: 50%;display: inline-block"></div>
-    <div echarts [options]="initPi()" (click)="$event.stopPropagation()" class="chart" style="height: 400px;width: 50%;display: inline-block"></div>
-    <div echarts [options]="initDashboard()" (click)="$event.stopPropagation()" class="chart" style="height: 400px;width: 40%;display: inline-block"></div>
+  <div style="margin-top: 32px;">
+    <div class="grid-stack">
+      <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+        <div class="grid-stack-item-content">
+          <div class="grid-tool">堆叠折线图</div>
+          <div echarts [options]="initBar()" class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
+        </div>
+      </div>
+      <div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+        <div class="grid-stack-item-content">
+          <div class="grid-tool">环形图</div>
+          <div echarts [options]="initPi()"  class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
+        </div>
+      </div>
+      <div class="grid-stack-item" data-gs-x="4" data-gs-y="4" data-gs-width="4" data-gs-height="4">
+        <div class="grid-stack-item-content">
+          <div class="grid-tool">完成率监控</div>
+          <div echarts [options]="initDashboard()"  class="chart"   style="height: calc(100% - 40px);width: 100%"></div>
+        </div>
+      </div>
+    </div>
   </div>
-
 </div>
+
+<!--<template id="gridstack-template">-->
+  <!--<div class="grid-stack" data-bind="foreach: {data: widgets, afterRender: afterAddWidget}">-->
+    <!--<div class="grid-stack-item" data-bind="attr: {'data-gs-x': $data.x, 'data-gs-y': $data.y, 'data-gs-width': $data.width, 'data-gs-height': $data.height, 'data-gs-auto-position': $data.auto_position}">-->
+      <!--<div class="grid-stack-item-content">-->
+      <!--</div>-->
+    <!--</div></div>&lt;!&ndash; <&#45;&#45;&#45;&#45; NO SPACE BETWEEN THESE CLOSING TAGS &ndash;&gt;-->
+<!--</template>-->
