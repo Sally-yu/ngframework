@@ -25,7 +25,7 @@
 }
 .grid-stack-item-content {
   text-align: center;
-  box-shadow: 0 0 8px rgba(10, 10, 10, 0.05);
+  box-shadow: 0 0 8px rgba(10, 10, 10, 0.1);
 }
 .grid-tool {
   width: 100%;

@@ -16,19 +16,19 @@
 
   <div style="margin-top: 32px;">
     <div class="grid-stack">
-      <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+      <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="8" data-gs-height="8">
         <div class="grid-stack-item-content">
           <div class="grid-tool">堆叠折线图</div>
           <div echarts [options]="initBar()" class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
         </div>
       </div>
-      <div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+      <div class="grid-stack-item" data-gs-x="8" data-gs-y="0" data-gs-width="4" data-gs-height="4">
         <div class="grid-stack-item-content">
           <div class="grid-tool">环形图</div>
           <div echarts [options]="initPi()"  class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
         </div>
       </div>
-      <div class="grid-stack-item" data-gs-x="4" data-gs-y="4" data-gs-width="4" data-gs-height="4">
+      <div class="grid-stack-item" data-gs-x="8" data-gs-y="3" data-gs-width="4" data-gs-height="4">
         <div class="grid-stack-item-content">
           <div class="grid-tool">完成率监控</div>
           <div echarts [options]="initDashboard()"  class="chart"   style="height: calc(100% - 40px);width: 100%"></div>
