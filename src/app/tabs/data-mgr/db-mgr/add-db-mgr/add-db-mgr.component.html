@@ -1,0 +1,196 @@
+<p id="btn" (click)="close()" [title]="'返回'+parentCom">
+  <i nz-icon nzType="left" nzTheme="outline"></i>{{parentCom}}
+</p>
+
+<p style="    padding-left: 24px;
+      font-size: 16px;
+      border-left: solid #0987fe;">
+  <span *ngIf="option=='add'">新增</span>
+  <span *ngIf="option=='edit'">编辑</span>
+  <span *ngIf="option=='preview'">查看</span>
+</p>
+
+<form nz-form >
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>服务器名称</nz-form-label>
+    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!serverNameRequired"
+      [nzValidateStatus]="serverNameRequired?'success':'error'">
+      <input #codeEle nz-input name="serverName" [(ngModel)]="selectData.servername" [disabled]="option=='preview'"
+        placeholder="请输入服务器名称" />
+      <nz-form-explain *ngIf="!serverNameRequired">{{'请输入服务器名称！'}}</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>服务端IP</nz-form-label>
+    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!serverIpRequired"
+      [nzValidateStatus]="serverIpRequired?'success':'error'">
+      <input nz-input name="serverIP" [(ngModel)]="selectData.serverip" [disabled]="option!='add'" placeholder="请输入服务端IP" />
+      <nz-form-explain *ngIf="!serverIpRequired">{{'请输入服务端IP！'}}</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">服务端端口</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="serverPort" [(ngModel)]="selectData.serverport" [disabled]="option=='preview'" placeholder="请输入服务端端口" />
+      <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入服务端端口！'}}</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>数据库名称</nz-form-label>
+    <nz-form-control [nzSpan]="12"[nzHasFeedback]="!databaseNameRequired"
+    [nzValidateStatus]="databaseNameRequired?'success':'error'">
+      <input #codeEle nz-input name="databaseName" [(ngModel)]="selectData.database" [disabled]="option=='preview'"
+        placeholder="请输入数据库名称" />
+      <nz-form-explain *ngIf="!databaseNameRequired">{{'请输入数据库名称！'}}</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">用户名</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="userName" [(ngModel)]="selectData.username" [disabled]="option=='preview'" placeholder="请输入用户名" />
+      <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入用户名！'}}</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">密码</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="password" [(ngModel)]="selectData.password" [disabled]="option=='preview'" placeholder="请输入密码" />
+      <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入密码！'}}</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">数据库类型</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="databaseType" [(ngModel)]="selectData.databasetype" [disabled]="option=='preview'" placeholder="请输入数据库类型" />
+      <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入数据库类型！'}}</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">描述</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="description" [(ngModel)]="selectData.description" [disabled]="option=='preview'" placeholder="请输入描述" />
+      <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入描述！'}}</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备类型</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="type" [(ngModel)]="device['type']" placeholder="请选择设备类型"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备分组</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="group" [(ngModel)]="device['group']" placeholder="请选择设备分组"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>设备模板</nz-form-label>
+      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!templateRequire"
+                       [nzValidateStatus]="templateRequire?'success':'error'">
+        <nz-select name="template" [(ngModel)]="device.template" nzPlaceHolder="请选择设备模板" [compareWith]="compareFn"
+                   (ngModelChange)="templateChanged()">
+          <nz-option *ngFor="let temp of templateList" [nzValue]="temp" [nzLabel]="temp['name']"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="!templateRequire">{{'请选择设备模板！'}}</nz-form-explain>
+      </nz-form-control>
+      <button nz-tooltip nzTitle="刷新设备模板列表" nzPlacement="right" nz-button
+              style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="getTemplate()"
+              [nzLoading]="loading">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+      </button>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备连接</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="connect" [(ngModel)]="device['connect']" placeholder="请输入设备连接"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">规格型号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="model" [(ngModel)]="device['model']" placeholder="请输入规格型号"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">采样间隔</nz-form-label>
+      <nz-form-control [nzSpan]="8">
+        <nz-input-number style="width:100%;" name="interval" [(ngModel)]="t" [nzMin]="0" [nzStep]="1"
+                         (focus)="t==0?t=null:t;" (blur)="t==null?t=0:t;"></nz-input-number>
+      </nz-form-control>
+      <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint"
+                 (ngModelChange)="calcTime()">
+        <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>
+        <nz-option [nzLabel]="'秒'" [nzValue]="'s'"></nz-option>
+        <nz-option [nzLabel]="'分'" [nzValue]="'min'"></nz-option>
+        <nz-option [nzLabel]="'时'" [nzValue]="'h'"></nz-option>
+        <nz-option [nzLabel]="'日'" [nzValue]="'d'"></nz-option>
+      </nz-select>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">GPS</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="gps" [(ngModel)]="device['gps']" placeholder="请输入GPS位置信息"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12"> -->
+  <!--单向绑定可防止change事件后model改变-->
+  <!-- <input #telEle (ngModelChange)="telChange($event)" nz-input name="phone" [ngModel]="device['phone']"
+               placeholder="请输入手机号码"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">厂商</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="manufacturer" [(ngModel)]="device['manufacturer']" placeholder="请输入设备厂商"/>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7" >展示卡片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-switch class="switch" name="display" [(ngModel)]="device.display"></nz-switch>
+        <span style="margin-left: 8px"
+              [ngStyle]="{'color':device.display?'#1ab768':'#ff2222'}">{{device.display ? '展示' : '隐藏'}}</span>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7" >卡片颜色</nz-form-label>
+      <nz-form-control [nzSpan]="10">
+        <input name="color" nz-input [(ngModel)]="device['devicesetting']['cardcolor']">
+      </nz-form-control>
+      <input [cpPresetColors]="presetColors" readonly title="选择颜色"
+             [(colorPicker)]="device['devicesetting']['cardcolor']"
+             style="border: none;outline: none;height: 30px;width: 30px;margin-top: 5px;margin-left: 8px;cursor: pointer;"
+             [style.background]="device['devicesetting']['cardcolor']"/>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7" >状态</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-switch class="switch" name="status" [(ngModel)]="device.status"></nz-switch>
+        <span style="margin-left: 8px"
+              [ngStyle]="{'color':device.status?'#1ab768':'#ff2222'}">{{device.status ? '运行' : '停机'}}</span>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">备注</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                  placeholder="设备备注信息"></textarea>
+      </nz-form-control>
+    </nz-form-item> -->
+</form>
+
+<!--   
+  <p *ngIf="device['attrs']!=null" style="padding-left: 24px;
+      font-size: 16px;
+      border-left: solid #0987fe;">属性信息</p>
+   -->
+
+<div style="margin: 24px;padding-left: 150px;" *ngIf="option != 'preview'">
+  <button nz-button nzType="primary" style="margin-right: 8px;width: 95px" (click)="submit()" [nzLoading]="loading">保存
+  </button>
+  <button nz-button style="width: 95px;margin-right: 8px" (click)="reset()" [nzLoading]="loading">重置</button>
+  <button nz-button style="width: 94px;" (click)="close()">取消</button>
+</div>

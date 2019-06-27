@@ -59,6 +59,8 @@ import { ModelDesignComponent } from './tabs/model-design/model-design.component
 import { GrafanaComponent } from './tabs/grafana/grafana.component';
 import { IndexComponent } from './index/index.component';
 import { ForgetComponent } from './forget/forget.component';
+import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
+import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -122,6 +124,8 @@ const routes: Routes = [
     GrafanaComponent,
     IndexComponent,
     ForgetComponent,
+    DataManageComponent,
+    AddDbMgrComponent,
   ],
   imports: [
     BrowserModule,

@@ -194,6 +194,7 @@ export class HomeComponent implements OnInit {
       icon: 'database',
       children: [
         {title: '数据库管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: false},
+        {title: '数据管理', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
 
