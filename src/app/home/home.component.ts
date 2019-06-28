@@ -179,7 +179,7 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
-      title: '数据处理',
+      title: '数据挖掘',
       key: '103',
       expanded: false,
       icon: 'robot',
@@ -193,8 +193,8 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'database',
       children: [
-        {title: '数据库管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: false},
-        {title: '数据管理', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
+        {title: '数据源管理', key: '1020', app: 'db-mgr', isLeaf: true, fav: false, share: false},
+        {title: '数据源列表', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
 

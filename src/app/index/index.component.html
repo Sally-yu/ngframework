@@ -1,5 +1,4 @@
 <div id="content">
-  <!--<div data-bind="component: {name: 'dashboard-grid', params: $data}"></div>-->
 
 
   <span style=" margin-left: -16px;padding-left: 24px;
@@ -7,15 +6,15 @@
     border-left: solid #0987fe;">首页展示</span>
 
   <div id="search">
-    <button nz-button nz-tooltip nzTitle="新增" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon
+    <button nz-button data-bind="click: $root.add" nz-tooltip nzTitle="新增" nzPlacement="bottom"  nzType="primary"><i nz-icon
                                                                                                            nzType="plus"
                                                                                                            nzTheme="outline"></i>
     </button>
-    <button nz-button nz-tooltip nzTitle="保存" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon
+    <button nz-button data-bind="click: $root.save" nz-tooltip nzTitle="保存" nzPlacement="bottom" nzType="primary"><i nz-icon
                                                                                                            nzType="save"
                                                                                                            nzTheme="outline"></i>
     </button>
-    <button nz-button nz-tooltip nzTitle="刷新" nzPlacement="bottom" (click)="getList()" nzType="primary"><i nz-icon
+    <button nz-button nz-tooltip nzTitle="刷新" nzPlacement="bottom" (click)="initBar()" nzType="primary"><i nz-icon
                                                                                                            nzType="reload"
                                                                                                            nzTheme="outline"></i>
     </button>
@@ -24,48 +23,6 @@
                                                                                                          nzTheme="outline"></i>
     </button>
   </div>
-  <div data-bind="component: {name: 'dashboard-grid', params: $data}"></div>
+  <div style="margin-top: 32px" data-bind="component: {name: 'dashboard-grid', params: $data}"></div>
 
-  <div style="margin-top: 32px;">
-    <div class="grid-stack">
-      <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="8" data-gs-height="8">
-        <div class="grid-stack-item-content">
-          <div class="grid-tool">堆叠折线图</div>
-          <div echarts [options]="initBar()" class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
-        </div>
-      </div>
-      <div class="grid-stack-item" data-gs-x="8" data-gs-y="0" data-gs-width="4" data-gs-height="4">
-        <div class="grid-stack-item-content">
-          <div class="grid-tool">环形图</div>
-          <div echarts [options]="initPi()" class="chart" style="height: calc(100% - 40px);width: 100%;"></div>
-        </div>
-      </div>
-      <div class="grid-stack-item" data-gs-x="8" data-gs-y="3" data-gs-width="4" data-gs-height="6">
-        <div class="grid-stack-item-content">
-          <div class="grid-tool">完成率监控</div>
-          <div echarts [options]="initDashboard()" class="chart" style="height: calc(100% - 40px);width: 100%"></div>
-        </div>
-      </div>
-      <div class="grid-stack-item" data-gs-x="0" data-gs-y="4" data-gs-width="4" data-gs-height="2">
-        <div class="grid-stack-item-content" style="background-color: #1ab768;font-size: 32px;font-weight: bold;color: #ffffff">
-          <div class="grid-tool">设备指标</div>
-          <div>36%</div>
-        </div>
-      </div>
-      <div class="grid-stack-item" data-gs-x="4" data-gs-y="4" data-gs-width="4" data-gs-height="2">
-        <div class="grid-stack-item-content" style="background-color: #0987fe;font-size: 32px;font-weight: bold;color:#ffffff">
-          <div class="grid-tool">同期对比</div>
-          <div>65%</div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
-<!--<template id="gridstack-template">-->
-<!--<div class="grid-stack" data-bind="foreach: {data: widgets, afterRender: afterAddWidget}">-->
-<!--<div class="grid-stack-item" data-bind="attr: {'data-gs-x': $data.x, 'data-gs-y': $data.y, 'data-gs-width': $data.width, 'data-gs-height': $data.height, 'data-gs-auto-position': $data.auto_position}">-->
-<!--<div class="grid-stack-item-content">-->
-<!--</div>-->
-<!--</div></div>&lt;!&ndash; <&#45;&#45;&#45;&#45; NO SPACE BETWEEN THESE CLOSING TAGS &ndash;&gt;-->
-<!--</template>-->

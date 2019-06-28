@@ -22,6 +22,7 @@
     "angular2-uuid": "latest",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
+    "css-element-queries": "^1.2.0",
     "echarts": "^4.2.1",
     "emoji": "^0.3.2",
     "gojs": "latest",
