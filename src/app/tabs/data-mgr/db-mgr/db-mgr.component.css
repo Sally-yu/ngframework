@@ -1,5 +1,6 @@
 .database {
   text-align: center;
+  margin: 20px 10px 20px 10px;
 }
 .database:hover {
   transform: scale(1.1, 1.1);
