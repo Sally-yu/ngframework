@@ -22,7 +22,7 @@ export class DeviceCardComponent implements OnInit {
 
   attValue;//设备属性（参数）的值
 
-  presetColors = ['#2ecc71', '#1abc9c', '#3498db', '#f1c40f', '#e67e22', '#e74c3c']; //预置卡片颜色选项
+  presetColors = ['#f1c40f', '#e74c3c','#2ecc71']; //预置卡片颜色选项
 
   constructor(
     private deviceService: DeviceService,
@@ -199,7 +199,7 @@ export class DeviceCardComponent implements OnInit {
         series: []
       };
       data.forEach(r => {
-        var colorindex = Math.ceil(r['value'] / 20);
+        var colorindex = Math.floor(r['value'] / 33);
 
         option.series = [...option.series, {
           type: 'bar',
