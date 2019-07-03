@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AjaxService } from '../../../services/ajax/ajax.service';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
+import { UrlService } from '../../../url.service';
+import * as  MongoClient from '../../../../../node_modules/mongo/node_modules/mongodb/lib/mongo_client.js'
 
 @Component({
   selector: 'app-db-mgr',
@@ -32,115 +34,13 @@ export class DbMgrComponent implements OnInit {
     serverip: "",
     serverport: "",
     database: "",
-    databasetype: "",
+    databasetype: "MongoDB",
     username: "",
     password: "",
-    description: ""
+    description: "",
   };
+  header;
 
-  // 模拟数据
-  // dataAll = [
-  //   {
-  //     servername: "服务器 1",
-  //     serverip: "10.25.12.11",
-  //     serverport: "8000",
-  //     database: "mySQL",
-  //     databasetype: "时序数据库",
-  //     username: "admin",
-  //     password: "admin",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: "服务器 2",
-  //     serverip: "10.25.12.12",
-  //     serverport: "8001",
-  //     database: "mySQL",
-  //     databasetype: "关系数据库",
-  //     username: "test",
-  //     password: "test",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: '服务器 3',
-  //     serverip: "10.25.12.13",
-  //     database: "Oracle",
-  //     serverport: "8002",
-  //     databasetype: "文档数据库",
-  //     username: "admin",
-  //     password: "admin",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: '服务器 4',
-  //     serverip: "10.25.12.14",
-  //     database: "瀚高",
-  //     serverport: "4000",
-  //     databasetype: "时序数据库",
-  //     username: "admin",
-  //     password: "admin",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: '服务器 5',
-  //     serverip: "10.25.12.15",
-  //     database: "Postgres",
-  //     serverport: "8080",
-  //     databasetype: "关系数据库",
-  //     username: "wzq",
-  //     password: "wzq",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: '服务器 6',
-  //     serverip: "10.25.12.16",
-  //     database: "MySQL",
-  //     serverport: "8000",
-  //     databasetype: "文档数据库",
-  //     username: "test",
-  //     password: "test",
-  //     description: ""
-  //   }, {
-  //     servername: '服务器 7',
-  //     serverip: "10.25.12.17",
-  //     database: "MySQL",
-  //     serverport: "9001",
-  //     databasetype: "时序数据库",
-  //     username: "admin1",
-  //     password: "admin1",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: '服务器 8',
-  //     serverip: "10.25.12.18",
-  //     database: "Oracle",
-  //     serverport: "8002",
-  //     databasetype: "关系数据库",
-  //     username: "admin2",
-  //     password: "admin2",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: "服务器 9",
-  //     serverip: "10.25.12.19",
-  //     database: "Oracle",
-  //     serverport: "4040",
-  //     databasetype: "文档数据库",
-  //     username: "admin3",
-  //     password: "admin3",
-  //     description: ""
-  //   },
-  //   {
-  //     servername: "服务器 10",
-  //     serverip: "10.25.12.20",
-  //     database: "PostgreSQL",
-  //     serverport: "8000",
-  //     databasetype: "时序数据库",
-  //     username: "admin4",
-  //     password: "admin4",
-  //     description: ""
-  //   },
-
-  // ];
 
   constructor(
     private nzDropdownService: NzDropdownService,
@@ -148,7 +48,8 @@ export class DbMgrComponent implements OnInit {
     private http: HttpClient,
     private message: NzMessageService,
     private dbMgrService: DbMgrService,
-    ) { }
+    private url: UrlService,
+  ) { this.header = new HttpHeaders({ token: this.url.token(), user: this.url.key() }); }
 
   // 初始化
   ngOnInit() {
@@ -160,7 +61,7 @@ export class DbMgrComponent implements OnInit {
       this.dataAll = res;
       // console.log('1、',this.dataAll)
       this.loading = false;
-    },err => {
+    }, err => {
       this.loading = false;
     });
 
@@ -170,14 +71,14 @@ export class DbMgrComponent implements OnInit {
     this.loading = true;
     this.dbMgrService.dbMgrList().then(res => {
       this.dataAll = res;
-      if(this.searchValue){
+      if (this.searchValue) {
         this.dataAll = JSON.parse(JSON.stringify(this.dataAll)).filter(d => {
           return d.servername.indexOf(this.searchValue) >= 0;
         });
       }
-      console.log(this.dataAll)
+      // console.log(this.dataAll)
       this.loading = false;
-    },err => {
+    }, err => {
       this.loading = false;
     });
   }
@@ -228,19 +129,70 @@ export class DbMgrComponent implements OnInit {
     this.selectData = this.dataAll.filter(d => d.serverip === serverip)[0];
   }
 
+  // 测试连接
+  connection(data) {
+    this.dropdown.close();  //右键菜单关闭
+    const messageId = this.message.loading('正在测试连接...', { nzDuration: 0 }).messageId
+    if (data.databasetype == 'InfluxDB') {
+      let url_port = data.serverip;
+      if (data.serverport) {
+        url_port = url_port + `:${data.serverport}`
+      }
+      let url = `http://${url_port}/ping`;
+      if (data.username && data.password) {
+        url = url + `?u=${data.username}&p=${data.password}`
+      }
+      // console.log('url=', url)
+      this.http.get(url).toPromise().then(res => {
+        // console.log('res = ', res)
+        this.message.remove(messageId);
+        this.message.success('测试连接成功！');
+        // data["ping"] = true;
+      },
+        err => {
+          this.message.remove(messageId);
+          this.message.error('测试连接失败！');
+          // data["ping"] = false;
+        }
+      );
+    }
+
+    if (data.databasetype == 'MongoDB') {
+      this.dbMgrService.dbMgrPing(data).then(res => {
+        this.message.remove(messageId);
+        this.message.success('测试连接成功！');
+        // data["ping"] = true;
+      }, err => {
+        // console.log('err=', err.error)
+        this.message.remove(messageId);
+        this.message.error('测试连接失败！');
+        // data["ping"] = false;
+      });
+    }
+
+    // var url = 'mongodb://admin:123456@10.24.20.71:28081';
+    // // Use connect method to connect to the Server passing in
+    // // additional options
+    // MongoClient.connect(url, {
+    //   poolSize: 10, ssl: true
+    // }, function (err, db) {
+    //   // assert.equal(null, err);
+    //   console.log("Connected correctly to server");
+    //   db.close();
+    // });
+
+    // let url = 'http://10.72.43.193:8086/ping?u=admin&p=admin'
+    // let url = 'http://10.72.43.193/ping'
+    // let url = 'http://10.25.11.104/ping'
+  }
+
   // 删除
   remove(serverip: string) {
     this.dbMgrService.deleteDbMgr(serverip).then(res => {
-      // console.log('删除后res = ',res);
-      if(res['message'] == '1'){
-        this.message.success('删除成功！')
-      }else if(res['message'] == '-1'){
-        this.message.error('删除失败！')
-      }
-    },err => {
+      this.getDatabaselist();
+    }, err => {
     });
-    this.getDatabaselist();   
+    this.getDatabaselist();
   }
-
 
 }

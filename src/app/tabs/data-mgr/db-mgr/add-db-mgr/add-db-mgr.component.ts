@@ -31,6 +31,7 @@ export class AddDbMgrComponent implements OnInit {
   serverNameRequired = true;  // 服务器名称不为空
   serverIpRequired = true;  // 服务器IP不为空
   databaseNameRequired = true;  //数据库名称不为空
+  databaseTypeRequired = true;  //数据库类型不为空
 
 
   constructor(
@@ -41,49 +42,32 @@ export class AddDbMgrComponent implements OnInit {
 
   ngOnInit() {
     // this.data = this.selectData;
-
   }
 
   // 保存
   submit() {
     this.valide();
-    if (this.serverIpRequired && this.serverNameRequired && this.databaseNameRequired) {
+    var repeats = this.dataAll.filter(d => d.serverip === this.selectData.serverip);
+    if (this.serverIpRequired && this.serverNameRequired && this.databaseNameRequired && this.databaseTypeRequired) {
       let newData = JSON.parse(JSON.stringify(this.selectData));
       switch (this.option) {
         case 'add': //新增
-          this.dbMgrService.addDbMgr(newData).then(res => {
-            if(res['message'] == '-1'){
-              this.message.error('服务器IP已经存在！')
-            }else if(res['message'] == '1'){
-              this.message.success('添加成功！');
+          if (repeats.length !== 0) {   //检查IP地址唯一性
+            this.message.create("error", `服务器IP与已存在重复`);
+          } else {
+            this.dbMgrService.addDbMgr(newData).then(res => {
               this.close();
-            }
-          }, err => {
-          });
-          // console.log('添加前的 this.dataAll = ', this.dataAll);
-          // this.dataAll.push(newData);
-          // console.log('添加后的 this.dataAll = ', this.dataAll);
-          // this.close();
+              this.loading = false;
+            }, err => {
+              this.loading = false;
+            });
+          }
           break;
         case 'edit':  //编辑
           this.dbMgrService.updateDbMgr(newData).then(res => {
-            // console.log('更新后的 this.dataAll = ',this.dataAll)
             this.close();
           }, err => {
           });
-          // for (let keyout of this.dataAll) {
-          //   if(keyout.servername == newData.servername){
-          //     for( let key of keyout){
-          //       for(let keyin of newData){
-          //         if(key == keyin){
-          //           keyout.key = newData.keyin;
-          //         }
-          //       }
-          //     }
-          //   }
-          // }
-          // console.log('*****之后的dataAll =',this.dataAll);
-          // this.close();
           break;
         default:
           break;
@@ -91,7 +75,6 @@ export class AddDbMgrComponent implements OnInit {
     } else {
       this.message.warning("请完善表单信息");
     }
-
   }
   valide() {
     // 判断输入的“服务器IP”是否为空
@@ -106,12 +89,58 @@ export class AddDbMgrComponent implements OnInit {
     } else {
       this.serverNameRequired = false;
     }
-    // 判断输入的“数据库名称”是否为空
-    if (this.selectData.database) {
-      this.databaseNameRequired = true;
+    // 判断输入的“服务器类型”是否为空
+    if (this.selectData.databasetype) {
+      this.databaseTypeRequired = true;
     } else {
-      this.databaseNameRequired = false;
+      this.databaseTypeRequired = false;
     }
+    // 判断输入的“数据库名称”是否为空
+    // if (this.selectData.database) {
+    //   this.databaseNameRequired = true;
+    // } else {
+    //   this.databaseNameRequired = false;
+    // }
+  }
+
+  //重置数据库信息
+  reset() {
+    if (this.option == 'add') {
+      this.selectData = JSON.parse(JSON.stringify(this.data));
+      this.addNullData('', 'MongoDB');
+    }
+    if (this.option == 'edit') {
+      this.loading = true;
+      let ip = this.selectData.serverip;
+      this.dbMgrService.findServerIp(this.selectData.serverip).then(res => {
+        if (res['status']) {
+          this.selectData = res['data'];
+          this.loading = false;
+          this.addNullData(ip, this.selectData.databasetype);
+        } else {
+          this.message.error('重置数据库信息出错');
+          this.loading = false;
+          this.addNullData(ip, this.selectData.databasetype);
+        }
+      }, err => {
+        this.message.error('重置数据库信息出错');
+        this.loading = false;
+        this.addNullData(ip, this.selectData.databasetype);
+      });
+    }
+  }
+
+  addNullData(ip, dbType) {
+    this.selectData = {
+      servername: "",
+      serverip: ip,
+      serverport: "",
+      database: "",
+      databasetype: dbType,
+      username: "",
+      password: "",
+      description: ""
+    };
   }
 
   // 返回上一层

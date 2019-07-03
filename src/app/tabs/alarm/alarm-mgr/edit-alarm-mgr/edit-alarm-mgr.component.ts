@@ -14,7 +14,7 @@ export class EditAlarmMgrComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('传过来的数据 selectEditData = ',this.selectEditData, ' option = ',this.option)
+    
   }
 
   // 取消、关闭
