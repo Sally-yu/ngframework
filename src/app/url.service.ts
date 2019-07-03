@@ -7,7 +7,8 @@ import {Router, RouterModule} from '@angular/router';
 })
 export class UrlService {
 
-  hostname = 'http://10.24.20.71';
+  // hostname = 'http://10.24.20.71';
+  hostname = 'http://127.0.0.1';
   hostPort = ':9060';
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
@@ -59,6 +60,14 @@ export class UrlService {
   public findAlarmStg = this.hostname + this.hostPort + '/alarmStg/key';
   public removeAlarmStg = this.hostname + this.hostPort + '/alarmStg/remove';
 
+
+  // 数据库管理模块的url
+  public dbMgrlist = this.hostname + this.hostPort + '/dbMgr/all';  //所有的数据库信息
+  public addDbMgr = this.hostname + this.hostPort + '/dbMgr/add';   //添加一条数据库记录
+  public updateDbMgr = this.hostname + this.hostPort + '/dbMgr/update';//更新一条数据库记录
+  public deleteDbMgr = this.hostname + this.hostPort + '/dbMgr/delete';//删除一条记录
+  public serverIp = this.hostname + this.hostPort + '/dbMgr/find';  //查找当前ip的数据库
+  public testPing = this.hostname + this.hostPort + '/dbMgr/ping';  //数据库的测试连接
 
 
   public port = ':9098';

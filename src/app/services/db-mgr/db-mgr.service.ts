@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { UrlService } from '../../url.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbMgrService {
 
-  constructor(private http: HttpClient) { }
-
+  constructor(
+    private http: HttpClient,
+    private url: UrlService,
+    private message: NzMessageService,
+  ) { this.header=new HttpHeaders({token:this.url.token(),user:this.url.key()}); }
+  header;
   // 模拟数据
   dataAllServer = [
     {
@@ -79,36 +85,7 @@ export class DbMgrService {
       password: "admin1",
       description: ""
     },
-    {
-      servername: '服务器 8',
-      serverip: "10.25.12.18",
-      database: "Oracle",
-      serverport: "8002",
-      databasetype: "关系数据库",
-      username: "admin2",
-      password: "admin2",
-      description: ""
-    },
-    {
-      servername: "服务器 9",
-      serverip: "10.25.12.19",
-      database: "Oracle",
-      serverport: "4040",
-      databasetype: "文档数据库",
-      username: "admin3",
-      password: "admin3",
-      description: ""
-    },
-    {
-      servername: "服务器 10",
-      serverip: "10.25.12.20",
-      database: "PostgreSQL",
-      serverport: "8000",
-      databasetype: "时序数据库",
-      username: "admin4",
-      password: "admin4",
-      description: ""
-    },
+    
 
   ];
 
@@ -116,78 +93,109 @@ export class DbMgrService {
   // 数据列表，返回所有的数据。
   dbMgrList(): any {
     let data = [];
-    // return new Promise((resolve, reject) => {
-    //   this.http.get(this.url.alarmlist).toPromise().then(res => {
-    //     if (res['status'] && res['data']) {
-    //       data = res['data'];
-    //     }
-    //     resolve(data);
-    //   }, error1 => {
-    //     this.message.error(error1.error['msg']);
-    //     reject(data);
-    //   });
-    // });
-    // data = this.dataAll;
     return new Promise((resolve, reject) => {
-      // data = ;
-      resolve(JSON.parse(JSON.stringify(this.dataAllServer)));
-    })
+      this.http.get(this.url.dbMgrlist, {headers: this.header}).toPromise().then(res => {
+        console.log('res = ',res)
+        if (res['status'] && res['data']) {
+          data = res['data'];
+        }
+        resolve(data);
+      }, error => {
+        this.message.error(error.error['msg']);
+        reject(data);
+      });
+    });
+
   }
 
   // 添加一条记录
-  addDbMgr(d): any {
+  addDbMgr(data): any {
     return new Promise((resolve, reject) => {
-      let flag = -2;
-      for (let index of this.dataAllServer) {
-        if (index.serverip == d.serverip) {
-          this.dataAllServer['message'] = '-1'
-          flag = -1;
-          break;
+      this.http.post(this.url.addDbMgr, data, {headers: this.header}).toPromise().then(res => {
+        console.log('添加res = ',res)
+        if (res['status']) {
+          this.message.success(res['msg']);
+        } else {
+          this.message.error(res['msg']);
         }
-      }
-      if (flag == -2) {//不存在
-        this.dataAllServer['message'] = '1';
-        this.dataAllServer.push(d);
-      }
-      resolve(this.dataAllServer);
-    })
+        resolve(res['status']);
+      }, res => {
+        this.message.error(res.error['msg']);
+        reject(false);
+      });
+    });
+    
   }
   // 更新一条记录
-  updateDbMgr(d): any {
-    let nd = JSON.parse(JSON.stringify(d));
-    // console.log('nd = ',nd)
+  updateDbMgr(data:any):any{
     return new Promise((resolve, reject) => {
-      for (let keyout of this.dataAllServer) {
-        if (keyout.serverip == nd.serverip) {
-          keyout = JSON.parse(JSON.stringify(nd));
-          break;
+      this.http.post(this.url.updateDbMgr, data, {headers: this.header}).toPromise().then(res => {
+        // console.log('更新res = ',res)
+        if (res['status']) {
+          this.message.success(res['msg']);
+        } else {
+          this.message.error(res['msg']);
         }
-      }
-      resolve(this.dataAllServer);
-    })
+        resolve(res['status']);
+      }, res => {
+        this.message.error(res.error['msg']);
+        reject(false);
+      });
+    });
 
   }
 
   // 删除一条记录
   deleteDbMgr(serverip): any {
-    // console.log('service层中接收到的数据 = ', serverip)
     return new Promise((resolve, reject) => {
-      // 1.根据‘服务器ip’查找数组中的该元素的索引
-      let index = -1;
-      for (let i = 0; i < this.dataAllServer.length; i++) {
-        if (this.dataAllServer[i].serverip == serverip) {
-          index = i;
-          break;
+      this.http.post(this.url.deleteDbMgr, {serverip: serverip}, {headers: this.header}).toPromise().then(res => {
+        if (res['status']) {
+          this.message.success(res['msg']);
+        } else {
+          this.message.error(res['msg']);
         }
-      }
-      // 2.删除这个元素
-      if (index > -1) {
-        this.dataAllServer.splice(index, 1);
-        this.dataAllServer['message'] = '1';
-      } else {
-        this.dataAllServer['message'] = '-1';
-      }
-      resolve(JSON.parse(JSON.stringify(this.dataAllServer)));
-    })
+        resolve(res['status']);
+      }, res => {
+        this.message.error(res.error['msg']);
+        this.url.logout(res);
+        reject(false);
+      });
+    });
+
+  }
+
+
+  // 查找对应ip的数据库信息
+  findServerIp(serverip: string): any {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.serverIp, {serverip: serverip}, {headers: this.header}).toPromise().then(res => {
+        resolve(res);  //status为true时 data为数据库信息，为false时msg为错误信息
+      }, res => {
+        reject(res);
+        this.url.logout(res);
+      });
+    });
+  }
+
+  // 测试数据库的连接
+  dbMgrPing(data: any): any {
+    // let url = `http://${data.serverip}/ping`;
+    // if(data.serverport != ""){
+    //   url = `http://${data.serverip} ${data.serverport}/telnet`
+    // }
+    // this.http.post(url, {headers: this.header}).toPromise().then(res => {
+    // }, res => {
+    // });
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.url.testPing, data, {headers: this.header}).toPromise().then(res => {
+        console.log(res)
+        resolve(res); 
+      }, res => {
+        reject(res);
+        console.log(res.error)
+        this.url.logout(res);
+      });
+    });
   }
 }

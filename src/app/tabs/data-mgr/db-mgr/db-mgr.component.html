@@ -1,74 +1,68 @@
-
-
-<app-add-db-mgr *ngIf="addFlag" parentCom="数据元管理" [option]='option' [selectData]="selectData" [dataAll]="dataAll" (result)="cancel($event)"></app-add-db-mgr>
-<!-- 数据元管理页面 -->
-<div id="content" *ngIf="!addFlag" >
+<app-add-db-mgr *ngIf="addFlag" parentCom="数据元管理" [option]='option' [selectData]="selectData" [dataAll]="dataAll"
+  (result)="cancel($event)"></app-add-db-mgr>
+<!-- 数据源管理页面 -->
+<div id="content" *ngIf="!addFlag">
   <nz-layout style="padding:24px 0; background: transparent">
     <nz-content style="padding: 0 24px;">
       <div id="list-tool">
         <label>
           <input type="text" nz-input placeholder="输入关键字搜索" [(ngModel)]="searchValue" (ngModelChange)="search()">
         </label>
-        <!--<button nz-button nzType="primary">搜索</button>-->
         <button nz-button (click)="getList()">刷新</button>
         <button nz-button nzType="primary" (click)="add()">新增</button>
       </div>
     </nz-content>
   </nz-layout>
-  <div >
+  <div>
     <!-- <nz-card>
       <button nz-button nzType="default" (click)="add()"> <i nz-icon [nzType]="'plus'"></i>创建</button>
       <button nz-button nzType="default" style="left: 10%">移除<i nz-icon [nzType]="'delete'"></i></button>
     </nz-card> -->
-    <nz-list [nzDataSource]="dataAll" [nzRenderItem]="item" [nzLoading]="loading" [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
+    <nz-list [nzDataSource]="dataAll" [nzRenderItem]="item" [nzLoading]="loading"
+      [nzGrid]="{ gutter: 36, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
       <ng-template #item let-item>
         <ng-template #contextTemplate>
           <ul nz-menu nzInDropDown>
             <li nz-menu-item (click)="preview(item)">查看</li>
             <li nz-menu-item (click)="edit(item.serverip)">编辑</li>
+            <li nz-menu-item (click)="connection(item)">测试连接</li>
             <li nz-menu-item>
-                <a  nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.serverip)" >删除</a></li>
+              <a nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.serverip)">删除</a></li>
           </ul>
         </ng-template>
-        
-        <div (contextmenu)="contextMenu($event, contextTemplate)" nz-popover nzType="primary"  [nzContent]="contentTemplate" >
+        <div (contextmenu)="contextMenu($event, contextTemplate)" nz-popover nzType="primary"
+          [nzContent]="contentTemplate">
           <div class="database">
-            <img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;" alt="database" />
-            <span>{{item.servername}}</span>
+            <table border="0">
+              <tr>
+                <th rowspan="2"><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
+                    alt="database" /></th>
+                <td><span>{{item.servername}}</span></td>
+              </tr>
+            </table>
           </div>
         </div>
         <ng-template #contentTemplate>
-          <ul id="popover">
-            <li><b>服务器IP：</b><span>{{item.serverip}}</span></li>
-            <li><b>服务器端口：</b><span>{{item.serverport}}</span></li>
-            <li><b>数据库名称：</b><span>{{item.database}}</span></li>
-            <li><b>数据库类型：</b><span>{{item.databasetype}}</span></li>
-          </ul>
+          <table style="width: 200px">
+            <tr>
+              <th><b>服务器IP：</b></th>
+              <td>{{item.serverip}}</td>
+            </tr>
+            <tr>
+              <th><b>服务器端口：</b></th>
+              <td>{{item.serverport}}</td>
+            </tr>
+            <tr>
+              <th><b>数据库名称：</b></th>
+              <td>{{item.database}}</td>
+            </tr>
+            <tr>
+              <th><b>数据库类型：</b></th>
+              <td>{{item.databasetype}}</td>
+            </tr>
+          </table>
         </ng-template>
       </ng-template>
     </nz-list>
-
   </div>
-
-
-
-  <!-- <div *ngIf="!addFlag" style="background-color: white">
-    <nz-card>
-      <button nz-button nzType="default" (click)="add()"> <i nz-icon [nzType]="'plus'"></i>创建</button>
-      <button nz-button nzType="default" style="left: 10%">移除<i nz-icon [nzType]="'delete'"></i></button>
-    </nz-card>
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
-      <ng-template #item let-item>
-        <nz-list-item [nzContent]="nzContent" (ng-mousedown)="handleClick($event)">
-          <ng-template #nzContent>
-            <div class="database" >
-              <img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;" alt="database" />
-              <div>{{item.title}}</div>
-            </div>
-          </ng-template>
-        </nz-list-item>
-      </ng-template>
-    </nz-list>
-  </div> -->
-
 </div>

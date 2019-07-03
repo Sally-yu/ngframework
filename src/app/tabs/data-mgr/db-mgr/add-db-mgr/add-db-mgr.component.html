@@ -25,7 +25,7 @@
       <nz-form-label [nzSpan]="7" nzRequired>服务端IP</nz-form-label>
       <nz-form-control [nzSpan]="12" [nzHasFeedback]="!serverIpRequired"
         [nzValidateStatus]="serverIpRequired?'success':'error'">
-        <input nz-input name="serverIP" [(ngModel)]="selectData.serverip" [disabled]="option!='add'" placeholder="请输入服务端IP" />
+        <input nz-input name="serverIP" [(ngModel)]="selectData.serverip" [disabled]="option!='add'" placeholder="请输入服务端IP" onkeyup="this.value=this.value.replace(/[^\d|.]/g,'')" />
         <nz-form-explain *ngIf="!serverIpRequired">{{'请输入服务端IP！'}}</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
@@ -37,12 +37,12 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>数据库名称</nz-form-label>
+      <nz-form-label [nzSpan]="7" >数据库名称</nz-form-label>
       <nz-form-control [nzSpan]="12"[nzHasFeedback]="!databaseNameRequired"
       [nzValidateStatus]="databaseNameRequired?'success':'error'">
         <input #codeEle nz-input name="databaseName" [(ngModel)]="selectData.database" [disabled]="option=='preview'"
           placeholder="请输入数据库名称" />
-        <nz-form-explain *ngIf="!databaseNameRequired">{{'请输入数据库名称！'}}</nz-form-explain>
+        <!-- <nz-form-explain *ngIf="!databaseNameRequired">{{'请输入数据库名称！'}}</nz-form-explain> -->
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -59,13 +59,32 @@
         <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入密码！'}}</nz-form-explain> -->
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+    <!-- <nz-form-item>
       <nz-form-label [nzSpan]="7">数据库类型</nz-form-label>
       <nz-form-control [nzSpan]="12">
         <input nz-input name="databaseType" [(ngModel)]="selectData.databasetype" [disabled]="option=='preview'" placeholder="请输入数据库类型" />
-        <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入数据库类型！'}}</nz-form-explain> -->
+        <nz-form-explain *ngIf="!nameRequire">{{'请输入数据库类型！'}}</nz-form-explain>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>数据库类型</nz-form-label>
+        <nz-form-control [nzSpan]="12" [nzHasFeedback]="!databaseTypeRequired"
+        [nzValidateStatus]="databaseTypeRequired?'success':'error'">
+            <nz-select
+            name="databaseType"
+            nzShowSearch
+            nzAllowClear
+            
+            nzPlaceHolder="请选择数据库类型"
+            [(ngModel)]="selectData.databasetype"
+            
+          >
+            <nz-option nzLabel="InfluxDB" nzValue="InfluxDB"></nz-option>
+            <nz-option nzLabel="MongoDB" nzValue="MongoDB"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="!databaseTypeRequired">{{'请选择数据库类型'}}</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">描述</nz-form-label>
       <nz-form-control [nzSpan]="12">

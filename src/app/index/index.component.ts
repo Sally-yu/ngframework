@@ -244,9 +244,9 @@ export class IndexComponent implements OnInit {
   }
 
   initBar(): any {
-    this.charts[2].option.series.forEach(s => {
-      s.seriesLayoutBy = 'column';
-    });
+    // this.charts[2].option.series.forEach(s => {
+    //   s.seriesLayoutBy = 'column';
+    // });
     this.charts.forEach(c => {
       var e = document.getElementById(c.key);
       // $('#'+c.key).prev().innerHTML=c.key

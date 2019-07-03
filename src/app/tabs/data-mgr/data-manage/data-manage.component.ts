@@ -160,5 +160,63 @@ export class DataManageComponent implements OnInit {
     })
   }
 
+  // 测试连接
+  connection(data) {
+    // this.dropdown.close();  //右键菜单关闭
+    const messageId = this.message.loading('正在测试连接...', { nzDuration: 0 }).messageId
+    if (data.databasetype == 'InfluxDB') {
+      let url_port = data.serverip;
+      if (data.serverport) {
+        url_port = url_port + `:${data.serverport}`
+      }
+      let url = `http://${url_port}/ping`;
+      if (data.username && data.password) {
+        url = url + `?u=${data.username}&p=${data.password}`
+      }
+      // console.log('url=', url)
+      this.http.get(url).toPromise().then(res => {
+        this.message.remove(messageId);
+        this.message.success('测试连接成功！');
+        // data["ping"] = true;
+      },
+        err => {
+          // console.log('err = ', err)
+          this.message.remove(messageId);
+          this.message.error('测试连接失败！');
+          // data["ping"] = false;
+        }
+      );
+    }
+
+    if (data.databasetype == 'MongoDB') {
+      this.dbMgrService.dbMgrPing(data).then(res => {
+        this.message.remove(messageId);
+        this.message.success('测试连接成功！');
+        // data["ping"] = true;
+      }, err => {
+        // console.log('err=', err.error)
+        this.message.remove(messageId);
+        this.message.error('测试连接失败！');
+        // data["ping"] = false;
+      });
+    }
+
+    // var url = 'mongodb://admin:123456@10.24.20.71:28081';
+    // // Use connect method to connect to the Server passing in
+    // // additional options
+    // MongoClient.connect(url, {
+    //   poolSize: 10, ssl: true
+    // }, function (err, db) {
+    //   // assert.equal(null, err);
+    //   console.log("Connected correctly to server");
+    //   db.close();
+    // });
+
+
+    // let url = 'http://10.72.43.193:8086/ping?u=admin&p=admin'
+    // let url = 'http://10.72.43.193/ping'
+    // let url = 'http://10.25.11.104/ping'
+  }
+
 
 }
