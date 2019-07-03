@@ -25,7 +25,6 @@
     "css-element-queries": "^1.2.0",
     "echarts": "^4.2.1",
     "emoji": "^0.3.2",
-    "gojs": "latest",
     "jsencrypt": "^3.0.0-rc.1",
     "mongo": "^0.1.0",
     "ng-zorro-antd": "^7.3.3",

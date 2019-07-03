@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TopoService} from '../topo.service';
-import * as go from 'gojs';
 import {UrlService} from '../url.service';
+import * as go from '../../assets/js/gojs/release/go.js';
 
 declare var $: any;
 
@@ -271,7 +271,7 @@ export class TopoShowComponent implements OnInit {
     this.loading = true;
     this.topoSrv.getList().then(res => {
       this.list = JSON.parse(JSON.stringify(res));
-      this.list=this.list.filter(l=>l.released);
+      this.list = this.list.filter(l => l.released);
       this.spliceViewList();
     }, err => {
       this.loading = false;

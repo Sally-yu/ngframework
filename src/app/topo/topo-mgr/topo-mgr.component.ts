@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as go from 'gojs';
-import {HttpClient} from '@angular/common/http';
-import {NzMessageService} from 'ng-zorro-antd';
-import {UrlService} from '../../url.service';
 
 declare var $:any;
 

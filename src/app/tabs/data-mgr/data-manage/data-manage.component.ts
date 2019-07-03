@@ -13,12 +13,12 @@ export class DataManageComponent implements OnInit {
   searchValue = ''; // 搜索框中的数据
   dataAll;  //获得的所有数据
 
-  getinfluxUrl = this.ajax.getinfluxUrl;
-  insertinfluxUrl = this.ajax.insertinfluxUrl;
-  updateinfluxUrl = this.ajax.updateinfluxUrl;
-  deleteinfluxUrl = this.ajax.deleteinfluxUrl;
-  getopcUrl = this.ajax.getopcUrl;
-  influxhandleUrl = this.ajax.influxhandleUrl;
+  // getinfluxUrl = this.ajax.getinfluxUrl;
+  // insertinfluxUrl = this.ajax.insertinfluxUrl;
+  // updateinfluxUrl = this.ajax.updateinfluxUrl;
+  // deleteinfluxUrl = this.ajax.deleteinfluxUrl;
+  // getopcUrl = this.ajax.getopcUrl;
+  // influxhandleUrl = this.ajax.influxhandleUrl;
 
   show: boolean = false;//不显示编辑界面
   dataSet = [];//数组列表信息

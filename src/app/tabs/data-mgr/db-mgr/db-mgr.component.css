@@ -24,6 +24,16 @@
 #list-tool label {
   display: inline-block;
 }
+#search {
+  float: right;
+  display: inline-flex;
+}
+#search button {
+  margin-right: 8px;
+}
+#search input {
+  margin-right: 8px;
+}
 button {
   margin-left: 8px;
 }

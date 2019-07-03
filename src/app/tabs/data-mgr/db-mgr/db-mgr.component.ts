@@ -5,7 +5,6 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { AjaxService } from '../../../services/ajax/ajax.service';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import { UrlService } from '../../../url.service';
-import * as  MongoClient from '../../../../../node_modules/mongo/node_modules/mongodb/lib/mongo_client.js'
 
 @Component({
   selector: 'app-db-mgr',
@@ -15,7 +14,6 @@ import * as  MongoClient from '../../../../../node_modules/mongo/node_modules/mo
 
 
 export class DbMgrComponent implements OnInit {
-  getinfluxUrl = this.ajax.getinfluxUrl;
   dataAll;   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件

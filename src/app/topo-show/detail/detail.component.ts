@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import * as go from 'gojs';
 import {TopoService} from '../../topo.service';
 import {UrlService} from '../../url.service';
+import * as go from '../../../assets/js/gojs/release/go.js';
 
 declare var $: any;
 

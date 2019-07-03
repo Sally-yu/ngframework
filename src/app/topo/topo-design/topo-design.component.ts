@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UrlService} from '../../url.service';
 import {NzMessageService, UploadFile} from 'ng-zorro-antd';
 import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
-import * as go from 'gojs';
 import {filter} from 'rxjs/operators';
 import {UUID} from 'angular2-uuid';
+import * as go from '../../../assets/js/gojs/release/go.js';
 
 declare var $: any;
 
