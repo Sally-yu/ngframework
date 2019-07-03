@@ -1,0 +1,10 @@
+<div id="content">
+  <iframe style="  width: 100%;
+  height: 100%;
+  position: absolute;
+  border: none;" [src]="url | safe"></iframe>
+</div>
+
+<div id="float" nz-tooltip nzTitle="返回" nzPlacement="right" (click)="close()">
+  <i nz-icon nzType="import" nzTheme="outline"></i>
+</div>

@@ -11,7 +11,13 @@ export class AlarmMgrComponent implements OnInit {
   searchValue;
   editFlag = false; //标记是否显示编辑、预览页面
   selectEditData; //选中的编辑、预览数据
-  option; //编辑、预览的标记
+  option;
+
+  currentIndex = 1;
+  pageSize = 10;
+  sizeOption = [5, 10, 20, 50];
+
+  //编辑、预览的标记
 
   constructor(
     private alarmService: AlarmService

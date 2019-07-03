@@ -1,0 +1,244 @@
+<div id="content">
+  <div id="topbar">
+    <!--<div *ngIf="option" class="topbtn" (click)="close()" nzTitle="列表" nzPlacement="bottom" nz-tooltip>-->
+      <!--<i nz-icon nzType="import" nzTheme="outline"></i>-->
+    <!--&lt;!&ndash;返回&ndash;&gt;-->
+    <!--</div>-->
+    <!--<nz-divider *ngIf="option" class="divider" [nzType]="'vertical'"></nz-divider>-->
+    <div class="topbtn" (click)="load()" nzTitle="加载" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="reload" nzTheme="outline"></i>
+      <br>加载<!--加载-->
+    </div>
+    <div class="topbtn" (click)="beforeSave()" nzTitle="保存" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="save" nzTheme="outline"></i>
+      <br>保存<!--保存-->
+    </div>
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
+
+    <div class="topbtn" (click)="this.diagram.commandHandler.undo()" nzTitle="撤销" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="undo" nzTheme="outline"></i>
+      <br>撤销<!--撤销-->
+    </div>
+    <div class="topbtn" (click)="this.diagram.commandHandler.redo()" nzTitle="重做" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <br>重做<!--重做-->
+    </div>
+    <div class="topbtn" (click)="zoomOut(0.8)" nzTitle="缩小" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="zoom-in" nzTheme="outline"></i>
+      <br>缩小<!--缩小-->
+    </div>
+    <div class="topbtn" (click)="zoomOut(1.25)" nzTitle="放大" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="zoom-out" nzTheme="outline"></i>
+      <br>放大<!--放大-->
+    </div>
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
+
+    <div class="topbtn" nzTitle="添加链接" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="link" nzTheme="outline"></i>
+      <br>链接<!--链接-->
+    </div>
+    <div class="topbtn" nzTitle="添加图片" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="picture" nzTheme="outline"></i>
+      <br>图片<!--图片-->
+    </div>
+    <div class="topbtn" (click)="addComm()" nzTitle="添加备注" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="message" nzTheme="outline"></i>
+      <br>备注<!--备注-->
+    </div>
+
+    <!--<nz-divider class="divider" [nzType]="'vertical'"></nz-divider>-->
+    <!--<div class="topbtn" (click)="mapUp()" nzTitle="切换" nzPlacement="bottom" nz-tooltip>-->
+    <!--<i [class]="mapIcon"></i><br>-->
+    <!--&lt;!&ndash;切换&ndash;&gt;-->
+    <!--</div>-->
+
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
+    <div class="topbtn" (click)="loop()" nzTitle="启动" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+      <br>启动
+    </div>
+    <div class="topbtn" (click)="stopLoop()" nzTitle="停止" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="stop" nzTheme="outline"></i>
+      <br>停止<!--停止-->
+    </div>
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
+    <div class="topbtn" (click)="addSvg()" nzTitle="添加分组" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="plus" nzTheme="outline"></i>
+      <br>分组<!--添加分组-->
+    </div>
+    <div class="topbtn" (click)="modiSvg()" nzTitle="修改分组" nzPlacement="bottom" nz-tooltip>
+      <i nz-icon nzType="edit" nzTheme="outline"></i>
+      <br>修改<!--修改分组-->
+    </div>
+    <nz-divider class="divider" [nzType]="'vertical'"></nz-divider>
+
+    <div id="myPaletteDiv"
+         style="margin:0 8px;height:100%;width:120px;"></div>
+
+    <!--<nz-divider class="divider" [nzType]="'vertical'"></nz-divider>-->
+    <!--<div class="topbtn" (click)="drag()" id="dragbtn" nzTitle="图表" nzPlacement="bottom" nz-tooltip>-->
+    <!--<i class="icon-table"></i><br>-->
+    <!--&lt;!&ndash;图表切换&ndash;&gt;-->
+    <!--</div>-->
+
+  </div>
+
+  <div id="toolcontent">
+    <!--<div id="droptop" (click)="toggleTop()">-->
+      <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
+    <div id="leftbar">
+      <nz-collapse nzAccordion>
+        <nz-collapse-panel [nzActive]="true" [nzHeader]="'交通运输'">
+          <div id="myPaletteDiv1" style="height:400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'工厂设施'">
+          <div id="myPaletteDiv2" style="height: 400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'工业容器'">
+          <div id="myPaletteDiv3" style="height: 400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'加热设备'">
+          <div id="myPaletteDiv4" style="height: 400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'工业酿造'">
+          <div id="myPaletteDiv5" style="height: 400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel [nzHeader]="'能源设备'">
+          <div id="myPaletteDiv6" style="height: 400px;max-height: 800px;"></div>
+        </nz-collapse-panel>
+        <!--以下自定义分组 默认都不显示-->
+        <nz-collapse-panel class="cus" id="cus0" [nzHeader]="cusMenu[0].name">
+          <div id="cus0div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus1" [nzHeader]="cusMenu[1].name">
+          <div id="cus1div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus2" [nzHeader]="cusMenu[2].name">
+          <div id="cus2div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus3" [nzHeader]="cusMenu[3].name">
+          <div id="cus3div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus4" [nzHeader]="cusMenu[4].name">
+          <div id="cus4div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus5" [nzHeader]="cusMenu[5].name">
+          <div id="cus5div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus6" [nzHeader]="cusMenu[6].name">
+          <div id="cus6div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus7" [nzHeader]="cusMenu[7].name">
+          <div id="cus7div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus8" [nzHeader]="cusMenu[8].name">
+          <div id="cus8div"></div>
+        </nz-collapse-panel>
+        <nz-collapse-panel class="cus" id="cus9" [nzHeader]="cusMenu[9].name">
+          <div id="cus9div"></div>
+        </nz-collapse-panel>
+
+      </nz-collapse>
+    </div>
+    <!--<div id="dropleft" (click)="toggleleft()">-->
+      <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
+    <div id="toolTipDIV">
+      <ul style="list-style: none">
+        <li>设备信息：{{currDevice["svg"]}}</li>
+        <li>设备状态：<a style="color: #1890ff">运转中</a></li>
+        <li>设备名称：{{dataDevice['name']}}</li>
+        <li>设备描述：{{dataDevice['decription']}}</li>
+        <li>设备标签：{{dataDevice['labels']}}</li>
+      </ul>
+    </div>
+    <div id="contextMenu">
+      <ul>
+        <!--<li id="start" (click)="loop()"><a  target="_self">启动</a></li>-->
+
+        <li id="addDevice">
+          <a target="_self" (click)="click('addDevice')">关联设备</a>
+        </li>
+        <li id="deviceInfo" (click)="click('deviceInfo')"><a target="_self">设备信息</a></li>
+        <li id="delete" (click)="click('delete')"><a target="_self">删除设备</a></li>
+        <li id="copy" (click)="click('copy')"><a target="_self">复制</a></li>
+      </ul>
+    </div>
+    <div id="myDiagramDiv"></div>
+  </div>
+
+  <!--修改分组对话框-->
+  <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="modiShow" nzTitle="修改分组"
+            (nzOnOk)="handleUpload()" (nzAfterClose)="handleClose()" (nzOnCancel)="handleCancel()">
+    <p>选择分组</p>
+    <!--绑定欲上传分组中的divid -->
+    <nz-select nzShowSearch style="width: 200px;" [(ngModel)]="cusUpload.divid">
+      <nz-option *ngFor="let option of cusAva" [nzLabel]="option.name" [nzValue]="option.divid"></nz-option>
+    </nz-select>
+    <br>
+    <nz-upload
+      [(nzFileList)]="fileList"
+      [nzBeforeUpload]="beforeUpload">
+      <button nz-button>
+        <i nz-icon type="upload"></i><span>选择文件</span>
+      </button>
+    </nz-upload>
+    <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()"
+            [disabled]="fileList.length == 0" style="margin-top: 16px">
+      {{ uploading ? '上传中…' : '上传' }}
+    </button>
+  </nz-modal>
+
+  <!--新建分组对话框-->
+  <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="addSvgShow" nzTitle="添加图源"
+            (nzOnOk)="handleNew()" (nzAfterClose)="handleClose()" (nzOnCancel)="handleCancel()">
+    <p>添加分组</p>
+    <input nz-input type="text" [(ngModel)]="newGroup">
+    <br>
+    <nz-upload
+      [(nzFileList)]="fileList"
+      [nzBeforeUpload]="beforeUpload">
+      <button nz-button>
+        <i nz-icon type="upload"></i><span>选择文件</span>
+      </button>
+    </nz-upload>
+    <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleNew()"
+            [disabled]="fileList.length == 0" style="margin-top: 16px">
+      {{ uploading ? '上传中…' : '上传' }}
+    </button>
+  </nz-modal>
+
+  <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="visible" nzTitle="关联设备"
+            (nzAfterOpen)="handleOpen()"
+            (nzAfterClose)="handleClose()" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p>绑定设备：</p>
+    <nz-select nzShowSearch style="width: 200px;" [(ngModel)]="tempDeviceId">
+      <nz-option *ngFor="let option of devices" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+    </nz-select>
+  </nz-modal>
+
+  <nz-modal nzWrapClassName="vertical-center-modal" [(nzVisible)]="saveWork" nzTitle="保存布局"
+            (nzAfterClose)="saveWork=false" (nzOnCancel)="saveWork=false" (nzOnOk)="modalSave()">
+    <label style="margin-bottom: 8px;">布局名称:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="workName">
+    </label>
+    <label style="margin-bottom: 8px;">布局编号:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="code">
+    </label>
+    <label style="margin-bottom: 8px;">关联场景:
+      <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="sence">
+    </label>
+    <label style="margin-bottom: 8px;">备注:
+      <textarea style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="note" nzAutosize=""></textarea>
+    </label>
+  </nz-modal>
+
+  <!--滑动缩放条 有问题 暂时不用-->
+  <!--  <div class="floatbar">
+    <nz-slider nzVertical [ngModel]="zoom" nztooltipvisible="never"></nz-slider>
+  </div>-->
+</div>
+
+<!--<div class="echarts" id="echart1" *ngIf="true"></div>-->
+<!--<div class="echarts" id="echart2" style="left:300px" *ngIf="true"></div>-->
+<!--<div class="echarts" id="echart3" style="bottom:40px;" *ngIf="true"></div>-->
+<!--<div class="echarts" id="echart4" style="bottom: 40px;left:300px" *ngIf="true"></div>-->

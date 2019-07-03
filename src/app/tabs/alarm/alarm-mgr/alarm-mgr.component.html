@@ -1,10 +1,13 @@
 <!--跳转 报警信息详情-编辑、预览 页面-->
-<app-edit-alarm-mgr *ngIf="editFlag"  [selectEditData]="selectEditData" [option]="option" parentCom="报警信息详情"
-(result)="cancel($event)"></app-edit-alarm-mgr>
+
 
 <!--报警信息详情 列表-->
-<div id="content" *ngIf="!editFlag">
-    <nz-layout style="padding:24px 0; background: transparent">
+<div id="content" >
+
+  <app-edit-alarm-mgr *ngIf="editFlag"  [selectEditData]="selectEditData" [option]="option"
+                      (result)="cancel($event)"></app-edit-alarm-mgr>
+
+    <nz-layout style="padding:24px 0; background: transparent" *ngIf="!editFlag">
         <nz-content style="padding: 0 24px; min-height: 280px;">
         <div id="list-tool">
           <label>
@@ -13,7 +16,8 @@
             <button nz-button (click)="getAlarmList()" nzType="primary">刷新</button>
         </div>
 
-        <nz-table #list [nzData]="alarmList" [nzLoading]="loading" [nzPageSize]="5">
+        <nz-table #list [nzData]="alarmList" [nzLoading]="loading"  [nzPageSize]="pageSize" [nzPageIndex]="currentIndex"
+                  [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
           <thead>
           <tr>
               <th nzWidth="100px">#</th>

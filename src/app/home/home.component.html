@@ -1,10 +1,13 @@
 <!--右上用户下拉选项，绝对定位-->
 <div id="ava">
-  <nz-badge nzDot>
-    <nz-avatar (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']" style="background-color:#555d60;"></nz-avatar>
+  <nz-badge *ngIf="notifcount>0" nzDot>
+    <nz-avatar (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']"
+               style="background-color:#555d60;"></nz-avatar>
   </nz-badge>
+  <nz-avatar *ngIf="notifcount<=0" (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']"
+             style="background-color:#555d60;"></nz-avatar>
 
-  <div id="user-menu" >
+  <div id="user-menu">
     <ul>
       <li (click)="optionClick('1040')">
         <i nz-icon nzType="user" nzTheme="outline"></i>
@@ -15,7 +18,7 @@
               基本设置
             </li>-->
       <li (click)="optionClick('1042')">
-        <nz-badge [nzCount]="50">
+        <nz-badge [nzCount]="notifcount">
           <a class="head-example" style="margin-right: 24px"></a>
           <i nz-icon nzType="notification" nzTheme="outline"></i>
           消息通知
@@ -117,17 +120,16 @@
 
   <div id="menu-footer">
     <ul>
-      <li nzTitle="仿真设计" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
+      <li nzTitle="拓扑监控" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
+        <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
+      </li>
+      <li nzTitle="综合分析" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
+        <i nz-icon nzType="area-chart" nzTheme="outline"></i>
+      </li>
+      <li nzTitle="仿真监控" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
         <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
         <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
       </li>
-      <li nzTitle="监控设计" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
-        <i nz-icon nzType="area-chart" nzTheme="outline"></i>
-      </li>
-      <li nzTitle="拓扑设计" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
-        <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
-      </li>
-
     </ul>
   </div>
 
@@ -178,8 +180,6 @@
                        [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-alarm-summary>
     <app-alarm-mgr *ngIf="exist('1013')" class="back"
                    [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-mgr>
-    <app-alarm-history *ngIf="exist('1014')" class="back"
-                       [ngStyle]="{'display':active=='1014'?'block':'none'}"></app-alarm-history>
 
 
     <!--data-mgr-->
@@ -202,44 +202,59 @@
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
     <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
+    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"></app-topo-show>
+    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"></app-model3d-show>
 
-    <app-topo *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"></app-topo>
-    <app-model-design *ngIf="exist('1060')" class="back"
-                      [ngStyle]="{'display':active=='1060'?'block':'none'}"></app-model-design>
-    <app-grafana *ngIf="exist('1070')" class="back" [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana>
+
+    <app-topo-design *ngIf="exist('2001')" class="back"
+                     [ngStyle]="{'display':active=='2001'?'block':'none'}"></app-topo-design>
+    <app-topo-mgr *ngIf="exist('2002')" class="back"
+                  [ngStyle]="{'display':active=='2002'?'block':'none'}"></app-topo-mgr>
+
+
+    <app-model-design *ngIf="exist('2011')" class="back"
+                      [ngStyle]="{'display':active=='2011'?'block':'none'}"></app-model-design>
+    <app-model-mgr *ngIf="exist('2012')" class="back"
+                   [ngStyle]="{'display':active=='2012'?'block':'none'}"></app-model-mgr>
+
+
+    <app-grafana-design *ngIf="exist('2021')" class="back"
+                        [ngStyle]="{'display':active=='2021'?'block':'none'}"></app-grafana-design>
+    <app-grafana-mgr *ngIf="exist('2022')" class="back"
+                     [ngStyle]="{'display':active=='2022'?'block':'none'}"></app-grafana-mgr>
 
 
     <!--此处三个自定义菜单，逻辑相同，且细致缠绵，不确定能否简化，建议兄弟们别乱搞-->
     <!--自定义grafana区域，其子菜单存在tab页时渲染-->
     <!--打开的tab页中有grafana自定义菜单，则渲染整个大div（感觉可以去掉，还有显隐控制） // 激活的tab页属于grafana自定义菜单时才display // height必须100%，否则有高度问题，应该源于ant样式-->
-    <div *ngIf="cusExist('grafana')" [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">
-      <!--每个子菜单渲染一个div，height100% 源于ant // 激活的tab页对应显示div（除非关掉tab，内部的iframe持续存在，切换回来不会刷新） // ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of cusGrafana.children"
-           [ngStyle]="{'display':active==meta.key?'block':'none'}">
-        <!--iframe嵌入，需要safe管道 // tab页打开即渲染，切换不会刷新，关掉tab停止渲染-->
-        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>
-      </div>
-    </div>
+    <!--<div *ngIf="cusExist('grafana')" [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">-->
+    <!--&lt;!&ndash;每个子菜单渲染一个div，height100% 源于ant // 激活的tab页对应显示div（除非关掉tab，内部的iframe持续存在，切换回来不会刷新） // ngFor和ngIf不可同时用&ndash;&gt;-->
+    <!--<div *ngFor="let meta of cusGrafana.children"-->
+    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
+    <!--&lt;!&ndash;iframe嵌入，需要safe管道 // tab页打开即渲染，切换不会刷新，关掉tab停止渲染&ndash;&gt;-->
+    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
+    <!--</div>-->
+    <!--</div>-->
 
-    <!--自定义3D区域，其子菜单存在tab页时渲染-->
-    <div *ngIf="cusExist('3d')" [ngStyle]="{'display':activeExist('3d')?'block':'none'}">
-      <!--每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of custom3D.children"
-           [ngStyle]="{'display':active==meta.key?'block':'none'}">
-        <!--iframe嵌入，需要safe管道。按tab存在状态控制渲染-->
-        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>
-      </div>
-    </div>
+    <!--&lt;!&ndash;自定义3D区域，其子菜单存在tab页时渲染&ndash;&gt;-->
+    <!--<div *ngIf="cusExist('3d')" [ngStyle]="{'display':activeExist('3d')?'block':'none'}">-->
+    <!--&lt;!&ndash;每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用&ndash;&gt;-->
+    <!--<div *ngFor="let meta of custom3D.children"-->
+    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
+    <!--&lt;!&ndash;iframe嵌入，需要safe管道。按tab存在状态控制渲染&ndash;&gt;-->
+    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
+    <!--</div>-->
+    <!--</div>-->
 
-    <!--自定义topo内容区，其子菜单存在tab页时渲染-->
-    <div *ngIf="cusExist('topo')" [ngStyle]="{'display':activeExist('topo')?'block':'none'}">
-      <!--每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用-->
-      <div *ngFor="let meta of customTopo.children"
-           [ngStyle]="{'display':active==meta.key?'block':'none'}">
-        <!--iframe嵌入，需要safe管道。按tab存在状态控制渲染-->
-        <iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>
-      </div>
-    </div>
+    <!--&lt;!&ndash;自定义topo内容区，其子菜单存在tab页时渲染&ndash;&gt;-->
+    <!--<div *ngIf="cusExist('topo')" [ngStyle]="{'display':activeExist('topo')?'block':'none'}">-->
+    <!--&lt;!&ndash;每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用&ndash;&gt;-->
+    <!--<div *ngFor="let meta of customTopo.children"-->
+    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
+    <!--&lt;!&ndash;iframe嵌入，需要safe管道。按tab存在状态控制渲染&ndash;&gt;-->
+    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
+    <!--</div>-->
+    <!--</div>-->
 
   </div>
 </div>
@@ -250,16 +265,15 @@
     <!--<li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >-->
     <!--<i nz-icon nzType="dashboard" nzTheme="outline"></i>-->
     <!--</li>-->
-    <li nzTitle="仿真设计" nzPlacement="left" nz-tooltip (click)="click('model')">
-      <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
-      <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
+    <li nzTitle="拓扑监控" nzPlacement="left" nz-tooltip (click)="click('topo')">
+      <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
     </li>
-
-    <li nzTitle="监控设计" nzPlacement="left" nz-tooltip (click)="click('grafana')">
+    <li nzTitle="综合分析" nzPlacement="left" nz-tooltip (click)="click('grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
     </li>
-    <li nzTitle="拓扑设计" nzPlacement="left" nz-tooltip (click)="click('topo')">
-      <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
+    <li nzTitle="仿真监控" nzPlacement="left" nz-tooltip (click)="click('model')">
+      <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
+      <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
     </li>
     <!--<li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">-->
     <!--<i nz-icon nzType="robot" nzTheme="outline"></i>-->

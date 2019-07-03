@@ -22,6 +22,9 @@ export class DeviceTemplateComponent implements OnInit {
   };
   tempList = [];
   searchValue;
+  pageSize=10;
+  currentIndex=1;
+  sizeOption = [5, 10, 20, 50];
 
   constructor(
     private deviceService: DeviceService,
