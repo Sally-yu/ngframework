@@ -1,0 +1,42 @@
+<div id="content">
+  <app-model3d-detail *ngIf="detialUrl"
+                      (result)="cancel($event)" [url]="detialUrl"></app-model3d-detail>
+
+  <div style="padding: 16px" *ngIf="!detialUrl">
+    <div id="toolbar">
+      <div id="search">
+        <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
+        <button nz-button (click)="getList()" nzType="primary">刷新</button>
+      </div>
+    </div>
+    <nz-list [nzDataSource]="viewList" [nzRenderItem]="item"
+             [nzGrid]="{ gutter: 4, span: 2 ,xs:24 ,sm:24,md:12,lg:12,xl:6,xxl:6}"
+             [nzPagination]="pagination" [nzLoading]="loading">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent">
+          <ng-template #nzContent>
+            <div class="card" (click)="view(item)" [ngStyle]="{'background-color':cardColor}">
+              <div class="title" [title]="'编号  '+item.code">
+                <!--[ngStyle]="{'background-color':item['devicesetting']['cardcolor']}"-->
+                &nbsp;&nbsp;{{item.name}}
+                <i nz-icon nzType="more" title="更多选项"
+                   nzTheme="outline" style="float: right"></i>
+              </div>
+              <!--循环加载-->
+              <div class="card-content" [ngStyle]="{'background-image':'url('+url+item.cover+'.png)'}"
+                   style="overflow: hidden;background-size: cover; background-repeat: no-repeat;background-position-y: center;background-position-x: center"></div>
+            </div>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+
+    <ng-template #pagination>
+      <nz-pagination [nzPageIndex]="currentIndex" [nzTotal]="list.length"
+                     (nzPageIndexChange)="indexChange($event)" (nzPageSizeChange)="sizeChange($event)" nzShowSizeChanger
+                     [nzPageSize]="pageSize"
+                     [nzPageSizeOptions]="[4,8,16,64]"></nz-pagination>
+    </ng-template>
+
+  </div>
+</div>

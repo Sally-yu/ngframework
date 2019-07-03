@@ -13,9 +13,6 @@ declare var echarts: any; //index全局导入 保平安
 })
 export class IndexComponent implements OnInit {
 
-  chartId = [];//chartid
-  chartOption = [];//初始化的chartoption
-
   charts = [
     {
       x: 0,
@@ -144,7 +141,7 @@ export class IndexComponent implements OnInit {
           {type: 'line', areaStyle: {}},
         ]
       }
-    }
+    },
   ];
 
   widgets = [];
@@ -156,8 +153,6 @@ export class IndexComponent implements OnInit {
       );
     });
 
-    // console.log(this.widgets);
-    // console.log(this.items);
     var that = this;
     ko.components.register('dashboard-grid', {
       viewModel: {
@@ -357,14 +352,15 @@ export class IndexComponent implements OnInit {
     setTimeout(() => {
       this.charts.forEach(c => {
         var e = $('#' + c.key);
-        e.prev().get(0).innerHTML = c.name;
+        var inner=c.name+`<i nz-icon nzType="more" nzTheme="outline" style="    height: 40px; width: 40px; float: right;"></i>`
+        e.prev().get(0).innerHTML = inner;
         var chart = echarts.init(e.get(0), 'macarons');
         chart.setOption(c.option);
         new ResizeSensor(e, function () {
           chart.resize();
         });
       });
-    }, 500);
+    }, 1000);
   }
 
   getList() {

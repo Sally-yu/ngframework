@@ -16,6 +16,9 @@ export class AlarmSummaryComponent implements OnInit {
   editFlag = false;//编辑标志
   option;//编辑或者是添加的标记
 
+  currentIndex = 1;
+  pageSize = 10;
+  sizeOption = [5, 10, 20, 50];
 
   constructor(
     private alarmService: AlarmService

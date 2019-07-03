@@ -6,20 +6,16 @@
 
   <div style="padding: 16px" *ngIf="!deviceDetail&&!deviceTable">
     <div id="toolbar">
-      <ul>
-        <li>
-          <div style="background-color: #2ecc71;"></div>
-          运行
-        </li>
-        <li>
-          <div style="background-color: #e74c3c;"></div>
-          停机
-        </li>
-        <li>
-          <div style="background-color: #f1c40f;"></div>
-          报警
-        </li>
-      </ul>
+      <div id="status">
+        <div style="background-color: #2ecc71;"></div>
+        <span>运行</span>
+
+        <div style="background-color: #e74c3c;"></div>
+        <span>停机</span>
+
+        <div style="background-color: #f1c40f;"></div>
+        <span>报警</span>
+      </div>
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
         <button nz-button (click)="getList()">刷新</button>
@@ -33,23 +29,24 @@
         <nz-list-item [nzContent]="nzContent">
           <ng-template #nzContent>
             <div class="card" (click)="edit(item.key)">
-              <div class="title" [title]="'备注  '+item.note" [ngStyle]="{'background-color':item['devicesetting']['cardcolor']}">
+              <div class="title" [title]="'备注  '+item.note"
+                   [ngStyle]="{'background-color':item['devicesetting']['cardcolor']}">
                 {{item.name}}
                 <i nz-icon (click)="$event.stopPropagation();toTable(item.key)" nzType="pie-chart" title="设备图表"
                    nzTheme="outline" style="float: right"></i>
               </div>
 
-              <div class="card-content" >
+              <div class="card-content">
                 <div style="height: 30px;width: 100%;font-size: 20px;font-weight: bold;color:#000000;">
                   {{item.code}}
                 </div>
                 <div *ngFor="let att of display(item)"
                      [ngStyle]="{'height':200/row(item)+'px','padding-top':100/row(item)-36+'px','width':width(item,att)}">
-                  <span>{{keyValue(item.key,att.code)}}</span><br>
+                  <span>{{keyValue(item.key, att.code)}}</span><br>
                   {{att.name}}
                 </div>
               </div>
-              <div echarts [options]="chartOption(item.key)" (click)="$event.stopPropagation()" style="height: 50px"></div>
+              <div [id]="item.key" style="height: 50px"></div>
 
             </div>
           </ng-template>

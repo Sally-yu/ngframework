@@ -1,0 +1,238 @@
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  min-height: calc(100% - 24px);
+}
+.img {
+  height: inherit;
+  width: inherit;
+  display: inline-flex;
+}
+.img div {
+  text-align: center;
+  line-height: 60px;
+  width: 60px;
+  height: 60px;
+  background-color: #00cc00;
+  border-radius: 5px;
+  margin: 5px;
+  position: absolute;
+  float: left;
+  z-index: 1000;
+}
+.img div i {
+  font-size: 40px;
+  color: #fff;
+}
+.img img {
+  position: absolute;
+  height: inherit;
+}
+.toolbox {
+  width: 160px;
+  height: 100%;
+  background-color: #d9d9d9;
+}
+.toolbox .iconBtn {
+  text-align: center;
+  line-height: 60px;
+  width: 60px;
+  height: 60px;
+  background-color: #00cc00;
+  border-radius: 5px;
+  /* padding-bottom: 10px; */
+  margin: 5px;
+}
+.toolbox .iconBtn i {
+  font-size: 40px;
+  color: #fff;
+}
+#contextMenu {
+  z-index: 10002;
+  position: absolute;
+  left: 5px;
+  background-color: #9d9d9d;
+  display: none;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  font-size: 12px;
+  font-family: sans-serif;
+}
+#contextMenu ul {
+  list-style: none;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+#contextMenu li a {
+  position: relative;
+  min-width: 60px;
+  color: whitesmoke;
+  display: inline-block;
+  padding: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+#contextMenu li:hover {
+  background: #1890ff;
+}
+#contextMenu li ul li {
+  display: none;
+}
+#contextMenu li ul li a {
+  position: relative;
+  min-width: 60px;
+  padding: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+#topbar {
+  width: 100%;
+  /*必须沾满宽度防止浮动*/
+  height: 60px;
+  padding-left: 8px;
+  display: flex;
+}
+#leftbar {
+  max-height: 100%;
+  width: 260px;
+  min-height: 100%;
+  float: left;
+}
+#leftbar ::-webkit-scrollbar {
+  height: 2px;
+}
+#toolcontent {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  bottom: 0;
+}
+#container {
+  height: 100%;
+  width: 100%;
+}
+.imgGroup {
+  background-color: whitesmoke;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  border-bottom: 1px solid darkgray;
+  cursor: pointer;
+}
+.imgGroup :hover {
+  background-color: darkgray;
+}
+.toolitem {
+  display: none;
+}
+.active {
+  display: block;
+}
+.ant-collapse-content-box {
+  padding: 0;
+}
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
+}
+#toolTipDIV {
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  background: #9d9d9d;
+  color: #fff;
+  z-index: 1000;
+  display: none;
+  opacity: 0.8;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+}
+.floatbar {
+  position: absolute;
+  z-index: 1000;
+  height: 200px;
+  width: 30px;
+  bottom: 30px;
+  right: 30px;
+}
+.topbtn {
+  font-size: 10px;
+  width: 50px;
+  display: block;
+  height: 60px;
+  text-align: center;
+  cursor: pointer;
+  padding-top: 8px;
+  transition-duration: 400ms;
+}
+.topbtn i {
+  font-size: 20px;
+  color: #001529;
+}
+#upcontent {
+  width: 70px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  right: 8px;
+  height: 10%;
+  position: absolute;
+}
+#upcontent i {
+  font-size: 30px;
+}
+#upcontent:hover,
+.topbtn:hover,
+#droptop:hover {
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+#upcontent:hover i,
+.topbtn:hover i,
+#droptop:hover i {
+  color: #fff;
+}
+.activebtn {
+  background-color: #1890ff;
+  color: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+.activebtn i {
+  color: #fff;
+}
+.divider {
+  height: 80%;
+  top: 10%;
+}
+#container {
+  height: 100%;
+  width: 100%;
+}
+#myDiagramDiv {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 260px;
+  box-shadow: inset 0px 0px 6px rgba(10, 10, 10, 0.5);
+}
+.cus {
+  display: none;
+}
+.cus div {
+  height: 400px;
+  max-height: 800px;
+}
+/*# sourceMappingURL=topo-design.component.css.map */

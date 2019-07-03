@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {DeviceService} from '../../../device.service';
+import {ResizeSensor} from 'css-element-queries';
+
+declare var $: any;
+declare var echarts: any; //angular方式引用echarts做循环处理性能奇差 用土方子吧，给个延时
 
 @Component({
   selector: 'app-device-card',
@@ -22,48 +26,65 @@ export class DeviceCardComponent implements OnInit {
 
   attValue;//设备属性（参数）的值
 
-  presetColors = ['#f1c40f', '#e74c3c','#2ecc71']; //预置卡片颜色选项
+  presetColors = ['#f1c40f', '#e74c3c', '#2ecc71']; //预置卡片颜色选项
 
   constructor(
     private deviceService: DeviceService,
   ) {
   }
 
-  //获取所有device，按页码切分
+  //获取所有device，后续处理。刷新专用，与页面加载时不同
   getList() {
-    this.loading = true;
     this.deviceService.deviceList().then(res => {
-      this.deviceList = res.filter(d => d.display);
-      this.spliceViewList(this.deviceList);
-      this.loading = false;
-    }, err => {
-      this.spliceViewList(this.deviceList);
-      this.loading = false;
-    });
+        this.deviceList = res.filter(d => d.display);
+        this.spliceViewList(this.deviceList);
+      },
+      err => {
+        this.spliceViewList(this.deviceList);
+      });
   }
 
   //切换页码
   indexChange(n: number) {
     this.currentIndex = n;
+    this.loading=true;
     this.spliceViewList(this.deviceList);
   }
 
   //切换每页条数
   sizeChange(n: number) {
     this.pageSize = n;
+    this.loading=true;
     this.spliceViewList(this.deviceList);
   }
 
   spliceViewList(list) {
     this.viewList = JSON.parse(JSON.stringify(list)).splice((this.currentIndex - 1) * this.pageSize, this.pageSize);
-    this.deviceValue();
+    let keys = this.viewList.map(d => {
+      return d.key;
+    });
+    this.deviceService.deviceValue(keys).then(res => {
+      this.attValue = res;
+      this.viewList.forEach(c => {
+        var e = $('#' + c.key);
+        var chart = echarts.init(e.get(0));
+        chart.setOption(this.chartOption(c.key));
+        new ResizeSensor(e, function () {
+          chart.resize();
+        });
+        this.loading=false;
+      });
+    }, err => {
+      this.loading=false;
+    });
   }
 
   cancel($event: any) {
     if (event) {
       this.deviceDetail = false;
       this.deviceTable = false;
-      this.getList();
+      this.loading=true;
+      this.getList();//重新加载页面
     }
   }
 
@@ -77,10 +98,8 @@ export class DeviceCardComponent implements OnInit {
         });
       }
       this.spliceViewList(this.deviceList);
-      this.loading = false;
     }, err => {
       this.spliceViewList(this.deviceList);
-      this.loading = false;
     });
   }
 
@@ -103,54 +122,39 @@ export class DeviceCardComponent implements OnInit {
 
   //控制显示属性参数
   display(item: any) {
-    var display=item.attrs.filter(a => a.display);
-    if (display.length>16){
-      display=display.slice(0,16);
+    var display = item.attrs.filter(a => a.display);
+    if (display.length > 16) {
+      display = display.slice(0, 16);
     }
     return display;
   }
 
-  length(item){
+  length(item) {
     return this.display(item).length;
   }
 
-  column(item){
+  column(item) {
     const length = this.length(item);
     const d = Math.ceil(length / 4);
-    if (d<=2){
+    if (d <= 2) {
       return 2;
     } else {
       return d;
     }
   }
 
-  row(item){
+  row(item) {
     return Math.ceil(this.length(item) / this.column(item));
   }
 
-  width(item,att){
-    var display=this.display(item);
-    var tail=display.slice(this.column(item)*(this.row(item)-1),display.length);
-    if (tail.indexOf(att)<0){
-      return 100/this.column(item)+'%';
-    } else{
-      return 100/tail.length+'%';
+  width(item, att) {
+    var display = this.display(item);
+    var tail = display.slice(this.column(item) * (this.row(item) - 1), display.length);
+    if (tail.indexOf(att) < 0) {
+      return 100 / this.column(item) + '%';
+    } else {
+      return 100 / tail.length + '%';
     }
-
-  }
-
-  //获取所有设备属性值
-  deviceValue() {
-    this.loading = true;
-    let keys = this.viewList.map(d => {
-      return d.key;
-    });
-    this.deviceService.deviceValue(keys).then(res => {
-      this.attValue = res;
-      this.loading = false;
-    }, err => {
-      this.loading = false;
-    });
   }
 
   //设备属性数值
@@ -172,57 +176,59 @@ export class DeviceCardComponent implements OnInit {
 
   //生成随机匹配的echarts柱状图
   chartOption(key: any) {
-    if (!this.attValue) {
-      return;
-    }
-    try {
-      let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
-      let sum = 0;
-      let option = {
-        grid: {
-          left: '1%',
-          right: '1%',
-          bottom: '0%',
-          top: '0%',
-          containLabel: false
-        },
-        xAxis: {
-          max: 0,
-          type: 'value',
-          show: false
-        },
-        yAxis: {
-          type: 'category',
-          show: false,
-          data: ['']
-        },
-        series: []
-      };
-      data.forEach(r => {
-        var colorindex = Math.floor(r['value'] / 33);
+    // if (!this.attValue) {
+    //   return;
+    // }
+    // try {
+    let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
+    let sum = 0;
+    let option = {
+      grid: {
+        left: '1%',
+        right: '1%',
+        bottom: '0%',
+        top: '0%',
+        containLabel: false
+      },
+      xAxis: {
+        max: 0,
+        type: 'value',
+        show: false
+      },
+      yAxis: {
+        type: 'category',
+        show: false,
+        data: ['']
+      },
+      animation:false,
+      series: []
+    };
+    data.forEach(r => {
+      var colorindex = Math.floor(r['value'] / 33);
 
-        option.series = [...option.series, {
-          type: 'bar',
-          stack: '总量',
-          data: [r['value']],
-          itemStyle: {
-            normal: {
-              color: this.presetColors[colorindex]
-            }
+      option.series = [...option.series, {
+        type: 'bar',
+        stack: '1',
+        data: [r['value']],
+        itemStyle: {
+          normal: {
+            color: this.presetColors[colorindex]
           }
-        }];
-        sum += r['value'];
-      });
-      option.xAxis.max = sum;
+        }
+      }];
+      sum += r['value'];
+    });
+    option.xAxis.max = sum;
 
-      return option;
-    } catch (e) {
-
-    }
+    return option;
+    // } catch (e) {
+    //
+    // }
   }
 
 
   ngOnInit() {
+    this.loading=true;
     this.getList();
   }
 

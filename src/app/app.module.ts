@@ -24,7 +24,6 @@ import {AlarmMgrComponent} from './tabs/alarm/alarm-mgr/alarm-mgr.component';
 import {AlarmStrategyListComponent} from './tabs/alarm/alarm-strategy-list/alarm-strategy-list.component';
 import {AlarmSummaryComponent} from './tabs/alarm/alarm-summary/alarm-summary.component';
 import {AlarmDetailComponent} from './tabs/alarm/alarm-detail/alarm-detail.component';
-import {AlarmHistoryComponent} from './tabs/alarm/alarm-history/alarm-history.component';
 import {TableCodeAnalysisComponent} from './tabs/efficiency/table-code-analysis/table-code-analysis.component';
 import {UsageAnalysisComponent} from './tabs/efficiency/usage-analysis/usage-analysis.component';
 import {TrendAnalysisComponent} from './tabs/efficiency/trend-analysis/trend-analysis.component';
@@ -54,15 +53,26 @@ import {ColorPickerModule} from 'ngx-color-picker';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {EditAlarmSummaryComponent} from './tabs/alarm/alarm-summary/edit-alarm-summary/edit-alarm-summary.component';
 import {EditAlarmMgrComponent} from './tabs/alarm/alarm-mgr/edit-alarm-mgr/edit-alarm-mgr.component';
-import {TopoComponent} from './tabs/topo/topo.component';
-import {ModelDesignComponent} from './tabs/model-design/model-design.component';
-import {GrafanaComponent} from './tabs/grafana/grafana.component';
 import {IndexComponent} from './index/index.component';
 import {ForgetComponent} from './forget/forget.component';
 import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
 import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
+<<<<<<< HEAD
 import { DeviceServiceComponent } from './tabs/device-service/device-service.component';
 import { ServiceDetailComponent } from './tabs/device-service/service-detail/service-detail.component';
+=======
+import { TopoMgrComponent } from './topo/topo-mgr/topo-mgr.component';
+import { TopoDesignComponent } from './topo/topo-design/topo-design.component';
+import { GrafanaMgrComponent } from './grafana/grafana-mgr/grafana-mgr.component';
+import { GrafanaDesignComponent } from './grafana/grafana-design/grafana-design.component';
+import { ModelMgrComponent } from './model/model-mgr/model-mgr.component';
+import {ModelDesignComponent} from './model/model-design/model-design.component';
+import { TopoShowComponent } from './topo-show/topo-show.component';
+import { TopoDetailComponent} from './topo-show/detail/detail.component';
+import { GrafanaShowComponent } from './grafana-show/grafana-show.component';
+import { Model3dShowComponent } from './model3d-show/model3d-show.component';
+import {Model3dDetailComponent} from './model3d-show/detail/detail.component';
+>>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -94,7 +104,6 @@ const routes: Routes = [
     AddAlarmStrategyComponent,
     AlarmSummaryComponent,
     AlarmDetailComponent,
-    AlarmHistoryComponent,
     TableCodeAnalysisComponent,
     UsageAnalysisComponent,
     TrendAnalysisComponent,
@@ -121,15 +130,26 @@ const routes: Routes = [
     DeviceTableComponent,
     EditAlarmSummaryComponent,
     EditAlarmMgrComponent,
-    TopoComponent,
-    ModelDesignComponent,
-    GrafanaComponent,
     IndexComponent,
     ForgetComponent,
     DataManageComponent,
     AddDbMgrComponent,
+<<<<<<< HEAD
     DeviceServiceComponent,
     ServiceDetailComponent,
+=======
+    TopoMgrComponent,
+    TopoDesignComponent,
+    GrafanaMgrComponent,
+    GrafanaDesignComponent,
+    ModelMgrComponent,
+    ModelDesignComponent,
+    TopoShowComponent,
+    TopoDetailComponent,
+    GrafanaShowComponent,
+    Model3dShowComponent,
+    Model3dDetailComponent,
+>>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
   ],
   imports: [
     BrowserModule,

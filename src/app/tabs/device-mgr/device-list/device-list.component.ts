@@ -16,7 +16,7 @@ export class DeviceListComponent implements OnInit {
 
   option;
   currentIndex = 1;
-  pageSize = 5;
+  pageSize = 10;
   sizeOption = [5, 10, 20, 50];
 
   constructor(

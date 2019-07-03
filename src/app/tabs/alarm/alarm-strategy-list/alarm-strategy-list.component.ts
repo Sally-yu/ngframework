@@ -29,6 +29,9 @@ export class AlarmStrategyListComponent implements OnInit {
   };
   option;
   searchValue;
+  currentIndex = 1;
+  pageSize = 10;
+  sizeOption = [5, 10, 20, 50];
 
   constructor(
     private alarmService: AlarmService

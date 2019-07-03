@@ -39,6 +39,7 @@ import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
+import {NotifyService} from '../notify.service';
 
 @Component({
   selector: 'app-home',
@@ -65,67 +66,67 @@ export class HomeComponent implements OnInit {
 
   tabs = []; //tab页内容数组，元素格式是数的子节点
 
-  customTopo = {
-    title: '拓扑监控',
-    key: '700',
-    expanded: false,
-    icon: 'gateway',
-    children: []
-  }; //自定义菜单，仿照树节点结构
-
-  cusGrafana = {
-    title: '实时监控',
-    key: '800',
-    expanded: false,
-    icon: 'line-chart',
-    children: [
-      {
-        title: '设备数字运维Max',
-        key: 'jgq_eofiz',
-        url: 'http://10.24.20.45:8080/d/jgq_eofiz',
-        isLeaf: true,
-        fav: false,
-        share: true,
-        icon: 'dashboard'
-      },
-      {
-        title: '设备数字运维Mini',
-        key: 'f3478uifv',
-        url: 'http://10.24.20.45:8080/d/f3478uifv',
-        isLeaf: true,
-        fav: false,
-        share: false,
-        icon: 'dashboard'
-      },
-      {
-        title: '设备数字运维IE',
-        key: 'W884LJ3mz',
-        url: 'http://10.24.20.45:8080/d/W884LJ3mz',
-        isLeaf: true,
-        fav: true,
-        share: false,
-        icon: 'dashboard'
-      },
-    ]
-  }; //自定义菜单，仿照树节点结构
-
-  custom3D = {
-    title: '仿真监控',
-    key: '900',
-    expanded: false,
-    icon: 'bulb',
-    children: [
-      {
-        title: '模拟设备运转',
-        key: '9001',
-        url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html',
-        isLeaf: true,
-        fav: true,
-        share: false,
-        icon: 'dashboard'
-      },
-    ]
-  }; //自定义菜单，仿照树节点结构
+  // customTopo = {
+  //   title: '拓扑监控',
+  //   key: '700',
+  //   expanded: false,
+  //   icon: 'gateway',
+  //   children: []
+  // }; //自定义菜单，仿照树节点结构
+  //
+  // cusGrafana = {
+  //   title: '实时监控',
+  //   key: '800',
+  //   expanded: false,
+  //   icon: 'line-chart',
+  //   children: [
+  //     {
+  //       title: '设备数字运维Max',
+  //       key: 'jgq_eofiz',
+  //       url: 'http://10.24.20.45:8080/d/jgq_eofiz',
+  //       isLeaf: true,
+  //       fav: false,
+  //       share: true,
+  //       icon: 'dashboard'
+  //     },
+  //     {
+  //       title: '设备数字运维Mini',
+  //       key: 'f3478uifv',
+  //       url: 'http://10.24.20.45:8080/d/f3478uifv',
+  //       isLeaf: true,
+  //       fav: false,
+  //       share: false,
+  //       icon: 'dashboard'
+  //     },
+  //     {
+  //       title: '设备数字运维IE',
+  //       key: 'W884LJ3mz',
+  //       url: 'http://10.24.20.45:8080/d/W884LJ3mz',
+  //       isLeaf: true,
+  //       fav: true,
+  //       share: false,
+  //       icon: 'dashboard'
+  //     },
+  //   ]
+  // }; //自定义菜单，仿照树节点结构
+  //
+  // custom3D = {
+  //   title: '仿真监控',
+  //   key: '900',
+  //   expanded: false,
+  //   icon: 'bulb',
+  //   children: [
+  //     {
+  //       title: '模拟设备运转',
+  //       key: '9001',
+  //       url: 'http://172.31.1.27:9101/MachineTool_drc_parallel.html',
+  //       isLeaf: true,
+  //       fav: true,
+  //       share: false,
+  //       icon: 'dashboard'
+  //     },
+  //   ]
+  // }; //自定义菜单，仿照树节点结构
 
   setting = {
     title: '系统管理',
@@ -133,7 +134,7 @@ export class HomeComponent implements OnInit {
     expanded: false,
     icon: 'setting',
     children: []
-  }; //自定义菜单，仿照树节点结构
+  }; //系统管理菜单
 
   options = [
     {title: '个人中心', key: '1040', app: 'user', icon: 'control', isLeaf: true, fav: false, share: false},
@@ -160,7 +161,7 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'appstore',
       children: [
-        {title: '设备卡片', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: false},
+        {title: '设备监控', key: '1000', app: 'device-card', isLeaf: true, fav: true, share: false},
         {title: '设备列表', key: '1001', app: 'device-list', isLeaf: true, fav: false, share: false},
         {title: '设备模板', key: '1002', app: 'device-template', isLeaf: true, fav: true, share: true},
       ]
@@ -198,10 +199,41 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
+<<<<<<< HEAD
       title: '设备服务',
       key: '200',
       expanded: false,
       icon: 'cluster'
+=======
+      title: '拓扑监控',
+      key: '200',
+      expanded: false,
+      icon: 'gateway',
+      children: [
+        {title: '拓扑设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
+        {title: '拓扑监控管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
+      title: '综合分析',
+      key: '202',
+      expanded: false,
+      icon: 'line-chart',
+      children: [
+        {title: '分析设计', key: '2021', app: 'grafana-design', isLeaf: true, fav: false, share: false},
+        {title: '分析管理', key: '2022', app: 'grafana-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
+      title: '仿真监控',
+      key: '201',
+      expanded: false,
+      icon: 'bulb',
+      children: [
+        {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
+        {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
+      ]
+>>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
     },
 
   ]; //所有预置节点，渲染菜单结构
@@ -209,23 +241,22 @@ export class HomeComponent implements OnInit {
   nodes = []; //用于树列表绑定
   staticNodes; //拼接后的节点，用于刷新菜单不必异步请求，刷新树列表时刷新
 
-  workSpc;
-  listUrl = this.url.workUrl;
-  grafanaUrl = this.url.gafanaUrl;
-  topoUrl = this.url.topoUrl;
+
   loading = false;
   key;
+  notifcount = 0;
 
   constructor(
     private userSrv: UserService,
     private url: UrlService,
     private router: Router,
     private http: HttpClient,
+    private notifySrv: NotifyService,
     private message: NzMessageService,
     private nzDropdownService: NzDropdownService,
     private _iconService: NzIconService) {
     this._iconService.fetchFromIconfont({
-      scriptUrl: 'https://at.alicdn.com/t/font_1250422_9drpyoq4o3c.js'
+      scriptUrl: 'https://at.alicdn.com/t/font_1250422_9drpyoq4o3c.js' //自定义图标一个
     });
   }
 
@@ -273,22 +304,16 @@ export class HomeComponent implements OnInit {
         url = 'http://10.24.20.42:8800';
         break;
       case 'grafana':
-        url = this.grafanaUrl;
-        if (this.activeExist('grafana')) {
-          url = this.cusGrafana.children.filter(c => c.key == this.active)[0].url;
-        }
+        url = this.url.gafanaUrl;
+        // if (this.activeExist('grafana')) {
+        //   url = this.cusGrafana.children.filter(c => c.key == this.active)[0].url;
+        // }
         break;
       case 'topo':
-        url = this.topoUrl;
-        if (this.activeExist('topo')) {
-          url = this.customTopo.children.filter(c => c.key == this.active)[0].editUrl;//topo编辑链接和展示链接不同
-        }
-        break;
-      case 'datamgr':
-        url = '';
-        break;
-      case 'datapro':
-        url = '';
+        url = this.url.topoUrl;
+        // if (this.activeExist('topo')) {
+        //   url = this.customTopo.children.filter(c => c.key == this.active)[0].editUrl;//topo编辑链接和展示链接不同
+        // }
         break;
       default:
         break;
@@ -309,7 +334,7 @@ export class HomeComponent implements OnInit {
 
   topoClick(key: string) {
     this.active = key;
-    var obj = {title: '拓扑设计', key: '1050', app: 'topo', isLeaf: true, fav: true, share: true};
+    var obj = {title: '拓扑展示', key: '1050', app: 'topo-show', isLeaf: true, fav: true, share: true};
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -319,7 +344,7 @@ export class HomeComponent implements OnInit {
 
   modelClick(key: string) {
     this.active = key;
-    var obj = {title: '仿真设计', key: '1060', app: '3Dmodel', isLeaf: true, fav: true, share: true};
+    var obj = {title: '仿真展示', key: '1060', app: '3D-show', isLeaf: true, fav: true, share: true};
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -329,7 +354,7 @@ export class HomeComponent implements OnInit {
 
   grafanaClick(key: string) {
     this.active = key;
-    var obj = {title: '监控设计', key: '1070', app: 'grafana', isLeaf: true, fav: true, share: true};
+    var obj = {title: '实时监控', key: '1070', app: 'grafana-show', isLeaf: true, fav: true, share: true};
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -399,55 +424,55 @@ export class HomeComponent implements OnInit {
   }
 
   //自定义菜单子项是否有打开的tab页
-  cusExist(key: string): boolean {
-    var cus = {
-      key: '',
-      children: []
-    };
-    switch (key) {
-      case 'topo':
-        cus = this.customTopo;
-        break;
-      case 'grafana':
-        cus = this.cusGrafana;
-        break;
-      case '3d':
-        cus = this.custom3D;
-        break;
-      default:
-        break;
-    }
-    var arr = [];
-    cus.children.forEach(e => {
-      arr = [...arr, this.exist(e.key)];
-    });
-    // console.log(arr);
-    return arr.indexOf(true) >= 0;
-  }
+  // cusExist(key: string): boolean {
+  //   var cus = {
+  //     key: '',
+  //     children: []
+  //   };
+  //   switch (key) {
+  //     case 'topo':
+  //       cus = this.customTopo;
+  //       break;
+  //     case 'grafana':
+  //       cus = this.cusGrafana;
+  //       break;
+  //     case '3d':
+  //       cus = this.custom3D;
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   var arr = [];
+  //   cus.children.forEach(e => {
+  //     arr = [...arr, this.exist(e.key)];
+  //   });
+  //   // console.log(arr);
+  //   return arr.indexOf(true) >= 0;
+  // }
 
   //激活tab是否在某自定义菜单，需要区分
-  activeExist(key: string): boolean {
-    var cus = {
-      key: '',
-      children: []
-    };
-    switch (key) {
-      case 'topo':
-        cus = this.customTopo;
-        break;
-      case 'grafana':
-        cus = this.cusGrafana;
-        break;
-      case '3d':
-        cus = this.custom3D;
-        break;
-      default:
-        break;
-    }
-    return cus.children.map(function (e) {
-      return e.key;
-    }).indexOf(this.active) >= 0;
-  }
+  // activeExist(key: string): boolean {
+  //   var cus = {
+  //     key: '',
+  //     children: []
+  //   };
+  //   switch (key) {
+  //     case 'topo':
+  //       cus = this.customTopo;
+  //       break;
+  //     case 'grafana':
+  //       cus = this.cusGrafana;
+  //       break;
+  //     case '3d':
+  //       cus = this.custom3D;
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   return cus.children.map(function (e) {
+  //     return e.key;
+  //   }).indexOf(this.active) >= 0;
+  // }
 
   // //展开 关闭 所有菜单
   // expandAll(b: boolean) {
@@ -495,58 +520,43 @@ export class HomeComponent implements OnInit {
 
   //异步获取布局图
   getWorkSpc() {
-    return new Promise((resolve, reject) => {
-      const data = {
-        opt: 'released',
-        workspace: {}
-      };
-      this.http.post(this.listUrl, data)
-        .toPromise()
-        .then(res => {
-            this.workSpc = res;
-            this.customTopo.children = [];//清空，避免刷新重复加载
-            if (this.workSpc.length > 0) {
-              this.workSpc.forEach(w => {
-                  let c = {
-                    title: w.name,
-                    key: w.key,
-                    url: 'http://10.24.20.71:9099/topo/detail/' + w.key,
-                    editUrl: 'http://10.24.20.71:9099/topo/item/' + w.key,
-                    isLeaf: true,
-                    fav: false,
-                    share: false,
-                    icon: 'dashboard'
-                  };//url匹配见topo项目
-                  this.customTopo.children.push(c);
-                }
-              );
-            }
-            resolve();
-          },
-          msg => {
-            reject(msg);
-          }
-        );
-    });
+    // return new Promise((resolve, reject) => {
+    //   const data = {
+    //     opt: 'released',
+    //     workspace: {}
+    //   };
+    //   this.http.post(this.url.listUrl, data)
+    //     .toPromise()
+    //     .then(res => {
+    //         this.workSpc = res;
+    //         resolve();
+    //       },
+    //       msg => {
+    //         reject(msg);
+    //       }
+    //     );
+    // });
   }
 
   reloadTree() {
     this.loading = true;
-    //网络错误等待不来时不会执行
-    this.getWorkSpc().then(_ => {
-      this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义 深复制防联动
-      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
-      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
-      this.setting.children = JSON.parse(JSON.stringify(this.options));
-      this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
-      this.loading = false;
-      this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
-    }, _ => {
-      this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-      this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
-      this.loading = false;
-    });
+    this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+    this.setting.children = JSON.parse(JSON.stringify(this.options));
+    this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
+    this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
+    this.loading = false;
+    // //网络错误等待不来时不会执行
+    // this.getWorkSpc().then(_ => {
+    //   this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义 深复制防联动
+    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
+    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
+    //   this.loading = false;
+    // }, _ => {
+    //   this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+    //   this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
+    //   this.loading = false;
+    // });
   }
 
   getUser() {
@@ -573,11 +583,19 @@ export class HomeComponent implements OnInit {
       // console.log(this.key);
       this.getUser();
       this.reloadTree();
+      this.notifyCount();
       this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
     }
   }
 
-
+  notifyCount(): any {
+    var list;
+    this.notifySrv.allNotif().then(res => {
+      list = res;
+      this.notifcount = list.filter(l => l.new).length;
+    }, err => {
+    });
+  }
 }

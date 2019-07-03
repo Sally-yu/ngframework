@@ -13,6 +13,22 @@ export class UrlService {
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
   modelUrl = 'http://10.24.20.42:8800';
+  topoHost='http://10.24.20.71:9098';
+
+  //topo使用的部分代码
+  public workUrl = this.topoHost + '/workspace';
+  //以下url需与go后台服务的url对应
+  //由于后台默认url不跨域，没在代码中开起跨域分享的url基本都报错不允许跨域，实际不是go的跨域处理问题，是url不对应
+  public imgUrl = this.topoHost + '/assets/img';
+  public saveUrl = this.topoHost + '/assets/img/save';
+  public findUrl = this.topoHost + '/assets/img/deviceid';
+  public backUrl = this.topoHost + '/assets/img/back';
+  public uploadUrl = this.topoHost + '/assets/upload';//上传保存自定义svg文件
+  public cusUrl = this.topoHost + '/assets/img/cussvg';//get保存自定义svg文件
+  public updateCus = this.topoHost + '/assets/updateCus'; //保存自定义svg关联信息到数据库
+  public findName = this.topoHost + '/workspace/findname';//查找同名布局是否已存在
+  public codeUrl = this.topoHost + '/code';//最大编号
+
 
   keyUrl = this.hostname + this.hostPort + '/rsakey';
   public loginUrl = this.hostname + this.hostPort + '/login';
@@ -74,19 +90,7 @@ export class UrlService {
   // public host=window.location.protocol+'//'+window.location.hostname+':'+this.port;
   public host = this.hostname  + this.port;
 
-  //以下url需与go后台服务的url对应
-  //由于后台默认url不跨域，没在代码中开起跨域分享的url基本都报错不允许跨域，实际不是go的跨域处理问题，是url不对应
-  public imgUrl = this.host + '/assets/img';
-  public saveUrl = this.host + '/assets/img/save';
-  public findUrl = this.host + '/assets/img/deviceid';
-  public backUrl = this.host + '/assets/img/back';
-  public uploadUrl = this.host + '/assets/upload';//上传保存自定义svg文件
-  public cusUrl = this.host + '/assets/img/cussvg';//get保存自定义svg文件
-  public updateCus = this.host + '/assets/updateCus'; //保存自定义svg关联信息到数据库
 
-  public workUrl = this.host + '/workspace';
-  public findName = this.host + '/workspace/findname';//查找同名布局是否已存在
-  public codeUrl = this.host + '/code';//最大编号
   constructor(
     private router:Router
   ) {
