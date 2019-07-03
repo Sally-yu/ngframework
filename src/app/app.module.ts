@@ -61,6 +61,8 @@ import {IndexComponent} from './index/index.component';
 import {ForgetComponent} from './forget/forget.component';
 import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
 import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
+import { DeviceServiceComponent } from './tabs/device-service/device-service.component';
+import { ServiceDetailComponent } from './tabs/device-service/service-detail/service-detail.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -126,6 +128,8 @@ const routes: Routes = [
     ForgetComponent,
     DataManageComponent,
     AddDbMgrComponent,
+    DeviceServiceComponent,
+    ServiceDetailComponent,
   ],
   imports: [
     BrowserModule,

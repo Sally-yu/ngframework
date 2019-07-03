@@ -195,6 +195,11 @@
     <!--user-->
     <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"
               [key]="key"></app-user>
+
+    <!--edge service-->
+    <app-device-service *ngIf="exist('200')" class="back"
+                     [ngStyle]="{'display':active=='200'?'block':'none'}"></app-device-service>
+
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
                       [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>

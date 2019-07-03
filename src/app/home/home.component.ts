@@ -197,6 +197,12 @@ export class HomeComponent implements OnInit {
         {title: '数据源列表', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
+    {
+      title: '设备服务',
+      key: '200',
+      expanded: false,
+      icon: 'cluster'
+    },
 
   ]; //所有预置节点，渲染菜单结构
 
