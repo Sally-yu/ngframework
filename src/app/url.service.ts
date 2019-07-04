@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class UrlService {
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
   modelUrl = 'http://10.24.20.42:8800';
-  topoHost='http://10.24.20.71:9098';
+  topoHost='http://10.24.20.71:9098';//topo后端
 
   //topo使用的部分代码
   public workUrl = this.topoHost + '/workspace';
@@ -85,6 +86,9 @@ export class UrlService {
   public testPing = this.hostname + this.hostPort + '/dbMgr/ping';  //数据库的测试连接
 
 
+  public modelAll=this.hostname+this.hostPort+'/model/all';
+  public modelUpdate=this.hostname+this.hostPort+'/model/update';
+
   public port = ':9098';
   // public host=window.location.protocol+'//'+window.location.hostname+':'+this.port;
   public host = this.hostname  + this.port;
@@ -93,6 +97,10 @@ export class UrlService {
   constructor(
     private router:Router
   ) {
+  }
+
+  public header():any{
+    return new HttpHeaders({token:this.token(),user:this.key()});
   }
 
   //取token

@@ -18,8 +18,8 @@
               <div class="title" [title]="'备注  '+item.note">
                 <!--[ngStyle]="{'background-color':item['devicesetting']['cardcolor']}"-->
                 {{item.code}}&nbsp;&nbsp;{{item.name}}
-                <i nz-icon nzType="more" title="更多选项"
-                   nzTheme="outline" style="float: right"></i>
+                <i nz-icon nzType="more" title="设为首页"
+                   nzTheme="outline" style="float: right" (click)="$event.stopPropagation();setIndex(item)"></i>
               </div>
               <!--循环加载-->
               <div class="card-content" [id]="item.key" style="overflow: hidden;" (click)="$event.stopPropagation()"></div>

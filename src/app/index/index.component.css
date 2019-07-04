@@ -9,6 +9,14 @@
   border-radius: 8px;
   min-height: calc(100% - 24px);
 }
+#indexUrl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  min-height: 100%;
+}
 #search {
   float: right;
   display: inline-flex;

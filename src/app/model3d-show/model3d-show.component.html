@@ -17,10 +17,9 @@
           <ng-template #nzContent>
             <div class="card" (click)="view(item)" [ngStyle]="{'background-color':cardColor}">
               <div class="title" [title]="'编号  '+item.code">
-                <!--[ngStyle]="{'background-color':item['devicesetting']['cardcolor']}"-->
                 &nbsp;&nbsp;{{item.name}}
-                <i nz-icon nzType="more" title="更多选项"
-                   nzTheme="outline" style="float: right"></i>
+                <i nz-icon nzType="more" title="设为首页"
+                   nzTheme="outline" style="float: right" (click)="$event.stopPropagation();setIndex(item)"></i>
               </div>
               <!--循环加载-->
               <div class="card-content" [ngStyle]="{'background-image':'url('+url+item.cover+'.png)'}"

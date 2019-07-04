@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {TopoService} from '../topo.service';
 import {UrlService} from '../url.service';
 import * as go from '../../assets/js/go.js';
+import {ModelService} from '../model.service';
+import {UserService} from '../user.service';
 
 declare var $: any;
 
@@ -24,6 +26,7 @@ export class TopoShowComponent implements OnInit {
   cardColor = '#deeef9dd';
 
   constructor(
+    private userSrv: UserService,
     private topoSrv: TopoService,
     private url: UrlService,
   ) {
@@ -316,5 +319,19 @@ export class TopoShowComponent implements OnInit {
   view(obj: any) {
     this.workspace = JSON.parse(JSON.stringify(obj));
     this.detail = true;
+  }
+
+  setIndex(item) {
+    var user = this.url.key();
+    this.userSrv.getUser(user).then(res => {
+      res.index = this.url.topoUrl+"/topo/detail/"+item.key;
+      this.userSrv.update(res).then(r => {
+
+      }, er => {
+
+      });
+    }, res => {
+
+    });
   }
 }

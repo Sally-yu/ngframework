@@ -1,7 +1,14 @@
-import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
+import {
+  Component, Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import ko from '../../assets/js/knockout-min.js';
 import _ from '../../assets/js/lodash.min.js';
 import {ResizeSensor} from 'css-element-queries';
+import {UrlService} from '../url.service';
+import {UserService} from '../user.service';
 
 declare var $: any;
 declare var echarts: any; //index全局导入 保平安
@@ -11,7 +18,9 @@ declare var echarts: any; //index全局导入 保平安
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.less']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, OnChanges {
+
+  @Input() flag;
 
   charts = [
     {
@@ -53,12 +62,12 @@ export class IndexComponent implements OnInit {
                 show: false
               }
             },
-            data:[
-              {name:'工厂建模',value:2432.3},
-              {name:'报废成本',value:1024},
-              {name:'运费',value:3445.3},
-              {name:'报销成本',value:324.3},
-              {name:'维护费用',value:983},
+            data: [
+              {name: '工厂建模', value: 2432.3},
+              {name: '报废成本', value: 1024},
+              {name: '运费', value: 3445.3},
+              {name: '报销成本', value: 324.3},
+              {name: '维护费用', value: 983},
             ]
           }
         ]
@@ -145,8 +154,16 @@ export class IndexComponent implements OnInit {
   ];
 
   widgets = [];
+  indexUrl;
 
-  constructor() {
+  constructor(
+    private url: UrlService,
+    private userSrv: UserService,
+  ) {
+    this.create()
+  }
+
+  create() {
     this.charts.forEach(c => {
       this.widgets.push(
         {x: c.x, y: c.y, width: c.width, height: c.height, key: c.key}
@@ -322,37 +339,38 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit() {
-    var self = this;
-    this.charts[2].option.dataset = {
-      source: [
-        ['', '2012', '2013', `2014`, '2015'],
-        ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
-        ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
-        ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4],
-      ]
-    };
-    this.charts[3].option.dataset = {
-      source: [
-        ['', '2012', '2013', '2015', '2014'],
-        ['PDK', 41.1, 30.4, 65.1, 53.3],
-        ['UT_S1', 86.5, 92.1, 85.7, 83.1],
-        ['S90', 24.1, 67.2, 79.5, 86.4],
-        ['KDU', 34.1, 23.2, 73.5, 26.4],
-        ['K90', 27.1, 64.2, 39.5, 65.4],
-        ['YUR', 23.1, 34.2, 243.5, 86.4],
-        ['DG', 64.1, 34.42, 356.5, 164.4],
-        ['DK_3', 124.1, 457.2, 22.5, 34.4],
-        ['DG8', 59.1, 2.2, 564.5, 86.4],
-        ['S33', 44.1, 45.2, 25.5, 57.4],
-        ['GY1', 57.1, 54.2, 65.5, 44.4],
-        ['U2', 24.1, 65, 100.5, 86.4],
-        ['RER', 43.1, 67.2, 35.5, 86.4],
-      ]
-    };
     setTimeout(() => {
+      var self = this;
+      this.charts[2].option.dataset = {
+        source: [
+          ['', '2012', '2013', `2014`, '2015'],
+          ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+          ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
+          ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4],
+        ]
+      };
+      this.charts[3].option.dataset = {
+        source: [
+          ['', '2012', '2013', '2015', '2014'],
+          ['PDK', 41.1, 30.4, 65.1, 53.3],
+          ['UT_S1', 86.5, 92.1, 85.7, 83.1],
+          ['S90', 24.1, 67.2, 79.5, 86.4],
+          ['KDU', 34.1, 23.2, 73.5, 26.4],
+          ['K90', 27.1, 64.2, 39.5, 65.4],
+          ['YUR', 23.1, 34.2, 243.5, 86.4],
+          ['DG', 64.1, 34.42, 356.5, 164.4],
+          ['DK_3', 124.1, 457.2, 22.5, 34.4],
+          ['DG8', 59.1, 2.2, 564.5, 86.4],
+          ['S33', 44.1, 45.2, 25.5, 57.4],
+          ['GY1', 57.1, 54.2, 65.5, 44.4],
+          ['U2', 24.1, 65, 100.5, 86.4],
+          ['RER', 43.1, 67.2, 35.5, 86.4],
+        ]
+      };
+
       this.charts.forEach(c => {
         var e = $('#' + c.key);
-        var inner=c.name+`<i nz-icon nzType="more" nzTheme="outline" style="    height: 40px; width: 40px; float: right;"></i>`
+        var inner = c.name + `<i nz-icon nzType="more" nzTheme="outline" style="    height: 40px; width: 40px; float: right;"></i>`;
         e.prev().get(0).innerHTML = inner;
         var chart = echarts.init(e.get(0), 'macarons');
         chart.setOption(c.option);
@@ -361,6 +379,7 @@ export class IndexComponent implements OnInit {
         });
       });
     }, 1000);
+    this.setIndex();
   }
 
   getList() {
@@ -370,4 +389,18 @@ export class IndexComponent implements OnInit {
   add() {
 
   }
+
+  setIndex() {
+    var user = this.url.key();
+    this.userSrv.getUser(user).then(res => {
+      this.indexUrl = res.index;
+    }, res => {
+
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ngOnInit();
+  }
+
 }

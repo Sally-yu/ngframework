@@ -12,7 +12,6 @@ export class RsaService {
   constructor(
     private url: UrlService,
     private http: HttpClient,
-    private message: NzMessageService
   ) {
   }
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {HttpClient} from '@angular/common/http';
 import {UrlService} from '../../../url.service';
@@ -10,28 +10,29 @@ import {UserService} from '../../../user.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.less']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit,OnChanges {
 
+  @Input() flag;
   loading = false;
   user = {};
 
-  changePwd= false;
-  changePhone= false;
-  @Input() key:string;
+  changePwd = false;
+  changePhone = false;
+  @Input() key: string;
 
   constructor(private rsa: RsaService,
               private http: HttpClient,
               private message: NzMessageService,
               private url: UrlService,
-              private userSrv:UserService,
+              private userSrv: UserService,
   ) {
   }
 
   getUser() {
-    this.loading=true;
-    this.userSrv.getUser(this.key).then(user=>{
-      this.user=user;
-      this.loading=false;
+    this.loading = true;
+    this.userSrv.getUser(this.key).then(user => {
+      this.user = user;
+      this.loading = false;
     });
   }
 
@@ -40,10 +41,26 @@ export class UserComponent implements OnInit {
   }
 
   cancel($event: any) {
-    if(event){
-      this.changePhone=false;
-      this.changePwd=false;
+    if (event) {
+      this.changePhone = false;
+      this.changePwd = false;
     }
     this.getUser();
+  }
+
+  setIndex() {
+    var user = JSON.parse(JSON.stringify(this.user));
+    user['index'] = '';
+    this.userSrv.update(user).then(r => {
+      this.getUser();
+    }, er => {
+
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.changePwd&&!this.changePhone) {
+      this.ngOnInit();
+    }
   }
 }

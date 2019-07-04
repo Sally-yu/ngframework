@@ -10,20 +10,18 @@ import {limitToSingleClasses} from '@angular/core/src/render3/styling/class_and_
 })
 export class NotifyService {
 
-  header;
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
     private url: UrlService,
   ) {
-    this.header=new HttpHeaders({token:this.url.token(),user:this.url.key()});
   }
 
   //所有通知
   allNotif(): any {
     let list = [];
     return new Promise((resolve, reject) => {
-      this.http.get(this.url.allNotif,{headers:this.header}).toPromise().then(res => {
+      this.http.get(this.url.allNotif,{headers:this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           list = res['data'];
         } else {
@@ -41,7 +39,7 @@ export class NotifyService {
   //删除通知
   removeNotif(key: string): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.removeNotif, {key: key},{headers:this.header}).toPromise().then(res => {
+      this.http.post(this.url.removeNotif, {key: key},{headers:this.url.header()}).toPromise().then(res => {
         if (!res['status']) {
           this.message.error(res['msg']);
         }
@@ -58,7 +56,7 @@ export class NotifyService {
   //更新通知，主要是最新状态
   updateNotif(data: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.updateNotif, data,{headers:this.header}).toPromise().then(res => {
+      this.http.post(this.url.updateNotif, data,{headers:this.url.header()}).toPromise().then(res => {
         resolve(true);
       }, err => {
         console.log('更新通知状态失败');
