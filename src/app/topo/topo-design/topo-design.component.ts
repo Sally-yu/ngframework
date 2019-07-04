@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UrlService} from '../../url.service';
 import {NzMessageService, UploadFile} from 'ng-zorro-antd';
 import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
-import * as go from 'gojs';
 import {filter} from 'rxjs/operators';
 import {UUID} from 'angular2-uuid';
+import * as go from '../../../assets/js/go.js';
 
 declare var $: any;
 
@@ -15,7 +15,7 @@ declare var $: any;
 })
 export class TopoDesignComponent implements OnInit {
 
-    id;
+  id;
   note: any;
   code;
   sence: any;
@@ -295,7 +295,7 @@ export class TopoDesignComponent implements OnInit {
       }
     }
 
-    self.diagram = $(go.Diagram,'myDiagramDiv' ,  // must name or refer to the DIV HTML element
+    self.diagram = $(go.Diagram, 'myDiagramDiv',  // must name or refer to the DIV HTML element
       {
         'LinkDrawn': showLinkLabel,  // this DiagramEvent listener is defined below
         'LinkRelinked': showLinkLabel,
@@ -889,9 +889,9 @@ export class TopoDesignComponent implements OnInit {
   init() {
     // console.log(this.currWork);
     this.getDevice();//获取可用设备，来自edge
-    setTimeout(()=>{
+    setTimeout(() => {
       this.initDiagram();//初始化布局图表
-    },500)
+    }, 500);
     this.getCus();//获取图表自定义分组
     $('.ant-collapse-content-box').css('padding', '0');//去折叠面板padding，默认16px
   }

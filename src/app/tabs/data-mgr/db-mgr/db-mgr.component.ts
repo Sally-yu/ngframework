@@ -15,7 +15,6 @@ import * as  MongoClient from 'mongodb/lib/mongo_client.js'
 
 
 export class DbMgrComponent implements OnInit {
-  getinfluxUrl = this.ajax.getinfluxUrl;
   dataAll;   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件

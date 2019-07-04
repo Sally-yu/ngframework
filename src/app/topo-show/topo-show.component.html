@@ -22,7 +22,7 @@
                    nzTheme="outline" style="float: right"></i>
               </div>
               <!--循环加载-->
-              <div class="card-content" [id]="item.key" style="overflow: hidden;" ></div>
+              <div class="card-content" [id]="item.key" style="overflow: hidden;" (click)="$event.stopPropagation()"></div>
             </div>
           </ng-template>
         </nz-list-item>

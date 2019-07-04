@@ -19,7 +19,7 @@
       <button nz-button nzType="default" style="left: 10%">移除<i nz-icon [nzType]="'delete'"></i></button>
     </nz-card> -->
     <nz-list [nzDataSource]="dataAll" [nzRenderItem]="item" [nzLoading]="loading"
-      [nzGrid]="{ gutter: 36, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
+      [nzGrid]="{ gutter: 24, lg: 6, md: 6, sm: 6, xs: 3,  xl: 3 }">
       <ng-template #item let-item>
         <ng-template #contextTemplate>
           <ul nz-menu nzInDropDown>
@@ -35,9 +35,9 @@
           <div class="database">
             <table >
               <tr>
-                <th rowspan="2"><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
+                <th rowspan="2" align="right" ><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
                     alt="database" /></th>
-                <td><span>{{item.servername}}</span></td>
+                <td align="left"><span>{{item.servername}}</span></td>
               </tr>
             </table>
           </div>  
