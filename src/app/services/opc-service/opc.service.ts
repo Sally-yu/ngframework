@@ -18,8 +18,8 @@ export class OpcService {
   public getopcUrl=this.host+'/api/v1/opcua/get';
   public deleteopcUrl=this.host+'/api/v1/opcua/delete';
 
-  public influxhandleUrl="Api/InfluxHandle.ashx";
-  public opchandleUrl="Api/OpcHandle.ashx";
+  public influxhandleUrl="/Api/InfluxHandle.ashx";
+  public opchandleUrl="/Api/OpcHandle.ashx";
   
    
     // 数据列表，返回所有的数据。

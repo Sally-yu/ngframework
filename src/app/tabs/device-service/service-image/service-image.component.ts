@@ -1,16 +1,18 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnChanges,SimpleChanges,Input,TemplateRef } from '@angular/core';
 import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import {OpcService} from '../../../services/opc-service/opc.service';
+import {Observable} from 'rxjs';
+import {MonitorService} from '../../../services/monitor-service/monitor.service';
 
 @Component({
   selector: 'app-service-image',
   templateUrl: './service-image.component.html',
   styleUrls: ['./service-image.component.less']
 })
-export class ServiceImageComponent implements OnInit {
+export class ServiceImageComponent implements OnInit,OnChanges {
   // // 查看
   // preview(e) {
   //   // console.log('查看 e = ', e);
@@ -19,6 +21,8 @@ export class ServiceImageComponent implements OnInit {
   //   this.option = 'preview';
   //   this.selectData = e;
   // }
+  @Input() refresh;
+
   serviceDetail = false;
   option;
   currentIndex = 1;
@@ -65,6 +69,7 @@ export class ServiceImageComponent implements OnInit {
     private message: NzMessageService,
     private DbMgrService: DbMgrService,
     private OpcService:OpcService,
+    private MonitorService: MonitorService,
   ) {
   }
  // 右键创建菜单
@@ -123,25 +128,30 @@ export class ServiceImageComponent implements OnInit {
     this.loading = true;
       if (this.searchValue) {
         this.serviceList = JSON.parse(JSON.stringify(this.serviceList)).filter(d => {
-          return d.servername.indexOf(this.searchValue) >= 0 || d.serveraddress.indexOf(this.searchValue) >= 0;
+          return d.servername.indexOf(this.searchValue) >= 0 || d.servername.indexOf(this.searchValue) >= 0;
         });
         this.loading = false;
       }  
   }
   //刷新
   reFresh(){
+    this.getDatabaselist();
     this.getServicelist();
+    // this.MonitorService.set('payload', this.serviceList);
+    // this.myObserver.subscribe(() => {});
   }
 
+  //获取influx数据库配置信息列表
   getDatabaselist() {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = res;
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
+     // this.influxlist = res.filter;
+      // console.log('1、',this.dataAll)
       this.loading = false;
-    }, err => {
+    },err => {
       this.loading = false;
     });
-
   }
   getServicelist() {
     this.OpcService.getserviceList().then(res => {
@@ -167,4 +177,8 @@ export class ServiceImageComponent implements OnInit {
     this.getDatabaselist();
     this.getServicelist();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+      this.ngOnInit();
+  }
+
 }

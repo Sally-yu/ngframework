@@ -131,7 +131,8 @@ export class ServiceDetailComponent implements OnInit {
   getDatabaselist() {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = res;
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
+     // this.influxlist = res.filter;
       // console.log('1、',this.dataAll)
       this.loading = false;
     },err => {
