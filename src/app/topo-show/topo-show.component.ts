@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TopoService} from '../topo.service';
 import {UrlService} from '../url.service';
-import * as go from '../../assets/js/gojs/release/go.js';
+import * as go from '../../assets/js/go.js';
 
 declare var $: any;
 

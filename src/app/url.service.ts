@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {forEach} from '@angular/router/src/utils/collection';
-import {Router, RouterModule} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
