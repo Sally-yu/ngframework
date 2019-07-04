@@ -205,12 +205,12 @@ export class TopoDetailComponent implements OnInit {
         {
           mouseEnter: function (e, port) {  // the PORT argument will be this Shape
             if (!e.diagram.isReadOnly) {
-              port.fill = 'rgba(65,191,236,0.5)';
+              //port.fill = 'rgba(65,191,236,0.5)';
             }
           }
           ,
           mouseLeave: function (e, port) {
-            port.fill = 'transparent';
+            // port.fill = 'transparent';
           }
         }
       );
@@ -361,9 +361,9 @@ export class TopoDetailComponent implements OnInit {
           corner: 15,
         },
         $(go.Shape, {isPanelMain: true, strokeWidth: 10},
-          new go.Binding('stroke', function (c) {
-            return '#41BFEC';
-          })
+          // new go.Binding('stroke', function (c) {
+          //   return '#41BFEC';
+          // })
         ),
         $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]})
       );

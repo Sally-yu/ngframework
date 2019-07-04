@@ -57,10 +57,9 @@ import {IndexComponent} from './index/index.component';
 import {ForgetComponent} from './forget/forget.component';
 import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
 import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
-<<<<<<< HEAD
-import { DeviceServiceComponent } from './tabs/device-service/device-service.component';
+import { DeviceServiceComponent } from './tabs/device-service/service-list/device-service.component';
 import { ServiceDetailComponent } from './tabs/device-service/service-detail/service-detail.component';
-=======
+import { ServiceImageComponent } from './tabs/device-service/service-image/service-image.component';
 import { TopoMgrComponent } from './topo/topo-mgr/topo-mgr.component';
 import { TopoDesignComponent } from './topo/topo-design/topo-design.component';
 import { GrafanaMgrComponent } from './grafana/grafana-mgr/grafana-mgr.component';
@@ -72,7 +71,6 @@ import { TopoDetailComponent} from './topo-show/detail/detail.component';
 import { GrafanaShowComponent } from './grafana-show/grafana-show.component';
 import { Model3dShowComponent } from './model3d-show/model3d-show.component';
 import {Model3dDetailComponent} from './model3d-show/detail/detail.component';
->>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -125,6 +123,7 @@ const routes: Routes = [
     NotifDetialComponent,
     TemplateDetailComponent,
     DeviceDetailComponent,
+    ServiceImageComponent,
     DbMgrComponent,
     DataDefineComponent,
     DeviceTableComponent,
@@ -134,10 +133,8 @@ const routes: Routes = [
     ForgetComponent,
     DataManageComponent,
     AddDbMgrComponent,
-<<<<<<< HEAD
     DeviceServiceComponent,
     ServiceDetailComponent,
-=======
     TopoMgrComponent,
     TopoDesignComponent,
     GrafanaMgrComponent,
@@ -149,7 +146,6 @@ const routes: Routes = [
     GrafanaShowComponent,
     Model3dShowComponent,
     Model3dDetailComponent,
->>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
   ],
   imports: [
     BrowserModule,
