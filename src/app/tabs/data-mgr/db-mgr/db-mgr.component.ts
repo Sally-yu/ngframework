@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { AjaxService } from '../../../services/ajax/ajax.service';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import { UrlService } from '../../../url.service';
+import * as  MongoClient from 'mongodb/lib/mongo_client.js'
 
 @Component({
   selector: 'app-db-mgr',
