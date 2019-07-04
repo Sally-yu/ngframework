@@ -57,8 +57,9 @@ import {IndexComponent} from './index/index.component';
 import {ForgetComponent} from './forget/forget.component';
 import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
 import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
-import { DeviceServiceComponent } from './tabs/device-service/device-service.component';
+import { DeviceServiceComponent } from './tabs/device-service/service-list/device-service.component';
 import { ServiceDetailComponent } from './tabs/device-service/service-detail/service-detail.component';
+import { ServiceImageComponent } from './tabs/device-service/service-image/service-image.component';
 import { TopoMgrComponent } from './topo/topo-mgr/topo-mgr.component';
 import { TopoDesignComponent } from './topo/topo-design/topo-design.component';
 import { GrafanaMgrComponent } from './grafana/grafana-mgr/grafana-mgr.component';
@@ -122,6 +123,7 @@ const routes: Routes = [
     NotifDetialComponent,
     TemplateDetailComponent,
     DeviceDetailComponent,
+    ServiceImageComponent,
     DbMgrComponent,
     DataDefineComponent,
     DeviceTableComponent,

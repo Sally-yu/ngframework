@@ -198,6 +198,7 @@ export class HomeComponent implements OnInit {
         {title: '数据源列表', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
+  
     {
       title: '拓扑监控',
       key: '200',
@@ -228,7 +229,16 @@ export class HomeComponent implements OnInit {
         {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
       ]
     },
-
+    {
+      title: '设备服务',
+      key: '300',
+      expanded: false,
+      icon: 'cluster',
+      children: [
+        {title: '设备服务管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
+        {title: '设备服务列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
+      ]
+    },
   ]; //所有预置节点，渲染菜单结构
 
   nodes = []; //用于树列表绑定

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NzMessageService, toBoolean} from 'ng-zorro-antd';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { DbMgrService } from '../../services/db-mgr/db-mgr.service';
-import {OpcService} from '../../services/opc-service/opc.service';
+import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
+import {OpcService} from '../../../services/opc-service/opc.service';
 declare var $:any;
 @Component({
   selector: 'app-device-service',
@@ -68,84 +68,23 @@ export class DeviceServiceComponent implements OnInit {
       $("#"+id).css({ opacity: 0.2});
     }
   }
- // //启动
+//启动
  startOPCServer(id:string,serveraddress:string) {
     this.attrDisability(id,false);
-    var saveobj=this.serviceList.filter(d => d.serveraddress === serveraddress);
-    var servername=JSON.parse(saveobj[0].servergroup)[0];
-    var influx=this.influxlist.filter(d => d.servername === servername)
-    var opcaction = 'startcollect';
-    var data = new FormData();
-    data.append('opctype', saveobj[0].opctype);
-    data.append('opcip', saveobj[0].opchost)
-    data.append('serverurl', saveobj[0].serverurl);
-    data.append('frequency', saveobj[0].interval);
-    data.append('opcaction', opcaction);
-    data.append('inhost', influx[0].serverip);
-    data.append('inport', influx[0].serverport);
-    data.append('username', influx[0].username);
-    data.append('password', influx[0].password);
-    data.append('database', influx[0].database);
-    var opcHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.opchandleUrl;
-    var influxHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.influxhandleUrl;
-    this.http.post(influxHandleUrl, data, {responseType: 'text'}).subscribe(res => {
-      var state=res.search("连接错误") != -1 ;
-      if(state){
-        this.message.info(res);
-        this.attrDisability(id,true);
-      }else{
-        this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
-              if (res.indexOf('Error') > -1 || res.indexOf('Exception') > -1) {   //后端代码内部报错也返回200，会在请求成功的结果中
-                this.message.warning('启动失败');
-                this.attrDisability(id,true);
-              } else {
-                this.message.success(res);
-                saveobj[0].opcstate="true";//应设置状态变化
-                this.OpcService.updateService(saveobj[0]).then(res => {
-                  //this.message.success(res);
-                }, err => {
-                  this.message.warning("写入失败");
-                });   
-              }
-            }, error1 => {
-              this.attrDisability(id,true);
-              this.message.warning('启动失败', error1.error);
-            });
-      }
-  
-    }, error1 => {
-      this.message.warning('数据库连接出错');
+    var attrstate=this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist)
+    if(attrstate){
       this.attrDisability(id,true);
-    });
-   
+    }
+    this.reFresh();
   }
 
   //停止
   stopOPCServer(serveraddress:string) {
     $(this).removeAttr("onclick");
-    var saveobj=this.serviceList.filter(d => d.serveraddress === serveraddress);
-    var opcaction = 'stopcollect';
-    var data = new FormData();
-    data.append('opcaction', opcaction);
-    var opcHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.opchandleUrl;
-    this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
-      if (res.indexOf('Error') > -1 || res.indexOf('Exception') > -1) {   //后端代码内部报错也返回200，会在请求成功的结果中
-        this.message.warning('停止失败');
-      } else {
-        this.message.success(res);
-        saveobj[0].opcstate="false";//应设置状态变化
-        this.OpcService.updateService(saveobj[0]).then(res => {
-          //this.message.success(res);
-        }, err => {
-          this.message.warning("写入失败");
-        });   
-      }
-    }, error1 => {
-      this.message.warning('停止失败', error1.error);
-    });
+    this.OpcService.stopServer(serveraddress,this.serviceList);
+    this.reFresh();
   }
   editRow(serveraddress: string) {
-    
     let data = JSON.parse(JSON.stringify(this.serviceList)).filter(t => t.serveraddress === serveraddress)[0];
     if(this.toBoolean(data.opcstate)){
       this.message.info('该服务在启动状态下禁止编辑');
@@ -219,7 +158,7 @@ export class DeviceServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.getDatabaselist();
+    this.getDatabaselist();
     this.getServicelist();
   }
 

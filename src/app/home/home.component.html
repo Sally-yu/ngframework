@@ -197,8 +197,10 @@
               [key]="key" [flag]="indexFlag"></app-user>
 
     <!--edge service-->
-    <app-device-service *ngIf="exist('200')" class="back"
-                     [ngStyle]="{'display':active=='200'?'block':'none'}"></app-device-service>
+    <app-service-image *ngIf="exist('3001')" class="back"
+                     [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
+    <app-device-service *ngIf="exist('3002')" class="back"
+                    [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>                 
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
