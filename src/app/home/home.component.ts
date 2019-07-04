@@ -199,12 +199,6 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
-<<<<<<< HEAD
-      title: '设备服务',
-      key: '200',
-      expanded: false,
-      icon: 'cluster'
-=======
       title: '拓扑监控',
       key: '200',
       expanded: false,
@@ -233,7 +227,6 @@ export class HomeComponent implements OnInit {
         {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
         {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
       ]
->>>>>>> 8e1626f69fb99ea6107151d79b0c6fcbf4351536
     },
 
   ]; //所有预置节点，渲染菜单结构
