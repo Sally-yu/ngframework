@@ -161,7 +161,7 @@
     <!--控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测-->
     <!--首页-->
     <app-index *ngIf="exist('000')" class="back"
-               [ngStyle]="{'display':active=='000'?'block':'none'}"></app-index>
+               [ngStyle]="{'display':active=='000'?'block':'none'}" [flag]="indexFlag"></app-index>
 
     <!--device mgr-->
     <app-device-card *ngIf="exist('1000')" class="back"
@@ -194,7 +194,7 @@
 
     <!--user-->
     <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"
-              [key]="key"></app-user>
+              [key]="key" [flag]="indexFlag"></app-user>
 
     <!--edge service-->
     <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"

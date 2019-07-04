@@ -10,14 +10,11 @@ import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 export class DeviceService {
 
-  header;
-
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
     private url: UrlService,
   ) {
-    this.header=new HttpHeaders({token:this.url.token(),user:this.url.key()});
   }
 
 
@@ -25,7 +22,7 @@ export class DeviceService {
   deviceTempList(): any {
     let data = [];
     return new Promise((resolve, reject) => {
-      this.http.get(this.url.tempList, {headers: this.header}).toPromise().then(res => {
+      this.http.get(this.url.tempList, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
         }
@@ -41,7 +38,7 @@ export class DeviceService {
   //新增设备模板
   newDeviceTemp(template: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.addTemp, template, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.addTemp, template, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -59,7 +56,7 @@ export class DeviceService {
   //删除设备模板
   removeTemp(key: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.removeTemp, {key: key}, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.removeTemp, {key: key}, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -77,7 +74,7 @@ export class DeviceService {
   //更新设备模板，注意时间时区
   updateTemplate(temp: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.updateTemp, temp, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.updateTemp, temp, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -106,7 +103,7 @@ export class DeviceService {
       device['template']['time'] = device['template']['time'].replace(' ', 'T') + '+08:00';
     }
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.addDevice, device, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.addDevice, device, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -124,7 +121,7 @@ export class DeviceService {
   //删除设备
   removeDevice(key: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.removeDevice, {key: key}, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.removeDevice, {key: key}, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -142,7 +139,7 @@ export class DeviceService {
   //更新设备，注意时间时区
   updateDevice(device: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.updateDevice, device, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.updateDevice, device, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -161,7 +158,7 @@ export class DeviceService {
   deviceList(): any {
     let data = [];
     return new Promise((resolve, reject) => {
-      this.http.get(this.url.deviceList, {headers: this.header}).toPromise().then(res => {
+      this.http.get(this.url.deviceList, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status'] && res['data']) {
           data = res['data'];
         }
@@ -178,7 +175,7 @@ export class DeviceService {
   findDeviceCode(code: string): any {
     let data = [];
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.deviceCode, {code: code}, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.deviceCode, {code: code}, {headers: this.url.header()}).toPromise().then(res => {
         resolve(res);  //status为true时 data为设备信息，为false时msg为错误信息
       }, res => {
         reject(res);
@@ -190,7 +187,7 @@ export class DeviceService {
   //获取设备数值
   deviceValue(codes: any): any {
     return new Promise((resolve, reject) => {
-      this.http.post(this.url.deviceValue, {keys: codes}, {headers: this.header}).toPromise().then(res => {
+      this.http.post(this.url.deviceValue, {keys: codes}, {headers: this.url.header()}).toPromise().then(res => {
         if (res['status'] && res['data']) {
           resolve(res['data']);  //status为true时 data为设备信息，为false时msg为错误信息
         } else {

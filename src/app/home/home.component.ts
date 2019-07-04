@@ -68,7 +68,6 @@ export class HomeComponent implements OnInit {
 
   tabs = []; //tab页内容数组，元素格式是数的子节点
 
-  indexFlag=0;
 
   // customTopo = {
   //   title: '拓扑监控',
@@ -141,11 +140,11 @@ export class HomeComponent implements OnInit {
   }; //系统管理菜单
 
   options = [
-    {title: '个人中心', key: '1040', app: 'user', icon: 'control', isLeaf: true, fav: false, share: false},
+    {title: '个人中心', key: '1040', app: 'user', icon: 'control', isLeaf: true, fav: false, share: false, reload: false},
     // {title: '基本设置', key: '1041', app: 'setting',isLeaf: true, fav: false, share: false},
-    {title: '消息通知', key: '1042', app: 'notification', icon: 'control', isLeaf: true, fav: false, share: true},
-    {title: '用户列表', key: '1043', app: 'user-list', icon: 'control', isLeaf: true, fav: false, share: false},
-    {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false}
+    {title: '消息通知', key: '1042', app: 'notification', icon: 'control', isLeaf: true, fav: false, share: true, reload: false},
+    {title: '用户列表', key: '1043', app: 'user-list', icon: 'control', isLeaf: true, fav: false, share: false, reload: false},
+    {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
   ]; //用户工具下拉菜单
 
   allNodes = [
@@ -157,7 +156,7 @@ export class HomeComponent implements OnInit {
       children: [],
       isLeaf: false,
       fav: true,
-      share: true
+      share: true,
     },
     {
       title: '设备管理',
@@ -252,6 +251,7 @@ export class HomeComponent implements OnInit {
   loading = false;
   key;
   notifcount = 0;
+  indexFlag = 0;
 
   constructor(
     private userSrv: UserService,
@@ -289,6 +289,7 @@ export class HomeComponent implements OnInit {
       var index = keys.indexOf(this.activedNode['key']);
       this.active = this.activedNode['key'];
       this.tabIndex = index >= 0 ? index : this.tabs.push(this.activedNode) - 1;
+      this.indexFlag += 1;
     } else {
 
     }
@@ -373,7 +374,8 @@ export class HomeComponent implements OnInit {
     this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);
     // let tab = this.tabs[this.tabIndex];
     this.active = key;
-    this.indexFlag+=1;
+    this.indexFlag += 1;
+
     // console.log("active:"+this.active);
     // console.log("event:"+event.index);
     // console.log("index:"+this.tabIndex);

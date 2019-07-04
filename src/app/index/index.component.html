@@ -1,4 +1,4 @@
-<div id="content">
+<div id="content" [ngStyle]="{'display':indexUrl?'none':'block'}">
 
 
   <span style=" margin-left: -16px;padding-left: 24px;
@@ -25,4 +25,8 @@
   </div>
   <div style="margin-top: 32px" data-bind="component: {name: 'dashboard-grid', params: $data}"></div>
 
+</div>
+
+<div id="indexUrl" *ngIf="indexUrl">
+  <iframe [src]="indexUrl | safe" style="position: absolute;height: 100%;width:100%;border: none"></iframe>
 </div>
