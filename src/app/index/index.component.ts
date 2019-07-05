@@ -20,6 +20,7 @@ declare var echarts: any; //index全局导入 保平安
 })
 export class IndexComponent implements OnInit, OnChanges {
 
+
   @Input() flag;
 
   charts = [
@@ -380,6 +381,7 @@ export class IndexComponent implements OnInit, OnChanges {
       });
     }, 1000);
     this.setIndex();
+    // this.connectWs();
   }
 
   getList() {
@@ -402,5 +404,7 @@ export class IndexComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.ngOnInit();
   }
+
+
 
 }

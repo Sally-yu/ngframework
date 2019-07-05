@@ -361,9 +361,9 @@ export class TopoDetailComponent implements OnInit {
           corner: 15,
         },
         $(go.Shape, {isPanelMain: true, strokeWidth: 10},
-          // new go.Binding('stroke', function (c) {
-          //   return '#41BFEC';
-          // })
+          new go.Binding('stroke', function (c) {
+            return '#41BFEC';
+          })
         ),
         $(go.Shape, {isPanelMain: true, stroke: 'white', strokeWidth: 3, name: 'PIPE', strokeDashArray: [20, 40]})
       );

@@ -19,6 +19,7 @@
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
         <button nz-button (click)="getList()">刷新</button>
+        <button nz-button (click)="connectWs()">自动</button>
         <button nz-button (click)="add()" nzType="primary">新增</button>
       </div>
     </div>
