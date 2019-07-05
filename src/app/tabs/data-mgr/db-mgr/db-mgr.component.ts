@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, SimpleChanges, OnChanges, Input } from '@angular/core';
 import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -14,7 +14,9 @@ import * as  MongoClient from 'mongodb/lib/mongo_client.js'
 })
 
 
-export class DbMgrComponent implements OnInit {
+export class DbMgrComponent implements OnInit,OnChanges {
+
+  @Input() change;
   dataAll;   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件
@@ -193,5 +195,7 @@ export class DbMgrComponent implements OnInit {
     });
     this.getDatabaselist();
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.dropdown.close();  //右键菜单关闭
+  }
 }

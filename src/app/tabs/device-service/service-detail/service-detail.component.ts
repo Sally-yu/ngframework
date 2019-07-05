@@ -124,15 +124,21 @@ export class ServiceDetailComponent implements OnInit {
     }),error1=>{
       this.message.warning(error1.error);
     };
+    this.OpcService.searchServer(this.service).then(res => {
+      if(res){
+        this.service.serverurl = '';
+        this.servernames = [];
+        this.servernames=JSON.parse(res);
+        this.service.serverurl = this.servernames[0];
+      }
+    });
   }
-
 
   //获取influx数据库配置信息列表
   getDatabaselist() {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = res;
-      // console.log('1、',this.dataAll)
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
       this.loading = false;
     },err => {
       this.loading = false;

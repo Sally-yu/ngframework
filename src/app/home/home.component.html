@@ -183,7 +183,7 @@
 
 
     <!--data-mgr-->
-    <app-db-mgr *ngIf="exist('1020')" class="back"
+    <app-db-mgr *ngIf="exist('1020')" class="back" [change]="indexFlag"
                 [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>
     <app-data-manage *ngIf="exist('1021')" class="back"
                      [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>
@@ -197,9 +197,9 @@
               [key]="key" [flag]="indexFlag"></app-user>
 
     <!--edge service-->
-    <app-service-image *ngIf="exist('3001')" class="back"
+    <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
                      [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
-    <app-device-service *ngIf="exist('3002')" class="back"
+    <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
                     [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>                 
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>

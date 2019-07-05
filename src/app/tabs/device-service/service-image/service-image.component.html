@@ -29,11 +29,13 @@
           <div (contextmenu)="contextMenu($event, contextTemplate)" nz-popover nzType="primary"
             [nzContent]="contentTemplate">
             <div class="database">
-              <table border="0">
+              <table style="border:0">
                 <tr>
-                  <th rowspan="2"><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
-                      alt="database" /></th>
-                  <td><span>{{item.servername}}</span></td>
+                  <th rowspan="2" align="right" >
+                    <img *ngIf="toBoolean(item.opcstate)" src="../../../../assets/src/service-up.png" style="width: 50px; align-self: center;"alt="database" />
+                    <img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />
+                  </th>
+                  <td align="left"><span>{{item.servername}}</span></td>
                 </tr>
               </table>
             </div>

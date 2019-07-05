@@ -33,13 +33,15 @@
  **/
 
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,ViewChild} from '@angular/core';
 import {NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
 import {NotifyService} from '../notify.service';
+import { DeviceServiceComponent } from '../tabs/device-service/service-list/device-service.component';
+import { ServiceImageComponent } from '../tabs/device-service/service-image/service-image.component';
 
 @Component({
   selector: 'app-home',
@@ -65,6 +67,7 @@ export class HomeComponent implements OnInit {
   active = '000'; //当前激活tab页的key 默认首页
 
   tabs = []; //tab页内容数组，元素格式是数的子节点
+
 
   // customTopo = {
   //   title: '拓扑监控',
@@ -230,13 +233,13 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
-      title: '设备服务',
+      title: '数采服务',
       key: '300',
       expanded: false,
       icon: 'cluster',
       children: [
-        {title: '设备服务管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
-        {title: '设备服务列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
+        {title: '数采服务管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
+        {title: '数采服务列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
       ]
     },
   ]; //所有预置节点，渲染菜单结构
@@ -366,8 +369,6 @@ export class HomeComponent implements OnInit {
       return e.key;
     }).indexOf(obj.key) : this.tabs.push(obj) - 1;
   }
-
-
   //点击tab页签事件
   selectChange(key) {
     this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);

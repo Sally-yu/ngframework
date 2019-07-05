@@ -71,6 +71,7 @@ import { TopoDetailComponent} from './topo-show/detail/detail.component';
 import { GrafanaShowComponent } from './grafana-show/grafana-show.component';
 import { Model3dShowComponent } from './model3d-show/model3d-show.component';
 import {Model3dDetailComponent} from './model3d-show/detail/detail.component';
+import {MonitorService} from './services/monitor-service/monitor.service';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -160,7 +161,8 @@ const routes: Routes = [
   ],
   providers: [
     {provide: NZ_I18N, useValue: zh_CN},
-    {provide: NZ_ICONS, useValue: icons}
+    {provide: NZ_ICONS, useValue: icons},
+    MonitorService
   ],
   bootstrap: [AppComponent],
   schemas: [

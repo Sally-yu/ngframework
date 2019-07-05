@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,OnChanges, SimpleChanges } from '@angular/core';
 import {NzMessageService, toBoolean} from 'ng-zorro-antd';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import {OpcService} from '../../../services/opc-service/opc.service';
+import {Observable} from 'rxjs';
+import {MonitorService} from '../../../services/monitor-service/monitor.service';
+
 declare var $:any;
 @Component({
   selector: 'app-device-service',
   templateUrl: './device-service.component.html',
   styleUrls: ['./device-service.component.less']
 })
-export class DeviceServiceComponent implements OnInit {
+export class DeviceServiceComponent implements OnInit,OnChanges {
 
+  @Input() refresh;
   serviceDetail = false;
   option;
   currentIndex = 1;
   pageSize = 5;
   sizeOption = [5, 10, 25, 20];
-
+  public myObserver: Observable<any>;
   show:boolean = true;//显示列表主界面
   loading = false;
   servername:string;
@@ -56,6 +60,7 @@ export class DeviceServiceComponent implements OnInit {
     private message: NzMessageService,
     private DbMgrService: DbMgrService,
     private OpcService:OpcService,
+    private MonitorService: MonitorService,
   ) {
   }
   //为a标签禁止 or 开启 点击事件
@@ -71,18 +76,30 @@ export class DeviceServiceComponent implements OnInit {
 //启动
  startOPCServer(id:string,serveraddress:string) {
     this.attrDisability(id,false);
-    var attrstate=this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist)
-    if(attrstate){
+    this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
       this.attrDisability(id,true);
-    }
-    this.reFresh();
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+        
+      }
+    });  
+    
   }
 
   //停止
   stopOPCServer(serveraddress:string) {
     $(this).removeAttr("onclick");
-    this.OpcService.stopServer(serveraddress,this.serviceList);
-    this.reFresh();
+    this.OpcService.stopServer(serveraddress,this.serviceList).then(res => {
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+      }
+    }); 
   }
   editRow(serveraddress: string) {
     let data = JSON.parse(JSON.stringify(this.serviceList)).filter(t => t.serveraddress === serveraddress)[0];
@@ -121,7 +138,7 @@ export class DeviceServiceComponent implements OnInit {
     this.loading = true;
       if (this.searchValue) {
         this.serviceList = JSON.parse(JSON.stringify(this.serviceList)).filter(d => {
-          return d.servername.indexOf(this.searchValue) >= 0 || d.serveraddress.indexOf(this.searchValue) >= 0;
+          return d.servername.indexOf(this.searchValue) >= 0 || d.servername.indexOf(this.searchValue) >= 0;
         });
         this.loading = false;
       }  
@@ -129,12 +146,17 @@ export class DeviceServiceComponent implements OnInit {
   //刷新
   reFresh(){
     this.getServicelist();
+    this.getDatabaselist();
   }
 
+  //获取influx数据库配置信息列表
   getDatabaselist() {
+    this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = res;
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
+      this.loading = false;
     },err => {
+      this.loading = false;
     });
   }
   getServicelist() {
@@ -160,7 +182,10 @@ export class DeviceServiceComponent implements OnInit {
   ngOnInit() {
     this.getDatabaselist();
     this.getServicelist();
-  }
 
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ngOnInit();
+  }
 
 }
