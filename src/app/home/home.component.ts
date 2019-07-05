@@ -201,7 +201,7 @@ export class HomeComponent implements OnInit {
         {title: '数据源列表', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
-  
+
     {
       title: '拓扑监控',
       key: '200',
@@ -282,6 +282,7 @@ export class HomeComponent implements OnInit {
 
   // 激活节点，赋类，调整样式，tab页响应
   activeNode(data: NzFormatEmitEvent): void {
+    this.indexFlag += 1;
     if (data.node.origin.isLeaf || data.node.children.length < 1) {     //仅子节点可选中
       this.activedNode = data.node.origin;
       // var obj = this.activedNode;
@@ -289,7 +290,6 @@ export class HomeComponent implements OnInit {
       var index = keys.indexOf(this.activedNode['key']);
       this.active = this.activedNode['key'];
       this.tabIndex = index >= 0 ? index : this.tabs.push(this.activedNode) - 1;
-      this.indexFlag += 1;
     } else {
 
     }
