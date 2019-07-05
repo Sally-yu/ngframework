@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DeviceService} from '../../../device.service';
+import {OpcService} from '../../../services/opc-service/opc.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-device-list',
@@ -21,6 +23,8 @@ export class DeviceListComponent implements OnInit {
 
   constructor(
     private deviceService: DeviceService,
+    private OpcService: OpcService,
+    private message: NzMessageService,
   ) {
   }
 
@@ -52,7 +56,22 @@ export class DeviceListComponent implements OnInit {
       this.loading = false;
     });
   }
+  //同步设备列表
+  synchro(){
+    this.OpcService.getserviceList().then(res => {
+      var serviceList = res;
+      serviceList.forEach(element => {
+        this.OpcService.updateDevicelist(element).then(res => {
 
+        },err => {
+          this.message.warning("同步失败");
+        });;
+      });
+      this.message.success("同步成功");
+      setTimeout(() => {  this.getList();; }, 1000);
+    },err => {
+    });
+  }
   add() {
     // this.device = JSON.parse(JSON.stringify(this.nullDevice));
     this.option = 'new';

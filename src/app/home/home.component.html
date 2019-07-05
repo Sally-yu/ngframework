@@ -183,7 +183,7 @@
 
 
     <!--data-mgr-->
-    <app-db-mgr *ngIf="exist('1020')" class="back"
+    <app-db-mgr *ngIf="exist('1020')" class="back" [change]="indexFlag"
                 [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>
     <app-data-manage *ngIf="exist('1021')" class="back"
                      [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>

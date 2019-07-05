@@ -76,18 +76,30 @@ export class DeviceServiceComponent implements OnInit,OnChanges {
 //启动
  startOPCServer(id:string,serveraddress:string) {
     this.attrDisability(id,false);
-    var attrstate=this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist)
-    if(attrstate){
+    this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
       this.attrDisability(id,true);
-    }
-    this.reFresh();
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+        
+      }
+    });  
+    
   }
 
   //停止
   stopOPCServer(serveraddress:string) {
     $(this).removeAttr("onclick");
-    this.OpcService.stopServer(serveraddress,this.serviceList);
-    this.reFresh();
+    this.OpcService.stopServer(serveraddress,this.serviceList).then(res => {
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+      }
+    }); 
   }
   editRow(serveraddress: string) {
     let data = JSON.parse(JSON.stringify(this.serviceList)).filter(t => t.serveraddress === serveraddress)[0];
@@ -134,8 +146,7 @@ export class DeviceServiceComponent implements OnInit,OnChanges {
   //刷新
   reFresh(){
     this.getServicelist();
-    // this.MonitorService.set('payload', this.serviceList);
-    // this.myObserver.subscribe(() => {});
+    this.getDatabaselist();
   }
 
   //获取influx数据库配置信息列表
@@ -143,8 +154,6 @@ export class DeviceServiceComponent implements OnInit,OnChanges {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
       this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
-     // this.influxlist = res.filter;
-      // console.log('1、',this.dataAll)
       this.loading = false;
     },err => {
       this.loading = false;

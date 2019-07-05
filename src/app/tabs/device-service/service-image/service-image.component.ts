@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges,SimpleChanges,Input,TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { NzDropdownContextComponent, NzDropdownService,NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
@@ -78,18 +78,30 @@ export class ServiceImageComponent implements OnInit,OnChanges {
 }
 //启动
  startOPCServer(serveraddress:string) {
-    var attrstate=this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist)
-    if(attrstate){
-     
-    }
-    this.reFresh();
+    this.dropdown.close();  //右键菜单关闭
+    this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+      }
+    }); 
   }
 
   //停止
-  stopOPCServer(serveraddress:string) {
-    this.OpcService.stopServer(serveraddress,this.serviceList);
-    this.reFresh();
+  stopOPCServer(serveraddress:string) {  
+    this.dropdown.close();  //右键菜单关闭
+    this.OpcService.stopServer(serveraddress,this.serviceList).then(res => {
+      if(res){
+        this.OpcService.updateService(res).then(res => {
+          this.reFresh();
+        }, err => {
+        });
+      }
+    }); 
   }
+
   edit(serveraddress: string) {
     this.dropdown.close();  //右键菜单关闭
     let data = JSON.parse(JSON.stringify(this.serviceList)).filter(t => t.serveraddress === serveraddress)[0];
@@ -135,10 +147,8 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   }
   //刷新
   reFresh(){
-    this.getDatabaselist();
     this.getServicelist();
-    // this.MonitorService.set('payload', this.serviceList);
-    // this.myObserver.subscribe(() => {});
+    this.getDatabaselist();
   }
 
   //获取influx数据库配置信息列表
@@ -146,8 +156,6 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
       this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
-     // this.influxlist = res.filter;
-      // console.log('1、',this.dataAll)
       this.loading = false;
     },err => {
       this.loading = false;
@@ -178,7 +186,8 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     this.getServicelist();
   }
   ngOnChanges(changes: SimpleChanges): void {
-      this.ngOnInit();
+    this.dropdown.close();  //右键菜单关闭
+    this.ngOnInit();    
   }
 
 }
