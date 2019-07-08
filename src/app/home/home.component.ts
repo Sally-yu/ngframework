@@ -174,8 +174,8 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'gateway',
       children: [
-        {title: '拓扑设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
-        {title: '拓扑监控管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
+        {title: '拓扑图设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
+        {title: '拓扑图管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
       ]
     },
     {
