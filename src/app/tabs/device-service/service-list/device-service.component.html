@@ -1,5 +1,5 @@
 <div id="content">
-    <app-service-detail *ngIf="serviceDetail" [service]="service" [option]="option" [parentCom]="'设备列表'"
+    <app-service-detail *ngIf="serviceDetail" [service]="service" [option]="option" [parentCom]="'服务列表'"
                       (result)="cancel($event)"></app-service-detail>
     <div *ngIf="!serviceDetail">
       <nz-layout style="padding:24px 0; background: transparent">

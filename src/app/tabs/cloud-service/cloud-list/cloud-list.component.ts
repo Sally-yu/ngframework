@@ -23,20 +23,25 @@ export class CloudListComponent implements OnInit,OnChanges {
   searchValue:string;
 
   cloud= {
-    id: null,
-    servername: "",
-    serveraddress: "", 
-    serverlocation: "", 
-    serverport: "",
-    description:"",
-    opcstate:   "false",
-    opctype:    "DA",
-    opchost:    "",
-    serverurl:  "",
-    interval:     "100",
-    savestrategy:  "单机版部署",
-    servergroup:   [],
-    login:         []   
+      id: null,
+      name: null,
+      destination: 'MQTT_TOPIC',
+      encryption: {},
+      format: 'JSON',
+      enable: false,
+      address: null,
+      port: 0,
+      path: null,
+      publisher: null,
+      user: null,
+      password: null,
+      topic: null,
+      baseURL: null,
+      url: null,
+      filter: {
+          device: null,
+          attribute:null
+      }
   };
   cloudList = [];//订阅客户端数组列表信息            
 
@@ -49,18 +54,18 @@ export class CloudListComponent implements OnInit,OnChanges {
   }
 
 
-  editRow(serveraddress: string) {
-    // let data = JSON.parse(JSON.stringify(this.cloudList)).filter(t => t.serveraddress === serveraddress)[0];
-    // if(this.toBoolean(data.opcstate)){
-    //   this.message.info('该服务在启动状态下禁止编辑');
-    //   return 0;
-    // }else{
-    //   this.cloud=this.toEditableobj(this.cloud,data);
-    //   this.option = 'edit';
-    //   this.cloudDetail = true;
-    // }    
+  edit(id: string) {
+    let data = JSON.parse(JSON.stringify(this.cloudList)).filter(t => t.id === id)[0];
+    if(data.enable){
+      this.message.info('该服务在启动状态下禁止编辑');
+      return 0;
+    }else{
+      this.cloud=data;
+      this.option = 'edit';
+      this.cloudDetail = true;
+    }    
   }
-  addNewOpcRow(){  
+  add(){  
      this.option = 'new';
      this.cloudDetail = true;
   }
@@ -75,42 +80,38 @@ export class CloudListComponent implements OnInit,OnChanges {
     this.loading = true;
       if (this.searchValue) {
         this.cloudList = JSON.parse(JSON.stringify(this.cloudList)).filter(d => {
-          return d.servername.indexOf(this.searchValue) >= 0 || d.servername.indexOf(this.searchValue) >= 0;
+          return d.name.indexOf(this.searchValue) >= 0 || d.name.indexOf(this.searchValue) >= 0;
         });
         this.loading = false;
       }  
   }
   //刷新
   reFresh(){
-    this.getServicelist();
+    this.getCloudlist();
   }
 
-  getServicelist() {
+  getCloudlist() {
     this.SubscribeService.getsubscribeList().then(res => {
       this.cloudList = res;
     },err => {
     });
   }
   // 删除
-  remove(serveraddress: string) {
-    this.SubscribeService.deleteSubscribe(serveraddress).then(res => {
-      this.getServicelist();
+  remove(id: string) {
+    this.SubscribeService.deleteSubscribe(id).then(res => {
+      this.getCloudlist();
     },err => {
-      this.getServicelist();
+      this.getCloudlist();
     });  
   }
  
-  //将字符串转为bool变量
-  toBoolean(state:string){
-    return eval(state.toLowerCase());
-  }
 
   ngOnInit() {
-    // this.getServicelist();
+     this.getCloudlist();
 
   }
   ngOnChanges(changes: SimpleChanges): void {
-    //this.ngOnInit();
+    this.ngOnInit();
   }
 
 

@@ -1,5 +1,5 @@
 <div id="content">
-  <app-cloud-detail *ngIf="cloudDetail" [service]="service" [option]="option" [parentCom]="'设备列表'"
+  <app-cloud-detail *ngIf="cloudDetail" [cloud]="cloud" [option]="option" [parentCom]="'订阅列表'"
                     (result)="cancel($event)"></app-cloud-detail>
 <div *ngIf="!cloudDetail">
   <nz-layout style="padding:24px 0; background: transparent">
@@ -14,16 +14,16 @@
     </nz-content>
   </nz-layout>
   <div>
-    <nz-list [nzDataSource]="serviceList" [nzRenderItem]="item" [nzLoading]="loading"
+    <nz-list [nzDataSource]="cloudList" [nzRenderItem]="item" [nzLoading]="loading"
       [nzGrid]="{ gutter: 36, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
       <ng-template #item let-item>
         <ng-template #contextTemplate>
           <ul nz-menu nzInDropDown>
-            <li nz-menu-item (click)="edit(item.serveraddress)">编辑</li>
-            <li *ngIf="!toBoolean(item.opcstate)" nz-menu-item (click)="startOPCServer(item.serveraddress)">启动</li>
-            <li *ngIf="toBoolean(item.opcstate)" nz-menu-item style="color:#F22;" (click)="stopOPCServer(item.serveraddress)">停止</li>
+            <li nz-menu-item (click)="edit(item.id)">编辑</li>
+            <li *ngIf="!item.enable" nz-menu-item (click)="start(item.id)">启动</li>
+            <li *ngIf="item.enable" nz-menu-item style="color:#F22;" (click)="stop(item.id)">停止</li>
             <li nz-menu-item>
-              <a nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.serveraddress)">删除</a></li>
+              <a nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.id)">删除</a></li>
           </ul>
         </ng-template>
         <div (contextmenu)="contextMenu($event, contextTemplate)" nz-popover nzType="primary"
@@ -32,10 +32,10 @@
             <table style="border:0">
               <tr>
                 <th rowspan="2" align="right" >
-                  <img *ngIf="toBoolean(item.opcstate)" src="../../../../assets/src/service-up.png" style="width: 50px; align-self: center;"alt="database" />
-                  <img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />
+                  <img *ngIf="item.enable" src="../../../../assets/src/cloud-up.png" style="width: 50px; align-self: center;"alt="database" />
+                  <img *ngIf="!item.enable" src="../../../../assets/src/cloud-down.png" style="width: 50px; align-self: center;"alt="database" />
                 </th>
-                <td align="left"><span>{{item.servername}}</span></td>
+                <td align="left"><span>{{item.name}}</span></td>
               </tr>
             </table>
           </div>
@@ -43,20 +43,25 @@
         <ng-template #contentTemplate>
           <table style="width: 200px">
             <tr>
-              <th><b>服务地址：</b></th>
-              <td>{{item.serveraddress}}</td>
+              <th><b>订阅方式：</b></th>
+              <td>{{item.destination}}</td>
             </tr>
             <tr>
-              <th><b>端口号：</b></th>
-              <td>{{item.serverport}}</td>
+              <th><b>主题：</b></th>
+              <td>{{item.topic}}</td>
             </tr>
             <tr>
-              <th><b>采集频率：</b></th>
-              <td>{{item.interval}}ms</td>
+              <th><b>压缩方式：</b></th>
+              <td>{{item.format}}</td>
+              </tr>
+            <tr>
+            <tr>
+              <th><b>设备名称：</b></th>
+              <td>{{item.filter.device}}</td>
             </tr>
             <tr>
-              <th><b>存储策略：</b></th>
-              <td>{{item.savestrategy}}</td>
+              <th><b>设备参数：</b></th>
+              <td>{{item.filter.attribute}}</td>
             </tr>
           </table>
         </ng-template>

@@ -1,8 +1,8 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
-import {OpcService} from '../../../services/opc-service/opc.service';
+import {SubscribeService} from '../../../services/subscribe-service/subscribe.service';
+import { DeviceService } from 'src/app/device.service';
 
 @Component({
   selector: 'app-cloud-detail',
@@ -12,170 +12,114 @@ import {OpcService} from '../../../services/opc-service/opc.service';
 export class CloudDetailComponent implements OnInit {
 
   @Input() option: string;
-  @Input() service;
+  @Input() cloud;
   @Input() parentCom;
   @Output() result: EventEmitter<any> = new EventEmitter();
 
   loading = false;
+  destinationData = ['MQTT_TOPIC', 'ZMQ_TOPIC', 'IOTCORE_MQTT', 'AZURE_MQTT', 'REST_ENDPOINT'];
+  fomartData = ['JSON', 'XML', 'CSV', 'SERIALIZED', 'IOTCORE_JSON', 'AZURE_JSON'];
 
-
-  nullService = {
-    servername: "",
-    serveraddress: "", 
-    serverlocation: "", 
-    serverport: "",
-    description:"",
-    opcstate:   "false",
-    opctype:    "DA",
-    opchost:    "",
-    serverurl:  "",
-    interval:     "100",
-    savestrategy:  "单机版部署",
-    servergroup:   [],
-    login:         []   
+  nullCloud= {
+    id: null,
+    name: null,
+    destination: 'MQTT_TOPIC',
+    encryption: {},
+    format: 'JSON',
+    enable: false,
+    address: null,
+    port: 0,
+    path: null,
+    publisher: null,
+    user: null,
+    password: null,
+    topic: null,
+    baseURL: null,
+    url: null,
+    filter: {
+        device: null,
+        attribute:null
+    }
   };
-  servernames = ["opcda://10.25.11.197/KEPware.KEPServerEx.V4"];
-  collectFrq = [
-    '100', '300', '500', '800', '1000', '1500'
-  ];
-  influxlist = [];//时序数据库数组列表信息
-  removestate:boolean=false;//判断是否显示删除数据库按钮
-  addstate:boolean=false;//判断是否显示添加数据库按钮
+  deviceList;
+  paramList;
   nameRequire = true;
   addrRequire = true;
   portRequire = true;
-  hostRequire = true;
-  opchandleUrl=this.OpcService.opchandleUrl;
+  topicRequire = true;
+  deviceRequire= true;
 
 
   constructor(
     private message: NzMessageService,
     private http: HttpClient,
-    private DbMgrService: DbMgrService,
-    private OpcService:OpcService,
+    private SubscribeService:SubscribeService,
+    private deviceService: DeviceService,
   ) {
   }
 
   close() {
     this.result.emit(true);
   }
-  addInput() {//集群部署时添加从数据库
-    var number;
-    if(this.service.login==null){
-      number=2;
-      this.removestate=false;
-    }else{
-      this.removestate=true;
-      number = this.service.login.length + 2;
-    }
-    this.service.login.push({"name":"从数据库"+number,"id":number});
-    if((this.service.login.length+2)<this.influxlist.length){
-      this.addstate=true;
-    }
-    else{
-      this.addstate=false;
-    }
-  }
-  removeInput() {//集群部署时删除从数据库
-      let i = this.service.login.length-1;
-      this.service.servergroup.splice(i-1, 1);
-      this.service.login.splice(i, 1);
-      if(i>0){
-        this.removestate=true;
-      }else{
-        this.removestate=false;
-      }
-      if((this.service.login.length+2)<this.influxlist.length){
-        this.addstate=true;
-      }
-      else{
-        this.addstate=false;
-      }
-  }
-  isNotSelected(servername,node){//判断下拉选项是否已被选中，排除已选项
-    if(servername===node){
-      return true;
-    }else{
-      return this.service.servergroup.indexOf(node) === -1;
-    }
-  }
-  strategyChange(strategy){//时序数据库策略发生改变时
-    this.service.servergroup.length=0;
-    if(strategy==="集群版部署" && this.influxlist.length>2){
-      this.addstate=true;
-    }
-  }
 
-  //查找服务器名称
-  searchopcserver() {
-    this.OpcService.searchServer(this.service).then(res => {
-      if(res){
-        this.service.serverurl = '';
-        this.servernames = [];
-        this.servernames=JSON.parse(res);
-        this.service.serverurl = this.servernames[0];
-      }
-    }); 
-  }
-
-  //获取influx数据库配置信息列表
-  getDatabaselist() {
-    this.loading = true;
-    this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
-      this.loading = false;
-    },err => {
-      this.loading = false;
-    });
-  }
   //提交前验证
   validate() {
-    if (this.service.servername) {
+    if (this.cloud.name) {
       this.nameRequire = true;
     } else {
       this.nameRequire = false;
     }
-    if (this.service.serveraddress) {
+    if (this.cloud.address) {
       this.addrRequire = true;
     } else {
       this.addrRequire = false;
     }
-    if (this.service.serverport) {
+    if (this.cloud.port) {
       this.portRequire = true;
     } else {
       this.portRequire = false;
     }
-    if (this.service.opchost) {
-      this.hostRequire = true;
+    if (this.cloud.topic) {
+      this.topicRequire = true;
     } else {
-      this.hostRequire = false;
+      this.topicRequire = false;
+    }
+    if (this.cloud.filter.device) {
+      this.deviceRequire = true;
+    } else {
+      this.deviceRequire = false;
     }
   }
-
+  //获取设备信息
+  getList() {
+    this.loading = true;
+    this.deviceService.deviceList().then(res => {
+      this.deviceList = res;
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+  
+  deviceChange(device){
+    if(device){
+      this.deviceRequire=true;
+      this.paramList=device.attrs;
+    }else{
+      this.deviceRequire=false;
+      this.paramList=null;
+    }
+  }
   //提交保存
   submit() {
     this.loading = true;
-    var saveobj={ 
-      servername: "",
-      serveraddress: "",
-      serverport: "", 
-      serverlocation: "", 
-      description:"", 
-      opcstate: "", 
-      opctype: "", 
-      opchost: "",
-      serverurl: "",
-      interval: "",
-      savestrategy:"",
-      servergroup: "",
-      login: ""   };          
     this.validate();
-    if (this.nameRequire && this.addrRequire && this.portRequire && this.hostRequire) {
-      saveobj=this.toSaveableobj(saveobj,this.service);
-      let data = JSON.parse(JSON.stringify(saveobj));
+    if (this.nameRequire && this.addrRequire && this.portRequire && this.topicRequire) {
+
+      let data = JSON.parse(JSON.stringify(this.cloud));
       switch (this.option) {
         case 'new': //新增
-          this.OpcService.addService(data).then(res => {
+          this.SubscribeService.addSubscribe(data).then(res => {
             this.close();
             this.loading = false;
           }, err => {
@@ -183,7 +127,7 @@ export class CloudDetailComponent implements OnInit {
           });
           break;
         case 'edit':  //编辑
-          this.OpcService.updateService(data).then(res => {
+          this.SubscribeService.updateSubscribe(data).then(res => {
             this.close();
             this.loading = false;
           }, err => {
@@ -199,30 +143,10 @@ export class CloudDetailComponent implements OnInit {
     }
   }
 
-  //将可编辑对象转化为可存储到mongo对象
-  toSaveableobj(reobj,obj){
-    Object.keys(obj).forEach(function(key){
-      if(key==="servergroup"|| key==="login"){
-        reobj[key]=JSON.stringify(obj[key]);
-      }else{
-        reobj[key]=obj[key];
-      }
-    });
-    return reobj;
-  }
   ngOnInit() {
     if(this.option=='new'){
-      this.service=JSON.parse(JSON.stringify(this.nullService));
-    }else{
-      this.servernames[0]=this.service.serverurl;
-      if(this.service.login.length>0){
-        this.removestate=true;
-      }
-      if(this.service.servergroup.length<this.influxlist.length){
-        this.addstate=true;
-      }  
+      this.cloud=JSON.parse(JSON.stringify(this.nullCloud));
     }
-    this.getDatabaselist();
   }
 
 }

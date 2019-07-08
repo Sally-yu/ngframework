@@ -222,7 +222,6 @@ export class HomeComponent implements OnInit {
         // {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
       ]
     },
-
     {
       title: '数据管理',
       key: '102',
@@ -233,26 +232,24 @@ export class HomeComponent implements OnInit {
         {title: '数据源列表', key: '1021', app: 'data-manage', isLeaf: true, fav: false, share: false},
       ]
     },
-
-
     {
-      title: '订阅服务',
+      title: '数据订阅',
       key: '301',
       expanded: false,
       icon: 'cloud',
       children: [
-        {title: '订阅服务管理', key: '3011', app: 'cloud-image', isLeaf: true, fav: false, share: false},
-        {title: '订阅服务列表', key: '3012', app: 'cloud-list', isLeaf: true, fav: false, share: false},
+        {title: '订阅管理', key: '3011', app: 'cloud-image', isLeaf: true, fav: false, share: false},
+        {title: '订阅列表', key: '3012', app: 'cloud-list', isLeaf: true, fav: false, share: false},
       ]
     },
     {
-      title: '数采服务',
+      title: '设备接入',
       key: '300',
       expanded: false,
       icon: 'cluster',
       children: [
-        {title: '数采服务管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
-        {title: '数采服务列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
+        {title: '服务端管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
+        {title: '服务端列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
       ]
     },
   ]; //所有预置节点，渲染菜单结构

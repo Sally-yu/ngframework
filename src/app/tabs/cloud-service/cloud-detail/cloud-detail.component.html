@@ -8,141 +8,95 @@
 
 <form nz-form>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7" nzRequired>服务名称</nz-form-label>
+    <nz-form-label [nzSpan]="7" nzRequired>订阅名称</nz-form-label>
     <nz-form-control [nzSpan]="12" [nzHasFeedback]="!nameRequire"
                      [nzValidateStatus]="nameRequire?'success':'error'">
-      <input #codeEle nz-input name="servername" [(ngModel)]="service['servername']" [disabled]="option=='edit'"
-             placeholder="请输入服务名称"
-             (ngModelChange)="service.servername?nameRequire=true:nameRequire=false;"/>
-      <nz-form-explain *ngIf="!nameRequire">{{'请输入服务名称！'}}</nz-form-explain>
+      <input #codeEle nz-input name="name" [(ngModel)]="cloud['name']" [disabled]="option=='edit'"
+             placeholder="请输入订阅名称"
+             (ngModelChange)="cloud.name?nameRequire=true:nameRequire=false;"/>
+      <nz-form-explain *ngIf="!nameRequire">{{'请输入订阅名称！'}}</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7" nzRequired>服务地址</nz-form-label>
-    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!addrRequire"
-                     [nzValidateStatus]="addrRequire?'success':'error'">
-      <input nz-input name="serveraddress" [(ngModel)]="service['serveraddress']" placeholder="请输入服务地址"
-             (ngModelChange)="service.serveraddress?addrRequire=true:addrRequire=false;"/>
-      <nz-form-explain *ngIf="!addrRequire">{{'请输入服务地址！'}}</nz-form-explain>
+    <nz-form-label [nzSpan]="7">订阅方式</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-select name="destination"  [(ngModel)]="cloud['destination']" placeholder="请选择订阅方式">
+          <nz-option *ngFor="let d of destinationData" [nzLabel]="d" [nzValue]="d"></nz-option>
+      </nz-select>
     </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+      <nz-form-label [nzSpan]="7">格式</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-select name="format"  [(ngModel)]="cloud['format']" placeholder="请选择数据传输格式">
+            <nz-option *ngFor="let f of fomartData" [nzLabel]="f" [nzValue]="f"></nz-option>
+        </nz-select>
+      </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>设备名称</nz-form-label>
+    <nz-form-control [nzSpan]="12" [nzHasFeedback]="!deviceRequire"
+                     [nzValidateStatus]="deviceRequire?'success':'error'">
+      <nz-select name="device"  [(ngModel)]="cloud['filter']['device']" placeholder="请选择设备名称"  (ngModelChange)="deviceChange(cloud['filter']['device'])">
+        <nz-option *ngFor="let d of deviceList" [nzLabel]="d" [nzValue]="d"></nz-option>
+      </nz-select>               
+      <nz-form-explain *ngIf="!deviceRequire">{{'请选择设备名称！'}}</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+      <nz-form-label [nzSpan]="7">参数名称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-select name="attribute"  [(ngModel)]="cloud['filter']['attribute']" placeholder="请选择参数名称">
+            <nz-option *ngFor="let d of paramList" [nzLabel]="d" [nzValue]="destinationData"></nz-option>
+        </nz-select>
+      </nz-form-control>
+  </nz-form-item>
+  <p style="    padding-left: 24px;
+  font-size: 16px;
+  border-left: solid #0987fe;">寻址信息</p>
+  <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>主题</nz-form-label>
+      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!topicRequire"
+                        [nzValidateStatus]="topicRequire?'success':'error'">
+        <input nz-input name="topic" [(ngModel)]="cloud['topic']" placeholder="请输入主题"
+          (ngModelChange)="cloud.topic?topicRequire=true:topicRequire=false;"/>  
+        <nz-form-explain *ngIf="!topicRequire">{{'请输入主题！'}}</nz-form-explain>
+      </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>地址</nz-form-label>
+      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!addrRequire"
+                        [nzValidateStatus]="addrRequire?'success':'error'">
+        <input nz-input name="address" [(ngModel)]="cloud['address']" placeholder="请输入地址"
+          (ngModelChange)="cloud.address?addrRequire=true:addrRequire=false;"/>  
+        <nz-form-explain *ngIf="!addrRequire">{{'请输入地址！'}}</nz-form-explain>
+      </nz-form-control>
   </nz-form-item>
   <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>端口号</nz-form-label>
       <nz-form-control [nzSpan]="12" [nzHasFeedback]="!portRequire"
                        [nzValidateStatus]="portRequire?'success':'error'">
-        <input nz-input name="serverport" [(ngModel)]="service['serverport']" placeholder="请输入端口号"
-               (ngModelChange)="service.serverport?portRequire=true:portRequire=false;"/>
+        <input nz-input name="port" [(ngModel)]="cloud['port']" placeholder="请输入端口号"
+               (ngModelChange)="cloud.port?portRequire=true:portRequire=false;"/>
         <nz-form-explain *ngIf="!portRequire">{{'请输入端口号！'}}</nz-form-explain>
       </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7">服务器位置</nz-form-label>
+    <nz-form-label [nzSpan]="7">用户名</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="serverlocation" [(ngModel)]="service['serverlocation']" placeholder="服务器位置"/>
-    </nz-form-control>
-  </nz-form-item>
-  <p style="    padding-left: 24px;
-  font-size: 16px;
-  border-left: solid #0987fe;">服务配置</p>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="7">服务类型</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <!-- <input nz-input name="type" [(ngModel)]="service['type']" placeholder="请选择设备类型"/> -->
-      <nz-select name="opctype"  [(ngModel)]="service['opctype']" placeholder="请选择服务类型">
-        <nz-option [nzLabel]="'DA'" [nzValue]="'DA'"></nz-option>
-        <nz-option [nzLabel]="'UA'" [nzValue]="'UA'"></nz-option>
-      </nz-select>
+      <input nz-input name="user" [(ngModel)]="cloud['user']" placeholder="请输入用户名"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>OPC地址</nz-form-label>
-      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!hostRequire"
-                       [nzValidateStatus]="hostRequire?'success':'error'">
-        <input nz-input name="opchost" [(ngModel)]="service['opchost']" placeholder="请输入OPC地址"
-          (ngModelChange)="service.opchost?hostRequire=true:hostRequire=false;"/>  
-        <nz-form-explain *ngIf="!hostRequire">{{'请输入OPC地址！'}}</nz-form-explain>
-      </nz-form-control>
-      <button nz-tooltip nzTitle="搜索OPC服务列表" nzPlacement="right" nz-button
-              style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="searchopcserver()"
-              [nzLoading]="loading">
-        <i nz-icon nzType="search" nzTheme="outline"></i>
-      </button>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="7">opc链接</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-select name="serverurl" [(ngModel)]="service['serverurl']" placeholder="请选择opc链接">
-          <nz-option *ngFor="let srv of servernames" [nzLabel]="srv" [nzValue]="srv"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-      <nz-form-label [nzSpan]="7">采集频率</nz-form-label>
+      <nz-form-label [nzSpan]="7">密码</nz-form-label>
       <nz-form-control [nzSpan]="12">
-        <nz-select name="interval" [(ngModel)]="service['interval']" placeholder="请选择采集频率">
-            <nz-option *ngFor="let f of collectFrq" [nzLabel]="f+'ms'" [nzValue]="f"></nz-option>
-        </nz-select>
+        <input nz-input name="password" [(ngModel)]="cloud['password']" placeholder="请输入密码"/>
       </nz-form-control>
-  </nz-form-item>
-<div>
-  <p  style="padding-left: 24px;
-  font-size: 16px;
-  border-left: solid #0987fe;">存储策略</p>
-<nz-form-item>
-    <nz-form-label [nzSpan]="7">存储策略</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-select   name="savestrategy" [(ngModel)]="service['savestrategy']" placeholder="请选择存储策略" (ngModelChange)="strategyChange(service['savestrategy'])">
-        <nz-option nzLabel="单机版部署" nzValue="单机版部署"></nz-option>
-        <nz-option nzLabel="双服务冗余" nzValue="双服务冗余"></nz-option>
-        <nz-option nzLabel="集群版部署" nzValue="集群版部署"></nz-option>
-      </nz-select>
-    </nz-form-control>
-</nz-form-item>
-<nz-form-item>
-    <nz-form-label [nzSpan]="7">主数据库</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-select name="servergroup0" [(ngModel)]="service['servergroup'][0]" placeholder="请选择主数据库">
-          <ng-container *ngFor="let influx of influxlist">
-              <nz-option [nzLabel]="influx.servername" [nzValue]="influx.servername" *ngIf="isNotSelected(service['servergroup'][0],influx.servername)"></nz-option>
-            </ng-container>
-      </nz-select>
-    </nz-form-control>
-</nz-form-item>
-<nz-form-item *ngIf="service['savestrategy']!='单机版部署'">
-    <nz-form-label [nzSpan]="7">从数据库1</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-select name="servergroup1" [(ngModel)]="service['servergroup'][1]" placeholder="请选择从数据库">
-          <ng-container *ngFor="let influx of influxlist">
-              <nz-option [nzLabel]="influx.servername" [nzValue]="influx.servername" *ngIf="isNotSelected(service['servergroup'][1],influx.servername)"></nz-option>
-            </ng-container>
-      </nz-select>
-    </nz-form-control>
-</nz-form-item>
-<div *ngIf="service['savestrategy']=='集群版部署'">
-  <nz-form-item *ngFor="let i of service['login']">
-    <nz-form-label [nzSpan]="7"> {{i.name}}</nz-form-label>
-    <nz-form-control [nzSpan]="12">
-      <nz-select style="width: 100%" name="i.name"  [(ngModel)]="service['servergroup'][i.id]">
-        <ng-container *ngFor="let influx of influxlist">
-          <nz-option [nzLabel]="influx.servername" [nzValue]="influx.servername" *ngIf="isNotSelected(service['servergroup'][i.id],influx.servername)"></nz-option>
-        </ng-container>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-</div>
-<div style="margin: 24px;padding-left: 150px;">
-  <button *ngIf="addstate" nzType="primary" style="margin-right: 8px;width: 95px" class="tool-btn-blue" nz-button (click)="addInput()">
-    <i class="icon-play-circle"></i>添加数据库
-  </button>
-  <button *ngIf="removestate" style="width: 95px;margin-right: 8px" class="tool-btn-red" nz-button (click)="removeInput()">
-    <i class="icon-poweroff"></i>删除数据库
-  </button>
-</div>
+    </nz-form-item>
 <div style="margin: 24px;padding-left: 150px;">
   <button nz-button nzType="primary" style="margin-right: 8px;width: 95px" (click)="submit()" [nzLoading]="loading">保存
   </button>
   <button nz-button style="width: 95px;margin-right: 8px" (click)="reset()" [nzLoading]="loading">重置</button>
   <button nz-button style="width: 94px;" (click)="close()">取消</button>
 </div>
-
-</div>  
+</form>
