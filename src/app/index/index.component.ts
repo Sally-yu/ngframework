@@ -28,7 +28,7 @@ export class IndexComponent implements OnInit, OnChanges {
       x: 0,
       y: 0,
       width: 4,
-      height: 5,
+      height: 4,
       key: 'id1',
       name: '环形图',
       option: {
@@ -78,7 +78,7 @@ export class IndexComponent implements OnInit, OnChanges {
       x: 4,
       y: 0,
       width: 3,
-      height: 5,
+      height: 4,
       key: 'id2',
       name: '业务完成率',
       option: {
@@ -105,7 +105,7 @@ export class IndexComponent implements OnInit, OnChanges {
       x: 7,
       y: 0,
       width: 5,
-      height: 5,
+      height: 4,
       key: 'id3',
       name: '设备流转',
       option: {
@@ -126,8 +126,8 @@ export class IndexComponent implements OnInit, OnChanges {
     },
     {
       x: 0,
-      y: 5,
-      width: 8,
+      y: 4,
+      width: 12,
       height: 5,
       key: 'id4',
       name: '龙门焊机运转监控',

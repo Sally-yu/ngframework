@@ -108,6 +108,7 @@ export class UserService {
 
   //更新用户信息
   update(user: any): any {
+    console.log(user)
     return new Promise((resolve, reject) => {
       this.rsa.Encrypt(JSON.stringify(user)).then(encrypt => {
         if (!encrypt) {

@@ -33,15 +33,15 @@
  **/
 
 
-import {Component, OnInit,ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
 import {NotifyService} from '../notify.service';
-import { DeviceServiceComponent } from '../tabs/device-service/service-list/device-service.component';
-import { ServiceImageComponent } from '../tabs/device-service/service-image/service-image.component';
+import {DeviceServiceComponent} from '../tabs/device-service/service-list/device-service.component';
+import {ServiceImageComponent} from '../tabs/device-service/service-image/service-image.component';
 
 @Component({
   selector: 'app-home',
@@ -143,8 +143,8 @@ export class HomeComponent implements OnInit {
     {title: '个人中心', key: '1040', app: 'user', icon: 'control', isLeaf: true, fav: false, share: false, reload: false},
     // {title: '基本设置', key: '1041', app: 'setting',isLeaf: true, fav: false, share: false},
     {title: '消息通知', key: '1042', app: 'notification', icon: 'control', isLeaf: true, fav: false, share: true, reload: false},
-    {title: '用户列表', key: '1043', app: 'user-list', icon: 'control', isLeaf: true, fav: false, share: false, reload: false},
-    {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
+    // {title: '用户列表', key: '1043', app: 'user-list', icon: 'control', isLeaf: true, fav: false, share: false, reload: false},
+    // {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
   ]; //用户工具下拉菜单
 
   allNodes = [
@@ -158,6 +158,46 @@ export class HomeComponent implements OnInit {
       fav: true,
       share: true,
     },
+    {
+      title: '综合分析',
+      key: '202',
+      expanded: false,
+      icon: 'line-chart',
+      children: [
+        {title: '分析设计', key: '2021', app: 'grafana-design', isLeaf: true, fav: false, share: false},
+        {title: '分析管理', key: '2022', app: 'grafana-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
+      title: '拓扑监控',
+      key: '200',
+      expanded: false,
+      icon: 'gateway',
+      children: [
+        {title: '拓扑设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
+        {title: '拓扑监控管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
+      title: '仿真监控',
+      key: '201',
+      expanded: false,
+      icon: 'bulb',
+      children: [
+        {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
+        {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
+      title: '算法模型',
+      key: '103',
+      expanded: false,
+      icon: 'robot',
+      children: [
+        {title: '数据定义', key: '1030', app: 'data-define', isLeaf: true, fav: false, share: true},
+      ]
+    },
+
     {
       title: '设备管理',
       key: '100',
@@ -182,15 +222,7 @@ export class HomeComponent implements OnInit {
         // {title: '报警历史记录', key: '1014', app: 'alarm-history', isLeaf: true, fav: true, share: true}
       ]
     },
-    {
-      title: '数据挖掘',
-      key: '103',
-      expanded: false,
-      icon: 'robot',
-      children: [
-        {title: '数据定义', key: '1030', app: 'data-define', isLeaf: true, fav: false, share: true},
-      ]
-    },
+
     {
       title: '数据管理',
       key: '102',
@@ -202,36 +234,7 @@ export class HomeComponent implements OnInit {
       ]
     },
 
-    {
-      title: '拓扑监控',
-      key: '200',
-      expanded: false,
-      icon: 'gateway',
-      children: [
-        {title: '拓扑设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
-        {title: '拓扑监控管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
-      ]
-    },
-    {
-      title: '综合分析',
-      key: '202',
-      expanded: false,
-      icon: 'line-chart',
-      children: [
-        {title: '分析设计', key: '2021', app: 'grafana-design', isLeaf: true, fav: false, share: false},
-        {title: '分析管理', key: '2022', app: 'grafana-mgr', isLeaf: true, fav: false, share: false},
-      ]
-    },
-    {
-      title: '仿真监控',
-      key: '201',
-      expanded: false,
-      icon: 'bulb',
-      children: [
-        {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
-        {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
-      ]
-    },
+
     {
       title: '订阅服务',
       key: '301',
@@ -379,6 +382,7 @@ export class HomeComponent implements OnInit {
       return e.key;
     }).indexOf(obj.key) : this.tabs.push(obj) - 1;
   }
+
   //点击tab页签事件
   selectChange(key) {
     this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);
@@ -559,6 +563,19 @@ export class HomeComponent implements OnInit {
   reloadTree() {
     this.loading = true;
     this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
+    if (this.user['role'] === 'admin') {
+      this.options = [...this.options, {
+        title: '用户列表',
+        key: '1043',
+        app: 'user-list',
+        icon: 'control',
+        isLeaf: true,
+        fav: false,
+        share: false,
+        reload: false
+      },
+        {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}];
+    }
     this.setting.children = JSON.parse(JSON.stringify(this.options));
     this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
     this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
@@ -582,6 +599,7 @@ export class HomeComponent implements OnInit {
     console.log(this.key);
     this.userSrv.getUser(this.key).then(user => {
       this.user = user;
+      this.reloadTree();
     });
   }
 
@@ -600,7 +618,7 @@ export class HomeComponent implements OnInit {
     if (cookie) {
       // console.log(this.key);
       this.getUser();
-      this.reloadTree();
+      // this.reloadTree();
       this.notifyCount();
       this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
