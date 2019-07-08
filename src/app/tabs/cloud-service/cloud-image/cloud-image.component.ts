@@ -175,12 +175,12 @@ export class CloudImageComponent implements OnInit,OnChanges {
   }
 
   ngOnInit() {
-    this.getDatabaselist();
-    this.getServicelist();
+    // this.getDatabaselist();
+    // this.getServicelist();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.dropdown.close();  //右键菜单关闭
-    this.ngOnInit();    
+    // this.dropdown.close();  //右键菜单关闭
+    // this.ngOnInit();    
   }
 
 

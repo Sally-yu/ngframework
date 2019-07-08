@@ -50,27 +50,16 @@ export class CloudListComponent implements OnInit,OnChanges {
 
 
   editRow(serveraddress: string) {
-    let data = JSON.parse(JSON.stringify(this.cloudList)).filter(t => t.serveraddress === serveraddress)[0];
-    if(this.toBoolean(data.opcstate)){
-      this.message.info('该服务在启动状态下禁止编辑');
-      return 0;
-    }else{
-      this.cloud=this.toEditableobj(this.cloud,data);
-      this.option = 'edit';
-      this.cloudDetail = true;
-    }    
+    // let data = JSON.parse(JSON.stringify(this.cloudList)).filter(t => t.serveraddress === serveraddress)[0];
+    // if(this.toBoolean(data.opcstate)){
+    //   this.message.info('该服务在启动状态下禁止编辑');
+    //   return 0;
+    // }else{
+    //   this.cloud=this.toEditableobj(this.cloud,data);
+    //   this.option = 'edit';
+    //   this.cloudDetail = true;
+    // }    
   }
-    //将数据库取出对象转化为可编辑对象
-    toEditableobj(reobj,obj){
-      Object.keys(obj).forEach(function(key){
-        if(key==="servergroup"|| key==="login"){
-          reobj[key]=JSON.parse(obj[key]);
-        }else{
-          reobj[key]=obj[key];
-        }
-      });
-      return reobj;
-    }
   addNewOpcRow(){  
      this.option = 'new';
      this.cloudDetail = true;
@@ -117,11 +106,11 @@ export class CloudListComponent implements OnInit,OnChanges {
   }
 
   ngOnInit() {
-    this.getServicelist();
+    // this.getServicelist();
 
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.ngOnInit();
+    //this.ngOnInit();
   }
 
 
