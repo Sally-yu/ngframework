@@ -730,6 +730,7 @@ export class TopoDesignComponent implements OnInit {
     //   this.saveWork = true;//弹出保存对话框 认为是新增
     // }
     this.saveWork = true;//弹出保存对话框 认为是新增
+    this.autoCode();
 
   }
 
@@ -810,10 +811,10 @@ export class TopoDesignComponent implements OnInit {
 
   //加载，重新加载，从列表传进来的布局图，未保存前可刷新加载
   load() {
-    this.diagram.model = go.Model.fromJson(this.currWork);
-    //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
-    this.diagram.model.linkFromPortIdProperty = 'fromPortId';
-    this.diagram.model.linkToPortIdProperty = 'toPortId';
+      this.diagram.model = go.Model.fromJson(this.currWork);
+      //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
+      this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+      this.diagram.model.linkToPortIdProperty = 'toPortId';
   }
 
   //获取后台设备列表
@@ -891,6 +892,9 @@ export class TopoDesignComponent implements OnInit {
     this.getDevice();//获取可用设备，来自edge
     setTimeout(() => {
       this.initDiagram();//初始化布局图表
+      this.diagram.model = go.Model.fromJson(this.currWork);
+      this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+      this.diagram.model.linkToPortIdProperty = 'toPortId';
     }, 500);
     this.getCus();//获取图表自定义分组
     $('.ant-collapse-content-box').css('padding', '0');//去折叠面板padding，默认16px
@@ -1140,7 +1144,6 @@ export class TopoDesignComponent implements OnInit {
     //   this.autoCode(); //新增找不到，自动生成编号
     //   this.load();
     // });
-    this.load();
   }
 
 }

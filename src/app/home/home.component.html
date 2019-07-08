@@ -120,11 +120,11 @@
 
   <div id="menu-footer">
     <ul>
-      <li nzTitle="拓扑监控" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
-        <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
-      </li>
       <li nzTitle="综合分析" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
         <i nz-icon nzType="area-chart" nzTheme="outline"></i>
+      </li>
+      <li nzTitle="拓扑监控" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
+        <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
       </li>
       <li nzTitle="仿真监控" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
         <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
@@ -200,17 +200,18 @@
     <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
                      [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
     <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
-                    [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>                 
+                    [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
                       [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>
-    <app-user-list *ngIf="exist('1043')" class="back"
+    <app-user-list *ngIf="exist('1043')&&user['role']==='admin'" class="back"
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
-    <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
+    <app-role *ngIf="exist('1044')&&user['role']==='admin'" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
     <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"></app-topo-show>
     <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"></app-model3d-show>
+    <app-grafana-show *ngIf="exist('1070')" class="back" [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>
 
 
     <app-topo-design *ngIf="exist('2001')" class="back"
@@ -272,11 +273,11 @@
     <!--<li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >-->
     <!--<i nz-icon nzType="dashboard" nzTheme="outline"></i>-->
     <!--</li>-->
-    <li nzTitle="拓扑监控" nzPlacement="left" nz-tooltip (click)="click('topo')">
-      <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
-    </li>
     <li nzTitle="综合分析" nzPlacement="left" nz-tooltip (click)="click('grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
+    </li>
+    <li nzTitle="拓扑监控" nzPlacement="left" nz-tooltip (click)="click('topo')">
+      <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
     </li>
     <li nzTitle="仿真监控" nzPlacement="left" nz-tooltip (click)="click('model')">
       <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->

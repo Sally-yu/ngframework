@@ -1,0 +1,12 @@
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  min-height: calc(100% - 24px);
+}
+/*# sourceMappingURL=data-define.component.css.map */
