@@ -210,9 +210,9 @@
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
                       [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>
-    <app-user-list *ngIf="exist('1043')&&user['role']==='admin'" class="back"
+    <app-user-list *ngIf="exist('1043')" class="back"
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
-    <app-role *ngIf="exist('1044')&&user['role']==='admin'" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
+    <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
     <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}" [flag]="indexFlag"></app-topo-show>
     <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}" [flag]="indexFlag"></app-model3d-show>

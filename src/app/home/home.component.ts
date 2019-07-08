@@ -145,6 +145,8 @@ export class HomeComponent implements OnInit {
     // {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
   ]; //用户工具下拉菜单
 
+  optionsAll=[];
+
   allNodes = [
     {
       title: '首页',
@@ -343,7 +345,7 @@ export class HomeComponent implements OnInit {
   //右上用户列表选项，新增或激活tab页
   optionClick(key: string) {
     this.active = key;
-    var obj = JSON.parse(JSON.stringify(this.options.filter(n => n.key === key)[0]));
+    var obj = JSON.parse(JSON.stringify(this.optionsAll.filter(n => n.key === key)[0]));
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -561,9 +563,8 @@ export class HomeComponent implements OnInit {
   reloadTree() {
     this.loading = true;
     this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-    var oo;
     if (this.user['role'] === 'admin') {
-      oo = [...JSON.parse(JSON.stringify(this.options)), {
+      this.optionsAll = [...JSON.parse(JSON.stringify(this.options)), {
         title: '用户列表',
         key: '1043',
         app: 'user-list',
@@ -575,7 +576,7 @@ export class HomeComponent implements OnInit {
       },
         {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}];
     }
-    this.setting.children = JSON.parse(JSON.stringify(oo));
+    this.setting.children = JSON.parse(JSON.stringify(this.optionsAll));
     this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
     this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
     this.loading = false;
