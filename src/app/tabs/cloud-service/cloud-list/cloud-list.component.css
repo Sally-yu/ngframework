@@ -1,0 +1,59 @@
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  min-height: calc(100% - 24px);
+}
+#list-tool {
+  height: 48px;
+  width: 100%;
+  padding-top: 8px;
+}
+#list-tool label {
+  display: inline-block;
+}
+#btns {
+  display: inline;
+}
+button {
+  margin-left: 8px;
+}
+.ant-table-tbody tr {
+  font-size: 14px;
+}
+.ant-table-tbody td {
+  font-size: 14px;
+}
+.ant-table-tbody td a {
+  font-size: 14px;
+}
+.tool-btn-green {
+  background-color: #00cc00;
+  color: #fff;
+  border-color: #00cc00;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+.tool-btn-origin {
+  margin-left: 2%;
+  margin-top: 2%;
+}
+.tool-input-origin {
+  margin-left: 2%;
+}
+.tool-btn-red {
+  background-color: #f5222d;
+  color: #fff;
+  border-color: #f5222d;
+}
+.tool-btn-green:hover {
+  background-color: rgba(0, 204, 0, 0.8);
+}
+.tool-btn-red:hover {
+  background-color: rgba(245, 34, 45, 0.8);
+}
+/*# sourceMappingURL=cloud-list.component.css.map */

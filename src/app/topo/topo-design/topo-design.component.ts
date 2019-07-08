@@ -15,7 +15,6 @@ declare var $: any;
 })
 export class TopoDesignComponent implements OnInit {
 
-  id;
   note: any;
   code;
   sence: any;
@@ -357,8 +356,8 @@ export class TopoDesignComponent implements OnInit {
     function showToolTip(obj, diagram, tool) {
       var toolTipDIV = document.getElementById('toolTipDIV');
       var pt = diagram.lastInput.viewPoint;
-      self.currDevice = obj.data;
-      self.matchDevice();
+      // self.currDevice = obj.data;
+      // self.matchDevice();
       // console.log(self.currDevice);
       var fromLeft = document.getElementById('leftbar').offsetWidth;
       var left = pt.x + fromLeft + 10;//左侧菜单宽度  左侧图源栏款 10点向右偏移，在鼠标点击位置右侧
@@ -398,7 +397,7 @@ export class TopoDesignComponent implements OnInit {
       cxElement.style.display = 'block';
       // we don't bother overriding positionContextMenu, we just do it here:
       self.currDevice = obj.data;
-      self.matchDevice();
+      // self.matchDevice();
       // console.log(self.currDevice);
       var pt = diagram.lastInput.viewPoint;
       var fromLeft = document.getElementById('leftbar').offsetWidth;
@@ -724,36 +723,20 @@ export class TopoDesignComponent implements OnInit {
 
   //保存前，若非新增 直接保存
   beforeSave() {
-    // if (this.currWork.name) {//有名称，不是新增，直接保存
-    //   this.save(false);
-    // } else {
-    //   this.saveWork = true;//弹出保存对话框 认为是新增
-    // }
     this.saveWork = true;//弹出保存对话框 认为是新增
     this.autoCode();
-
   }
 
   //保存对话框的确定事件 检查名称是否有重复
   modalSave() {
-    // this.http.post(this.findNameUrl, JSON.stringify(this.workName)).subscribe(res => {
-    //   // console.log(res);
-    //   if (res['Status'] == '0') {
-    //     this.message.info('该名称已被使用！');
-    //   } else {
-    //     this.save(false);
-    //   }
-    // });
-    this.save(false);
+    this.save(true);
   }
 
   //保存布局
   save(r: boolean) {
-    // let dataarray = this.diagram.model.toJson();
-    // let datajson = JSON.parse(dataarray);
     let data = {
       'name': this.workName,//布局名称
-      'key': this.id,
+      'key': UUID.UUID(),
       'class': this.currWork.class,
       'linkDataArray': this.currWork.linkDataArray,
       'nodeDataArray': this.currWork.nodeDataArray,
@@ -769,20 +752,11 @@ export class TopoDesignComponent implements OnInit {
       opt: 'save',
       workspace: data
     };
-    // this.currWork.key = data.key; //保留key，先删后插，key不变
-    //删除
-    this.http.post(this.workUrl, {opt: 'delete', workspace: {key: this.currWork.key}}).subscribe(res => {
-      }
-      , error1 => {
-        console.log('not found');
-      });
-    console.log(post);
     //新增
     this.http.post(this.workUrl, post).subscribe(res => {
-      this.currWork.key = this.id;
+      this.currWork=JSON.parse(JSON.stringify(res));
       this.message.success('保存成功');
     }, error1 => {
-      // console.log(error1);
       this.message.info('保存失败:' + error1);
     });
     this.saveWork = false;
@@ -811,32 +785,14 @@ export class TopoDesignComponent implements OnInit {
 
   //加载，重新加载，从列表传进来的布局图，未保存前可刷新加载
   load() {
-      this.diagram.model = go.Model.fromJson(this.currWork);
-      //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
-      this.diagram.model.linkFromPortIdProperty = 'fromPortId';
-      this.diagram.model.linkToPortIdProperty = 'toPortId';
+    this.diagram.model = go.Model.fromJson(this.currWork);
+    //绑定出入点字段，必需放在go.Model.fromJson之后，别问为什么，我也不清楚
+    this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+    this.diagram.model.linkToPortIdProperty = 'toPortId';
   }
 
   //获取后台设备列表
   getDevice() {
-    // let url = '/core-metadata/api/v1/device';
-    // var head = new HttpHeaders({
-    //   'X-Session-Token': '21232f297a57a5a743894a0e4a801fc3',
-    //   'X-Requested-With': 'XMLHttpRequest'
-    // });
-    // this.http.get(url, {headers: head}).subscribe(response => {
-    //     console.log('deviceresponse:' + response);
-    //     this.devices = response;
-    //     this.devices.forEach(function (e) {  // 处理标签数组 时间戳
-    //       if (e.labels instanceof Array) {
-    //         e.labels = e.labels.join(',');
-    //       }
-    //     });
-    //   },
-    //   error1 => {
-    //     this.message.warning(error1);
-    //     console.log(error1);
-    //   });
   }
 
   //匹配当前选中的设备
@@ -888,15 +844,15 @@ export class TopoDesignComponent implements OnInit {
 
   //初始
   init() {
-    // console.log(this.currWork);
     this.getDevice();//获取可用设备，来自edge
-    setTimeout(() => {
-      this.initDiagram();//初始化布局图表
-      this.diagram.model = go.Model.fromJson(this.currWork);
-      this.diagram.model.linkFromPortIdProperty = 'fromPortId';
-      this.diagram.model.linkToPortIdProperty = 'toPortId';
-    }, 500);
+    this.initDiagram();//初始化布局图表
+    this.diagram.model = go.Model.fromJson(this.currWork);
+    this.diagram.model.linkFromPortIdProperty = 'fromPortId';
+    this.diagram.model.linkToPortIdProperty = 'toPortId';
     this.getCus();//获取图表自定义分组
+    setTimeout(() => {
+
+    }, 500);
     $('.ant-collapse-content-box').css('padding', '0');//去折叠面板padding，默认16px
   }
 
@@ -962,7 +918,7 @@ export class TopoDesignComponent implements OnInit {
     return false;
   };
 
-  //上传自定义图标
+  //上传自定义图标3
   handleUpload() {
     if (this.fileList.length < 1) {
       this.message.info('请选择上传图源');
@@ -1112,38 +1068,7 @@ export class TopoDesignComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.id = this.routeinfo.snapshot.params['id'];
-    // if (!this.id) {
-    //   this.router.navigate(['/topo/item/' + UUID.UUID()]);
-    // }
     this.init();
-
-    // this.diagram.model.linkFromPortIdProperty = 'fromPortId';
-    // this.diagram.model.linkToPortIdProperty = 'toPortId';
-    // this.makeMap();
-    // this.loop();
-    // this.http.post(this.workUrl, {opt: 'find', workspace: {key: this.id}}).subscribe(data => {
-    //   if (data) {
-    //     let res = JSON.parse(JSON.stringify(data));
-    //     this.currWork = {
-    //       'name': res.name,//布局名称
-    //       'key': res.key,
-    //       'class': res.class,
-    //       'linkDataArray': res.linkDataArray,
-    //       'nodeDataArray': res.nodeDataArray,
-    //     };
-    //     this.note = res.note;
-    //     this.sence = res.sence;
-    //     this.released = res.released;
-    //     this.code = res.code;
-    //     // console.log(this.currWork);
-    //     this.workName = res.name;
-    //   }
-    //   this.load();//获取到数据再给图标绑定
-    // }, error1 => {
-    //   this.autoCode(); //新增找不到，自动生成编号
-    //   this.load();
-    // });
   }
 
 }

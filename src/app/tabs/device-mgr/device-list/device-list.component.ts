@@ -1,15 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DeviceService} from '../../../device.service';
 import {OpcService} from '../../../services/opc-service/opc.service';
-import { NzMessageService } from 'ng-zorro-antd';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-device-list',
   templateUrl: './device-list.component.html',
   styleUrls: ['./device-list.component.less']
 })
-export class DeviceListComponent implements OnInit {
+export class DeviceListComponent implements OnInit, OnChanges {
 
+  @Input() flag;
   deviceDetail = false;
   loading = false;
   device;
@@ -56,22 +57,26 @@ export class DeviceListComponent implements OnInit {
       this.loading = false;
     });
   }
+
   //同步设备列表
-  synchro(){
+  synchro() {
     this.OpcService.getserviceList().then(res => {
       var serviceList = res;
       serviceList.forEach(element => {
         this.OpcService.updateDevicelist(element).then(res => {
 
-        },err => {
-          this.message.warning("同步失败");
-        });;
+        }, err => {
+          this.message.warning('同步失败');
+        });
       });
-      this.message.success("同步成功");
-      setTimeout(() => {  this.getList();; }, 1000);
-    },err => {
+      this.message.success('同步成功');
+      setTimeout(() => {
+        this.getList();
+      }, 1000);
+    }, err => {
     });
   }
+
   add() {
     // this.device = JSON.parse(JSON.stringify(this.nullDevice));
     this.option = 'new';
@@ -100,11 +105,17 @@ export class DeviceListComponent implements OnInit {
   }
 
   save(data: any) {
-    this.loading=true;
+    this.loading = true;
     this.deviceService.updateDevice(data).then(res => {
       this.loading = false;
     }, err => {
       this.loading = false;
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.deviceDetail) {
+      this.getList();
+    }
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {DeviceService} from '../../../device.service';
 import {ResizeSensor} from 'css-element-queries';
 
@@ -10,8 +10,10 @@ declare var echarts: any; //angular方式引用echarts做循环处理性能奇�
   templateUrl: './device-card.component.html',
   styleUrls: ['./device-card.component.less']
 })
-export class DeviceCardComponent implements OnInit,OnDestroy {
+export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
   ws: WebSocket;
+
+  @Input() flag;
 
   deviceList = [];
   loading = false;
@@ -278,6 +280,12 @@ export class DeviceCardComponent implements OnInit,OnDestroy {
   ngOnDestroy(): void {
     if (this.ws != null) {
       this.ws.close();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.deviceDetail&&!this.deviceTable){
+      this.getList();
     }
   }
 
