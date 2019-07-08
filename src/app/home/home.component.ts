@@ -233,6 +233,16 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
+      title: '订阅服务',
+      key: '301',
+      expanded: false,
+      icon: 'cloud',
+      children: [
+        {title: '订阅服务管理', key: '3011', app: 'cloud-image', isLeaf: true, fav: false, share: false},
+        {title: '订阅服务列表', key: '3012', app: 'cloud-list', isLeaf: true, fav: false, share: false},
+      ]
+    },
+    {
       title: '数采服务',
       key: '300',
       expanded: false,

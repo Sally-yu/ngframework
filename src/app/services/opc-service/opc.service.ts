@@ -191,4 +191,19 @@ export class OpcService {
         };
       });
     }
+     //保持服务端进程存活
+     keepServerAlive(service):any {
+      return new Promise((resolve, reject) => {
+        var data = new FormData();
+        var opcHandleUrl;
+        data.append('opcaction', 'keepalive');
+        opcHandleUrl="http://"+service.opchost+":"+service.serverport+this.opchandleUrl;
+        this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+          resolve(res.toString());
+        }),error1=>{
+          this.message.warning(error1.error);
+          reject(null);
+        };
+      });
+    }
 }

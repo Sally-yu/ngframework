@@ -72,6 +72,9 @@ import { GrafanaShowComponent } from './grafana-show/grafana-show.component';
 import { Model3dShowComponent } from './model3d-show/model3d-show.component';
 import {Model3dDetailComponent} from './model3d-show/detail/detail.component';
 import {MonitorService} from './services/monitor-service/monitor.service';
+import { CloudListComponent } from './tabs/cloud-service/cloud-list/cloud-list.component';
+import { CloudImageComponent } from './tabs/cloud-service/cloud-image/cloud-image.component';
+import { CloudDetailComponent } from './tabs/cloud-service/cloud-detail/cloud-detail.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -147,6 +150,9 @@ const routes: Routes = [
     GrafanaShowComponent,
     Model3dShowComponent,
     Model3dDetailComponent,
+    CloudListComponent,
+    CloudImageComponent,
+    CloudDetailComponent,
   ],
   imports: [
     BrowserModule,

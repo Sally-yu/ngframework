@@ -198,9 +198,14 @@
 
     <!--edge service-->
     <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
-                     [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
+                      [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
     <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
-                    [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>                 
+                      [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>     
+       <!--cloud service-->
+    <app-cloud-image *ngIf="exist('3011')" class="back" [refresh]="indexFlag"
+                      [ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>
+    <app-cloud-list *ngIf="exist('3012')" class="back" [refresh]="indexFlag"
+                      [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>                                
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
