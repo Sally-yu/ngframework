@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DeviceService} from '../../../device.service';
 import {ResizeSensor} from 'css-element-queries';
 
@@ -10,7 +10,8 @@ declare var echarts: any; //angular方式引用echarts做循环处理性能奇�
   templateUrl: './device-card.component.html',
   styleUrls: ['./device-card.component.less']
 })
-export class DeviceCardComponent implements OnInit {
+export class DeviceCardComponent implements OnInit,OnDestroy {
+  ws: WebSocket;
 
   deviceList = [];
   loading = false;
@@ -26,7 +27,11 @@ export class DeviceCardComponent implements OnInit {
 
   attValue;//设备属性（参数）的值
 
-  presetColors = ['#f1c40f', '#e74c3c', '#2ecc71']; //预置卡片颜色选项
+  presetColors = ['#f1c40f', '#e74c3c', '#2ecc71'];
+  keys: [];
+  interval=1; //默认一秒刷新
+
+  //预置卡片颜色选项
 
   constructor(
     private deviceService: DeviceService,
@@ -35,6 +40,9 @@ export class DeviceCardComponent implements OnInit {
 
   //获取所有device，后续处理。刷新专用，与页面加载时不同
   getList() {
+    if (this.ws != null) {
+      this.ws.close();
+    }
     this.deviceService.deviceList().then(res => {
         this.deviceList = res.filter(d => d.display);
         this.spliceViewList(this.deviceList);
@@ -47,23 +55,26 @@ export class DeviceCardComponent implements OnInit {
   //切换页码
   indexChange(n: number) {
     this.currentIndex = n;
-    this.loading=true;
+    this.loading = true;
     this.spliceViewList(this.deviceList);
   }
 
   //切换每页条数
   sizeChange(n: number) {
     this.pageSize = n;
-    this.loading=true;
+    this.loading = true;
     this.spliceViewList(this.deviceList);
   }
 
   spliceViewList(list) {
+    if (this.ws != null) {
+      this.ws.close();
+    }
     this.viewList = JSON.parse(JSON.stringify(list)).splice((this.currentIndex - 1) * this.pageSize, this.pageSize);
-    let keys = this.viewList.map(d => {
+    this.keys = this.viewList.map(d => {
       return d.key;
     });
-    this.deviceService.deviceValue(keys).then(res => {
+    this.deviceService.deviceValue(this.keys).then(res => {
       this.attValue = res;
       this.viewList.forEach(c => {
         var e = $('#' + c.key);
@@ -72,10 +83,10 @@ export class DeviceCardComponent implements OnInit {
         new ResizeSensor(e, function () {
           chart.resize();
         });
-        this.loading=false;
+        this.loading = false;
       });
     }, err => {
-      this.loading=false;
+      this.loading = false;
     });
   }
 
@@ -83,7 +94,7 @@ export class DeviceCardComponent implements OnInit {
     if (event) {
       this.deviceDetail = false;
       this.deviceTable = false;
-      this.loading=true;
+      this.loading = true;
       this.getList();//重新加载页面
     }
   }
@@ -180,6 +191,7 @@ export class DeviceCardComponent implements OnInit {
     //   return;
     // }
     // try {
+    console.log(this.attValue)
     let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
     let sum = 0;
     let option = {
@@ -200,7 +212,7 @@ export class DeviceCardComponent implements OnInit {
         show: false,
         data: ['']
       },
-      animation:false,
+      animation: false,
       series: []
     };
     data.forEach(r => {
@@ -228,8 +240,46 @@ export class DeviceCardComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loading=true;
+    this.loading = true;
     this.getList();
   }
+
+
+  connectWs() {
+    if (this.ws != null) {
+      this.ws.close();
+    }
+    var self = this;
+    this.ws = new WebSocket('ws://10.24.20.71:7777/ws');
+    this.ws.onopen=function (event) {
+      self.ws.send(JSON.stringify({
+        keys:self.keys,
+        time:self.interval
+      }));
+    };
+    this.ws.onmessage = function (event) {
+      console.log(event.data);
+      self.attValue = JSON.parse(event.data);
+      self.matchValue();
+    };
+  }
+
+  matchValue(){
+    this.viewList.forEach(c => {
+      var e = $('#' + c.key);
+      var chart = echarts.init(e.get(0));
+      chart.setOption(this.chartOption(c.key));
+      new ResizeSensor(e, function () {
+        chart.resize();
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.ws != null) {
+      this.ws.close();
+    }
+  }
+
 
 }

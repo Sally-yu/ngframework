@@ -21,8 +21,8 @@ export class ServiceDetailComponent implements OnInit {
 
   nullService = {
     servername: "",
-    serveraddress: "", 
-    serverlocation: "", 
+    serveraddress: "",
+    serverlocation: "",
     serverport: "",
     description:"",
     opcstate:   "false",
@@ -32,7 +32,7 @@ export class ServiceDetailComponent implements OnInit {
     interval:     "100",
     savestrategy:  "单机版部署",
     servergroup:   [],
-    login:         []   
+    login:         []
   };
   servernames = ["opcda://10.25.11.197/KEPware.KEPServerEx.V4"];
   collectFrq = [
@@ -108,6 +108,22 @@ export class ServiceDetailComponent implements OnInit {
 
   //查找服务器名称
   searchopcserver() {
+    var data = new FormData();
+    var opcHandleUrl;
+    data.append('opcip',  this.service.opchost);
+    data.append('opctype', this.service.opctype);
+    data.append('opcaction', 'recognition');
+    opcHandleUrl="http://"+this.service.opchost+":"+this.service.serverport+this.opchandleUrl;
+    this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+      console.log(res);
+      this.service.serverurl = '';
+      this.servernames = [];
+      this.servernames=JSON.parse(res);
+      this.service.serverurl = this.servernames[0];
+
+    }),error1=>{
+      this.message.warning(error1.error);
+    };
     this.OpcService.searchServer(this.service).then(res => {
       if(res){
         this.service.serverurl = '';
@@ -115,7 +131,7 @@ export class ServiceDetailComponent implements OnInit {
         this.servernames=JSON.parse(res);
         this.service.serverurl = this.servernames[0];
       }
-    }); 
+    });
   }
 
   //获取influx数据库配置信息列表
@@ -155,20 +171,20 @@ export class ServiceDetailComponent implements OnInit {
   //提交保存
   submit() {
     this.loading = true;
-    var saveobj={ 
+    var saveobj={
       servername: "",
       serveraddress: "",
-      serverport: "", 
-      serverlocation: "", 
-      description:"", 
-      opcstate: "", 
-      opctype: "", 
+      serverport: "",
+      serverlocation: "",
+      description:"",
+      opcstate: "",
+      opctype: "",
       opchost: "",
       serverurl: "",
       interval: "",
       savestrategy:"",
       servergroup: "",
-      login: ""   };          
+      login: ""   };
     this.validate();
     if (this.nameRequire && this.addrRequire && this.portRequire && this.hostRequire) {
       saveobj=this.toSaveableobj(saveobj,this.service);
@@ -220,9 +236,12 @@ export class ServiceDetailComponent implements OnInit {
       }
       if(this.service.servergroup.length<this.influxlist.length){
         this.addstate=true;
-      }  
+      }
     }
     this.getDatabaselist();
   }
 
+  reset() {
+
+  }
 }
