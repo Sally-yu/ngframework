@@ -43,7 +43,8 @@
             <button nz-button (click)="getList()">刷新</button>
             <button nz-button nzType="primary" (click)="addUser=true;option='new';user={};">新增</button>
         </div>
-        <nz-table #list [nzData]="userList" [nzLoading]="loading" [nzPageSize]="5">
+        <nz-table #list [nzData]="userList" [nzLoading]="loading"  [nzPageSize]="pageSize" [nzPageIndex]="currentIndex"
+                  [nzPageSizeOptions]="sizeOption" nzShowSizeChanger>
           <thead>
           <tr>
             <th nzWidth="100px">#</th>

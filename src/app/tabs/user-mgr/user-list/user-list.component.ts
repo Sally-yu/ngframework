@@ -13,6 +13,10 @@ export class UserListComponent implements OnInit {
   searchValue;
   addUser = false;
   loading;
+  pageSize = 10;
+  currentIndex = 1;
+  sizeOption = [5, 10, 20, 50];
+
   option;
   user = {};
 

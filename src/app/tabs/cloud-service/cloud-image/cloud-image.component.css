@@ -1,0 +1,57 @@
+.database {
+  text-align: center;
+  margin: 20px 10px 20px 10px;
+}
+.database:hover {
+  transform: scale(1.1, 1.1);
+  background-color: cyan;
+}
+#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  min-height: calc(100% - 24px);
+}
+#list-tool {
+  height: 48px;
+  width: 100%;
+  padding-top: 8px;
+}
+#list-tool label {
+  display: inline-block;
+}
+#search {
+  float: right;
+  display: inline-flex;
+}
+#search button {
+  margin-right: 8px;
+}
+#search input {
+  margin-right: 8px;
+}
+button {
+  margin-left: 8px;
+}
+.ant-table-tbody tr {
+  font-size: 14px;
+}
+.ant-table-tbody td {
+  font-size: 14px;
+}
+.ant-table-tbody td a {
+  font-size: 14px;
+}
+:host ::ng-deep .ant-tree {
+  overflow: hidden;
+  margin: 0 -24px;
+  padding: 0 24px;
+}
+:host ::ng-deep .ant-tree li {
+  padding: 4px 0 0 0;
+}
+/*# sourceMappingURL=cloud-image.component.css.map */

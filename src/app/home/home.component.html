@@ -165,9 +165,9 @@
 
     <!--device mgr-->
     <app-device-card *ngIf="exist('1000')" class="back"
-                     [ngStyle]="{'display':active=='1000'?'block':'none'}"></app-device-card>
+                     [ngStyle]="{'display':active=='1000'?'block':'none'}" [flag]="indexFlag"></app-device-card>
     <app-device-list *ngIf="exist('1001')" class="back"
-                     [ngStyle]="{'display':active=='1001'?'block':'none'}"></app-device-list>
+                     [ngStyle]="{'display':active=='1001'?'block':'none'}" [flag]="indexFlag"></app-device-list>
     <app-device-template *ngIf="exist('1002')" class="back"
                          [ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>
 
@@ -200,22 +200,22 @@
     <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
                       [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
     <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>     
+                      [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>
        <!--cloud service-->
     <app-cloud-image *ngIf="exist('3011')" class="back" [refresh]="indexFlag"
                       [ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>
     <app-cloud-list *ngIf="exist('3012')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>                                
+                      [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
                       [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>
-    <app-user-list *ngIf="exist('1043')&&user['role']==='admin'" class="back"
+    <app-user-list *ngIf="exist('1043')" class="back"
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
-    <app-role *ngIf="exist('1044')&&user['role']==='admin'" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
+    <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
-    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"></app-topo-show>
-    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"></app-model3d-show>
+    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}" [flag]="indexFlag"></app-topo-show>
+    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}" [flag]="indexFlag"></app-model3d-show>
     <app-grafana-show *ngIf="exist('1070')" class="back" [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>
 
 

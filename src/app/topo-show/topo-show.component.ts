@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {TopoService} from '../topo.service';
 import {UrlService} from '../url.service';
 import * as go from '../../assets/js/go.js';
@@ -12,7 +12,9 @@ declare var $: any;
   templateUrl: './topo-show.component.html',
   styleUrls: ['./topo-show.component.less']
 })
-export class TopoShowComponent implements OnInit {
+export class TopoShowComponent implements OnInit,OnChanges{
+
+  @Input() flag;
 
   detail = false;
   searchValue;
@@ -333,5 +335,11 @@ export class TopoShowComponent implements OnInit {
     }, res => {
 
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.detail){
+      this.ngOnInit();
+    }
   }
 }

@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {UrlService} from './url.service';
 import {RsaService} from './rsa.service';
+import {Buffer} from 'buffer';
 
 @Injectable({
   providedIn: 'root'
@@ -108,7 +109,7 @@ export class UserService {
 
   //更新用户信息
   update(user: any): any {
-    console.log(user)
+    user['username']=new Buffer(user['username']).toString('base64');//base64处理用户名，中文直接rsa加密，解密易出错
     return new Promise((resolve, reject) => {
       this.rsa.Encrypt(JSON.stringify(user)).then(encrypt => {
         if (!encrypt) {
@@ -223,11 +224,13 @@ export class UserService {
         resolve(res['status']);
       }, error1 => {
         this.message.error(error1.error['msg']);
-        this.url.logout(error1)
+        this.url.logout(error1);
         resolve(false);
       });
     });
   }
+
+
 }
 
 

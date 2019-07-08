@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {TopoService} from '../topo.service';
 import {UrlService} from '../url.service';
 import {ModelService} from '../model.service';
@@ -9,7 +9,9 @@ import {UserService} from '../user.service';
   templateUrl: './model3d-show.component.html',
   styleUrls: ['./model3d-show.component.less']
 })
-export class Model3dShowComponent implements OnInit {
+export class Model3dShowComponent implements OnInit,OnChanges {
+
+  @Input() flag;
 
   searchValue;
   loading = false;
@@ -217,5 +219,11 @@ export class Model3dShowComponent implements OnInit {
     }, res => {
 
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.detialUrl){
+      this.ngOnInit();
+    }
   }
 }

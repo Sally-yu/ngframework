@@ -33,15 +33,13 @@
  **/
 
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
 import {NotifyService} from '../notify.service';
-import {DeviceServiceComponent} from '../tabs/device-service/service-list/device-service.component';
-import {ServiceImageComponent} from '../tabs/device-service/service-image/service-image.component';
 
 @Component({
   selector: 'app-home',
@@ -147,6 +145,8 @@ export class HomeComponent implements OnInit {
     // {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
   ]; //用户工具下拉菜单
 
+  optionsAll=[];
+
   allNodes = [
     {
       title: '首页',
@@ -174,8 +174,8 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'gateway',
       children: [
-        {title: '拓扑设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
-        {title: '拓扑监控管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
+        {title: '拓扑图设计', key: '2001', app: 'topo-design', isLeaf: true, fav: false, share: false},
+        {title: '拓扑图管理', key: '2002', app: 'topo-mgr', isLeaf: true, fav: false, share: false},
       ]
     },
     {
@@ -292,7 +292,6 @@ export class HomeComponent implements OnInit {
 
   // 激活节点，赋类，调整样式，tab页响应
   activeNode(data: NzFormatEmitEvent): void {
-    this.indexFlag += 1;
     if (data.node.origin.isLeaf || data.node.children.length < 1) {     //仅子节点可选中
       this.activedNode = data.node.origin;
       // var obj = this.activedNode;
@@ -300,6 +299,7 @@ export class HomeComponent implements OnInit {
       var index = keys.indexOf(this.activedNode['key']);
       this.active = this.activedNode['key'];
       this.tabIndex = index >= 0 ? index : this.tabs.push(this.activedNode) - 1;
+      this.indexFlag=this.indexFlag>100?0:this.indexFlag+1;
     } else {
 
     }
@@ -342,7 +342,7 @@ export class HomeComponent implements OnInit {
   //右上用户列表选项，新增或激活tab页
   optionClick(key: string) {
     this.active = key;
-    var obj = JSON.parse(JSON.stringify(this.options.filter(n => n.key === key)[0]));
+    var obj = JSON.parse(JSON.stringify(this.optionsAll.filter(n => n.key === key)[0]));
     this.tabIndex = this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
@@ -385,7 +385,7 @@ export class HomeComponent implements OnInit {
     this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);
     // let tab = this.tabs[this.tabIndex];
     this.active = key;
-    this.indexFlag += 1;
+    this.indexFlag=this.indexFlag>100?0:this.indexFlag+1;
 
     // console.log("active:"+this.active);
     // console.log("event:"+event.index);
@@ -561,7 +561,7 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
     if (this.user['role'] === 'admin') {
-      this.options = [...this.options, {
+      this.optionsAll = [...JSON.parse(JSON.stringify(this.options)), {
         title: '用户列表',
         key: '1043',
         app: 'user-list',
@@ -573,22 +573,10 @@ export class HomeComponent implements OnInit {
       },
         {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}];
     }
-    this.setting.children = JSON.parse(JSON.stringify(this.options));
+    this.setting.children = JSON.parse(JSON.stringify(this.optionsAll));
     this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
     this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
     this.loading = false;
-    // //网络错误等待不来时不会执行
-    // this.getWorkSpc().then(_ => {
-    //   this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.customTopo))]; //追加自定义 深复制防联动
-    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.cusGrafana))]; //自定义grafana
-    //   this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.custom3D))]; //自定义3D
-    //   this.loading = false;
-    // }, _ => {
-    //   this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
-    //   this.staticNodes = JSON.parse(JSON.stringify(this.nodes));
-    //   this.loading = false;
-    // });
   }
 
   getUser() {
@@ -607,15 +595,12 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    // var cookie = document.cookie;
     var cookie = document.cookie;
     if (!cookie) {
       this.router.navigate(['/login']);
     }
     if (cookie) {
-      // console.log(this.key);
       this.getUser();
-      // this.reloadTree();
       this.notifyCount();
       this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
