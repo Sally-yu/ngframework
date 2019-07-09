@@ -49,7 +49,7 @@
                      [nzValidateStatus]="deviceRequire?'success':'error'">
       <nz-select name="device"  [(ngModel)]="cloud['filter']['device']" placeholder="请选择设备名称"  (ngModelChange)="deviceChange(cloud['filter']['device'])">
         <nz-option *ngFor="let d of deviceList" [nzLabel]="d" [nzValue]="d"></nz-option>
-      </nz-select>               
+      </nz-select>
       <nz-form-explain *ngIf="!deviceRequire">{{'请选择设备名称！'}}</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
@@ -70,7 +70,7 @@
       <nz-form-control [nzSpan]="10" [nzHasFeedback]="!topicRequire"
                         [nzValidateStatus]="topicRequire?'success':'error'">
         <input nz-input name="topic" [(ngModel)]="cloud['topic']" placeholder="请输入主题"
-          (ngModelChange)="cloud.topic?topicRequire=true:topicRequire=false;"/>  
+          (ngModelChange)="cloud.topic?topicRequire=true:topicRequire=false;"/>
         <nz-form-explain *ngIf="!topicRequire">{{'请输入主题！'}}</nz-form-explain>
       </nz-form-control>
   </nz-form-item>
@@ -79,7 +79,7 @@
       <nz-form-control [nzSpan]="10" [nzHasFeedback]="!addrRequire"
                         [nzValidateStatus]="addrRequire?'success':'error'">
         <input nz-input name="address" [(ngModel)]="cloud['address']" placeholder="请输入地址"
-          (ngModelChange)="cloud.address?addrRequire=true:addrRequire=false;"/>  
+          (ngModelChange)="cloud.address?addrRequire=true:addrRequire=false;"/>
         <nz-form-explain *ngIf="!addrRequire">{{'请输入地址！'}}</nz-form-explain>
       </nz-form-control>
   </nz-form-item>
