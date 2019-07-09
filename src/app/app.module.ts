@@ -45,7 +45,7 @@ import {PasswordComponent} from './tabs/user-mgr/user/modify/password/password.c
 import {NotifDetialComponent} from './tabs/user-mgr/notification/detail/notif-detial/notif-detial.component';
 import {TemplateDetailComponent} from './tabs/device-mgr/device-template/template-detail/template-detail.component';
 import {DeviceDetailComponent} from './tabs/device-mgr/device-list/device-detail/device-detail.component';
-import {DbMgrComponent} from './tabs/data-mgr/db-mgr/db-mgr.component';
+import {DbMgrComponent} from './tabs/data-mgr/data-image/db-mgr.component';
 import {DataDefineComponent} from './tabs/data-process/data-define/data-define.component';
 import {DeviceTableComponent} from './tabs/device-mgr/device-card/device-table/device-table.component';
 import {AddAlarmStrategyComponent} from './tabs/alarm/alarm-strategy-list/add-alarm-strategy/add-alarm-strategy.component';
@@ -55,8 +55,8 @@ import {EditAlarmSummaryComponent} from './tabs/alarm/alarm-summary/edit-alarm-s
 import {EditAlarmMgrComponent} from './tabs/alarm/alarm-mgr/edit-alarm-mgr/edit-alarm-mgr.component';
 import {IndexComponent} from './index/index.component';
 import {ForgetComponent} from './forget/forget.component';
-import {DataManageComponent} from './tabs/data-mgr/data-manage/data-manage.component';
-import {AddDbMgrComponent} from './tabs/data-mgr/db-mgr/add-db-mgr/add-db-mgr.component';
+import {DataManageComponent} from './tabs/data-mgr/data-list/data-manage.component';
+import {AddDbMgrComponent} from './tabs/data-mgr/data-detail/add-db-mgr.component';
 import {DeviceServiceComponent} from './tabs/device-service/service-list/device-service.component';
 import {ServiceDetailComponent} from './tabs/device-service/service-detail/service-detail.component';
 import {ServiceImageComponent} from './tabs/device-service/service-image/service-image.component';
