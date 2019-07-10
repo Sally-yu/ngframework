@@ -31,7 +31,7 @@ export class SubscribeService {
       publisher: null,
       user: "admin",
       password: "admin",
-      topic: "U肋组装机_温度",
+      topic: "U肋组装机",
       baseURL: null,
       url: null,
       filter: {
@@ -52,7 +52,7 @@ export class SubscribeService {
       publisher: null,
       user: "admin",
       password: "admin",
-      topic: "多嘴头龙门焊机_节拍",
+      topic: "龙门焊机",
       baseURL: null,
       url: null,
       filter: {
@@ -73,7 +73,7 @@ export class SubscribeService {
       publisher: null,
       user: "admin",
       password: "admin",
-      topic: "机械产品部_转速",
+      topic: "落地镗铣床",
       baseURL: null,
       url: null,
       filter: {

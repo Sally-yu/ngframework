@@ -17,7 +17,7 @@ import * as  MongoClient from 'mongodb/lib/mongo_client.js'
 export class DbMgrComponent implements OnInit,OnChanges {
 
   @Input() change;
-  dataAll;   // 所有数据
+  dataAll=[];   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件
   selectData = '';  // 被选择的数据
