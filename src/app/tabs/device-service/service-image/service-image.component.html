@@ -15,7 +15,7 @@
     </nz-layout>
     <div>
       <nz-list [nzDataSource]="serviceList" [nzRenderItem]="item" [nzLoading]="loading"
-        [nzGrid]="{ gutter: 36, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
+        [nzGrid]="{ gutter: 16, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
         <ng-template #item let-item>
           <ng-template #contextTemplate>
             <ul nz-menu nzInDropDown>
@@ -31,11 +31,11 @@
             <div class="database">
               <table style="border:0">
                 <tr>
-                  <th rowspan="2" align="right" >
+                  <th  align="right" >
                     <img *ngIf="toBoolean(item.opcstate)" src="../../../../assets/src/service-up.png" style="width: 50px; align-self: center;"alt="database" />
                     <img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />
                   </th>
-                  <td align="left"><span>{{item.servername}}</span></td>
+                  <td align="left" colspan="2"><span>{{item.servername}}</span></td>
                 </tr>
               </table>
             </div>
