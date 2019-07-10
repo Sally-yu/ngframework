@@ -1,5 +1,5 @@
-import { Component, OnInit,Input,OnChanges, SimpleChanges } from '@angular/core';
-import {NzMessageService, toBoolean} from 'ng-zorro-antd';
+import { Component, OnInit,Input,OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {NzMessageService, toBoolean, NzDropdownContextComponent, NzDropdownService} from 'ng-zorro-antd';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SubscribeService} from '../../../services/subscribe-service/subscribe.service';
 
@@ -18,7 +18,7 @@ export class CloudImageComponent implements OnInit,OnChanges {
   pageSize = 5;
   sizeOption = [5, 10, 25, 20];
   loading = false;
-
+  dropdown: NzDropdownContextComponent=null;
   searchValue:string;
 
   cloud= {
@@ -49,11 +49,16 @@ export class CloudImageComponent implements OnInit,OnChanges {
     private http: HttpClient,
     private message: NzMessageService,
     private SubscribeService:SubscribeService,
+    private nzDropdownService: NzDropdownService,
   ) {
   }
 
-
+// 右键创建菜单
+contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
+  this.dropdown = this.nzDropdownService.create($event, template);
+}
   edit(id: string) {
+    this.dropdown.close();  //右键菜单关闭
     let data = JSON.parse(JSON.stringify(this.cloudList)).filter(t => t.id === id)[0];
     if(data.enable){
       this.message.info('该服务在启动状态下禁止编辑');
@@ -67,6 +72,7 @@ export class CloudImageComponent implements OnInit,OnChanges {
   add(){  
      this.option = 'new';
      this.cloudDetail = true;
+     this.dropdown.close();  //右键菜单关闭
   }
   cancel($event: any) {
     if (event) {
@@ -97,19 +103,27 @@ export class CloudImageComponent implements OnInit,OnChanges {
   }
   // 删除
   remove(id: string) {
+    this.dropdown.close();  //右键菜单关闭
     this.SubscribeService.deleteSubscribe(id).then(res => {
       this.getCloudlist();
     },err => {
       this.getCloudlist();
     });  
   }
- 
-
+ start(id: string){
+  this.dropdown.close();  //右键菜单关闭
+ }
+ stop(id: string){
+  this.dropdown.close();  //右键菜单关闭
+ }
   ngOnInit() {
      this.getCloudlist();
 
   }
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.dropdown!=null){
+      this.dropdown.close();  //右键菜单关闭
+    }
     this.ngOnInit();
   }
 

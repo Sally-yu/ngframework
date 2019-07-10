@@ -1,4 +1,4 @@
-<app-add-db-mgr *ngIf="addFlag" parentCom="数据元管理" [option]='option' [selectData]="selectData" [dataAll]="dataAll"
+<app-add-db-mgr *ngIf="addFlag" parentCom="数据源管理" [option]='option' [selectData]="selectData" [dataAll]="dataAll"
   (result)="cancel($event)"></app-add-db-mgr>
 <!-- 数据源管理页面 -->
 <div id="content" *ngIf="!addFlag">
@@ -19,7 +19,7 @@
       <button nz-button nzType="default" style="left: 10%">移除<i nz-icon [nzType]="'delete'"></i></button>
     </nz-card> -->
     <nz-list [nzDataSource]="dataAll" [nzRenderItem]="item" [nzLoading]="loading"
-      [nzGrid]="{ gutter: 24, lg: 6, md: 6, sm: 6, xs: 3,  xl: 3 }">
+      [nzGrid]="{ gutter: 24, lg: 6, md: 6, sm: 6, xs: 4,  xl: 4 }">
       <ng-template #item let-item>
         <ng-template #contextTemplate>
           <ul nz-menu nzInDropDown>
@@ -35,9 +35,9 @@
           <div class="database">
             <table >
               <tr>
-                <th rowspan="2" align="right" ><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
+                <th  align="right" ><img src="../../../../assets/src/database.png" style="width: 50px; align-self: center;"
                     alt="database" /></th>
-                <td align="left"><span>{{item.servername}}</span></td>
+                <td align="left" colspan="2"><span>{{item.servername}}</span></td>
               </tr>
             </table>
           </div>  
@@ -45,11 +45,11 @@
         <ng-template #contentTemplate>
           <table style="width: 200px">
             <tr>
-              <th><b>服务器IP：</b></th>
+              <th><b>数据库地址：</b></th>
               <td>{{item.serverip}}</td>
             </tr>
             <tr>
-              <th><b>服务器端口：</b></th>
+              <th><b>端口号：</b></th>
               <td>{{item.serverport}}</td>
             </tr>
             <tr>

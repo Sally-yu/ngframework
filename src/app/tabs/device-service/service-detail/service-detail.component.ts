@@ -108,22 +108,6 @@ export class ServiceDetailComponent implements OnInit {
 
   //查找服务器名称
   searchopcserver() {
-    var data = new FormData();
-    var opcHandleUrl;
-    data.append('opcip',  this.service.opchost);
-    data.append('opctype', this.service.opctype);
-    data.append('opcaction', 'recognition');
-    opcHandleUrl="http://"+this.service.opchost+":"+this.service.serverport+this.opchandleUrl;
-    this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
-      console.log(res);
-      this.service.serverurl = '';
-      this.servernames = [];
-      this.servernames=JSON.parse(res);
-      this.service.serverurl = this.servernames[0];
-
-    }),error1=>{
-      this.message.warning(error1.error);
-    };
     this.OpcService.searchServer(this.service).then(res => {
       if(res){
         this.service.serverurl = '';
@@ -138,7 +122,7 @@ export class ServiceDetailComponent implements OnInit {
   getDatabaselist() {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "时序数据库");
       this.loading = false;
     },err => {
       this.loading = false;

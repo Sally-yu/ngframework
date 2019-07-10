@@ -13,6 +13,7 @@ export class OpcService {
     ) { }
 
   public host='http://10.24.20.71:4000';
+  //public host='http://192.168.110.143:4000';
   public insertopcUrl=this.host+'/api/v1/opcua/insert';
   public updateopcUrl=this.host+'/api/v1/opcua/update';
   public getopcUrl=this.host+'/api/v1/opcua/get';

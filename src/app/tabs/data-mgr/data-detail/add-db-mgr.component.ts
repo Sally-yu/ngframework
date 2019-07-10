@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgZorroAntdModule, NzMessageService } from 'ng-zorro-antd';
-import { DbMgrService } from '../../../../services/db-mgr/db-mgr.service';
+import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 
 @Component({
   selector: 'app-add-db-mgr',
