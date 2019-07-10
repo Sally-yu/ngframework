@@ -28,7 +28,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   currentIndex = 1;
   pageSize = 5;
   sizeOption = [5, 10, 25, 20];
-  dropdown: NzDropdownContextComponent;
+  dropdown: NzDropdownContextComponent=null;
   show:boolean = true;//显示列表主界面
   loading = false;
   servername:string;
@@ -186,7 +186,9 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     this.getServicelist();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.dropdown.close();  //右键菜单关闭
+    if(this.dropdown!=null){
+      this.dropdown.close();  //右键菜单关闭
+    }
     this.ngOnInit();    
   }
 

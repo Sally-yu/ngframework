@@ -26,7 +26,7 @@ export class DbMgrComponent implements OnInit,OnChanges {
 
   option = '';  //查看、新增和编辑的标志位
 
-  dropdown: NzDropdownContextComponent;
+  dropdown: NzDropdownContextComponent=null;
   // actived node
   // activedNode: NzTreeNode;
 
@@ -196,6 +196,8 @@ export class DbMgrComponent implements OnInit,OnChanges {
     this.getDatabaselist();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.dropdown.close();  //右键菜单关闭
+    if(this.dropdown!=null){
+      this.dropdown.close();  //右键菜单关闭
+    }
   }
 }

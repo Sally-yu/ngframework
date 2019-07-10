@@ -95,7 +95,6 @@ export class DbMgrService {
     let data = [];
     return new Promise((resolve, reject) => {
       this.http.get(this.url.dbMgrlist, {headers: this.header}).toPromise().then(res => {
-        console.log('res = ',res)
         if (res['status'] && res['data']) {
           data = res['data'];
         }
@@ -112,7 +111,6 @@ export class DbMgrService {
   addDbMgr(data): any {
     return new Promise((resolve, reject) => {
       this.http.post(this.url.addDbMgr, data, {headers: this.header}).toPromise().then(res => {
-        console.log('添加res = ',res)
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -130,7 +128,6 @@ export class DbMgrService {
   updateDbMgr(data:any):any{
     return new Promise((resolve, reject) => {
       this.http.post(this.url.updateDbMgr, data, {headers: this.header}).toPromise().then(res => {
-        // console.log('更新res = ',res)
         if (res['status']) {
           this.message.success(res['msg']);
         } else {
@@ -189,11 +186,9 @@ export class DbMgrService {
 
     return new Promise((resolve, reject) => {
       this.http.post(this.url.testPing, data, {headers: this.header}).toPromise().then(res => {
-        console.log(res)
         resolve(res); 
       }, res => {
         reject(res);
-        console.log(res.error)
         this.url.logout(res);
       });
     });

@@ -10,7 +10,7 @@ import { DbMgrService } from 'src/app/services/db-mgr/db-mgr.service';
   styleUrls: ['./data-manage.component.less']
 })
 export class DataManageComponent implements OnInit {
-  dataAll;   // 所有数据
+  dataAll= [];   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件
   selectData = '';  // 被选择的数据
@@ -18,8 +18,6 @@ export class DataManageComponent implements OnInit {
   loading = false;
 
   option = '';  //查看、新增和编辑的标志位
-  // actived node
-  // activedNode: NzTreeNode;
 
   nullData = {
     servername: "",
@@ -75,7 +73,6 @@ cancel($event: any) {
     this.loading = true;
     this.dbMgrService.dbMgrList().then(res => {
       this.dataAll = res;
-      // console.log('1、',this.dataAll)
       this.loading = false;
     }, err => {
       this.loading = false;
@@ -93,7 +90,6 @@ cancel($event: any) {
           return d.servername.indexOf(this.searchValue) >= 0;
         });
       }
-      // console.log(this.dataAll)
       this.loading = false;
     }, err => {
       this.loading = false;
@@ -111,7 +107,6 @@ cancel($event: any) {
 
   // 测试连接
   connection(data) {
-    // this.dropdown.close();  //右键菜单关闭
     const messageId = this.message.loading('正在测试连接...', { nzDuration: 0 }).messageId
     if (data.databasetype == 'InfluxDB') {
       let url_port = data.serverip;
@@ -122,17 +117,13 @@ cancel($event: any) {
       if (data.username && data.password) {
         url = url + `?u=${data.username}&p=${data.password}`
       }
-      // console.log('url=', url)
       this.http.get(url).toPromise().then(res => {
         this.message.remove(messageId);
         this.message.success('测试连接成功！');
-        // data["ping"] = true;
       },
         err => {
-          // console.log('err = ', err)
           this.message.remove(messageId);
           this.message.error('测试连接失败！');
-          // data["ping"] = false;
         }
       );
     }
@@ -141,30 +132,11 @@ cancel($event: any) {
       this.dbMgrService.dbMgrPing(data).then(res => {
         this.message.remove(messageId);
         this.message.success('测试连接成功！');
-        // data["ping"] = true;
       }, err => {
-        // console.log('err=', err.error)
         this.message.remove(messageId);
         this.message.error('测试连接失败！');
-        // data["ping"] = false;
       });
     }
-
-    // var url = 'mongodb://admin:123456@10.24.20.71:28081';
-    // // Use connect method to connect to the Server passing in
-    // // additional options
-    // MongoClient.connect(url, {
-    //   poolSize: 10, ssl: true
-    // }, function (err, db) {
-    //   // assert.equal(null, err);
-    //   console.log("Connected correctly to server");
-    //   db.close();
-    // });
-
-
-    // let url = 'http://10.72.43.193:8086/ping?u=admin&p=admin'
-    // let url = 'http://10.72.43.193/ping'
-    // let url = 'http://10.25.11.104/ping'
   }
 
 
