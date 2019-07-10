@@ -10,7 +10,7 @@ declare var echarts: any; //angular方式引用echarts做循环处理性能奇�
   templateUrl: './device-card.component.html',
   styleUrls: ['./device-card.component.less']
 })
-export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
+export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   ws: WebSocket;
 
   @Input() flag;
@@ -31,7 +31,7 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
 
   presetColors = ['#f1c40f', '#e74c3c', '#2ecc71'];
   keys: [];
-  interval=1; //默认一秒刷新
+  interval = 1; //默认一秒刷新
 
   //预置卡片颜色选项
 
@@ -193,7 +193,7 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
     //   return;
     // }
     // try {
-    console.log(this.attValue)
+    console.log(this.attValue);
     let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
     let sum = 0;
     let option = {
@@ -218,7 +218,7 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
       series: []
     };
     data.forEach(r => {
-      var colorindex = Math.floor(r['value'] / 33);
+      var colorindex = Math.floor(Math.random() * 100 / 33);
 
       option.series = [...option.series, {
         type: 'bar',
@@ -252,11 +252,11 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
       this.ws.close();
     }
     var self = this;
-    this.ws = new WebSocket('ws://10.24.20.71:7777/ws');
-    this.ws.onopen=function (event) {
+    this.ws = new WebSocket('ws://10.24.20.71:7777/devicevalue');
+    this.ws.onopen = function (event) {
       self.ws.send(JSON.stringify({
-        keys:self.keys,
-        time:self.interval
+        keys: self.keys,
+        time: self.interval
       }));
     };
     this.ws.onmessage = function (event) {
@@ -266,7 +266,7 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
     };
   }
 
-  matchValue(){
+  matchValue() {
     this.viewList.forEach(c => {
       var e = $('#' + c.key);
       var chart = echarts.init(e.get(0));
@@ -284,7 +284,7 @@ export class DeviceCardComponent implements OnInit,OnChanges,OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.deviceDetail&&!this.deviceTable){
+    if (!this.deviceDetail && !this.deviceTable) {
       this.getList();
     }
   }

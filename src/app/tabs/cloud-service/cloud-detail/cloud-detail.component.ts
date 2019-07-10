@@ -100,7 +100,7 @@ export class CloudDetailComponent implements OnInit {
       this.loading = false;
     });
   }
-  
+
   deviceChange(device){
     if(device){
       this.deviceRequire=true;
@@ -149,4 +149,7 @@ export class CloudDetailComponent implements OnInit {
     }
   }
 
+  reset() {
+
+  }
 }
