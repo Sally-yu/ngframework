@@ -248,8 +248,8 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'cluster',
       children: [
-        {title: '服务端管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
-        {title: '服务端列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
+        {title: '服务管理', key: '3001', app: 'service-image', isLeaf: true, fav: false, share: false},
+        {title: '服务列表', key: '3002', app: 'device-service', isLeaf: true, fav: false, share: false},
       ]
     },
   ]; //所有预置节点，渲染菜单结构

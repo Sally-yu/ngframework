@@ -155,7 +155,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   getDatabaselist() {
     this.loading = true;
     this.DbMgrService.dbMgrList().then(res => {
-      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "InfluxDB");
+      this.influxlist = JSON.parse(JSON.stringify(res)).filter(t => t.databasetype === "时序数据库");
       this.loading = false;
     },err => {
       this.loading = false;

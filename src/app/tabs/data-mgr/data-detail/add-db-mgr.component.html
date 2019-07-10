@@ -22,18 +22,18 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>服务端IP</nz-form-label>
+      <nz-form-label [nzSpan]="7" nzRequired>数据库地址</nz-form-label>
       <nz-form-control [nzSpan]="12" [nzHasFeedback]="!serverIpRequired"
         [nzValidateStatus]="serverIpRequired?'success':'error'">
-        <input nz-input name="serverIP" [(ngModel)]="selectData.serverip" [disabled]="option!='add'" placeholder="请输入服务端IP" onkeyup="this.value=this.value.replace(/[^\d|.]/g,'')" />
-        <nz-form-explain *ngIf="!serverIpRequired">{{'请输入服务端IP！'}}</nz-form-explain>
+        <input nz-input name="serverIP" [(ngModel)]="selectData.serverip" [disabled]="option!='add'" placeholder="请输入数据库地址" onkeyup="this.value=this.value.replace(/[^\d|.]/g,'')" />
+        <nz-form-explain *ngIf="!serverIpRequired">{{'请输入数据库地址！'}}</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSpan]="7">服务端端口</nz-form-label>
+      <nz-form-label [nzSpan]="7">端口号</nz-form-label>
       <nz-form-control [nzSpan]="12">
-        <input nz-input name="serverPort" [(ngModel)]="selectData.serverport" [disabled]="option=='preview'" placeholder="请输入服务端端口" />
-        <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入服务端端口！'}}</nz-form-explain> -->
+        <input nz-input name="serverPort" [(ngModel)]="selectData.serverport" [disabled]="option=='preview'" placeholder="请输入端口号" />
+        <!-- <nz-form-explain *ngIf="!nameRequire">{{'请输入端口号！'}}</nz-form-explain> -->
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -74,13 +74,13 @@
             name="databaseType"
             nzShowSearch
             nzAllowClear
-            
             nzPlaceHolder="请选择数据库类型"
             [(ngModel)]="selectData.databasetype"
             
           >
-            <nz-option nzLabel="InfluxDB" nzValue="InfluxDB"></nz-option>
-            <nz-option nzLabel="MongoDB" nzValue="MongoDB"></nz-option>
+            <nz-option nzLabel="时序数据库" nzValue="时序数据库"></nz-option>
+            <nz-option nzLabel="文档数据库" nzValue="文档数据库"></nz-option>
+            <nz-option nzLabel="关系数据库" nzValue="关系数据库"></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="!databaseTypeRequired">{{'请选择数据库类型'}}</nz-form-explain>
         </nz-form-control>
