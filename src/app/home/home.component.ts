@@ -196,8 +196,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       expanded: false,
       icon: 'bulb',
       children: [
-        {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
-        {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
+        {title: '三维仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
+        {title: '三维仿真管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
       ]
     },
     {

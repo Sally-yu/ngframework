@@ -27,11 +27,13 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   option;//标识新增或编辑
   device;
 
-  attValue;//设备属性（参数）的值
+  attValue = [];//设备属性（参数）的值
 
   presetColors = ['#f1c40f', '#e74c3c', '#2ecc71'];
   keys: [];
   interval = 1; //默认一秒刷新
+  dataOptions = [];
+  max=20;
 
   //预置卡片颜色选项
 
@@ -42,9 +44,6 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
 
   //获取所有device，后续处理。刷新专用，与页面加载时不同
   getList() {
-    if (this.ws != null) {
-      this.ws.close();
-    }
     this.deviceService.deviceList().then(res => {
         this.deviceList = res.filter(d => d.display);
         this.spliceViewList(this.deviceList);
@@ -69,24 +68,58 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   spliceViewList(list) {
-    if (this.ws != null) {
-      this.ws.close();
-    }
+    this.connectWs();//建立ws协议，自动刷新
     this.viewList = JSON.parse(JSON.stringify(list)).splice((this.currentIndex - 1) * this.pageSize, this.pageSize);
     this.keys = this.viewList.map(d => {
       return d.key;
     });
     this.deviceService.deviceValue(this.keys).then(res => {
       this.attValue = res;
-      this.viewList.forEach(c => {
-        var e = $('#' + c.key);
-        var chart = echarts.init(e.get(0));
-        chart.setOption(this.chartOption(c.key));
-        new ResizeSensor(e, function () {
-          chart.resize();
-        });
-        this.loading = false;
+      this.keys.forEach(r => {
+        let o = this.dataOptions.filter(d=>d['device']==r)[0]?this.dataOptions.filter(d=>d['device']==r)[0]['option']:null;
+        let option=o?o:
+        {
+          grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '0%',
+            top: '0%',
+            containLabel: false
+          },
+          xAxis: {
+            max: this.max,
+            type: 'value',
+            show: false
+          },
+          yAxis: {
+            type: 'category',
+            show: false,
+            data: ['']
+          },
+          animation: false,
+          series: []
+        };
+        this.dataOptions = [...this.dataOptions, {
+          device: r,
+          option: option,
+        }];
+        var colorindex = Math.floor(Math.random() * 100 / 33);
+        if (option.series.length >= this.max) {
+          option.series.splice(0, 1);
+        }
+        option.series = [...option.series, {
+          type: 'bar',
+          stack: '1',
+          data: [1],
+          itemStyle: {
+            normal: {
+              color: this.presetColors[colorindex]
+            }
+          }
+        }];
       });
+      this.matchValue();
+      this.loading = false;
     }, err => {
       this.loading = false;
     });
@@ -117,15 +150,16 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   add() {
-    // this.device=JSON.parse(JSON.stringify(this.nullDevice));
     this.option = 'new';
     this.deviceDetail = true;
+    this.closeWS();
   }
 
   edit(key: string) {
     this.device = JSON.parse(JSON.stringify(this.deviceList)).filter(d => d.key === key)[0];
     this.option = 'edit';
     this.deviceDetail = true;
+    this.closeWS();
   }
 
   toTable(key: string) {
@@ -187,70 +221,35 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  //生成随机匹配的echarts柱状图
-  chartOption(key: any) {
-    // if (!this.attValue) {
-    //   return;
-    // }
-    // try {
-    console.log(this.attValue);
-    let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
-    let sum = 0;
-    let option = {
-      grid: {
-        left: '1%',
-        right: '1%',
-        bottom: '0%',
-        top: '0%',
-        containLabel: false
-      },
-      xAxis: {
-        max: 0,
-        type: 'value',
-        show: false
-      },
-      yAxis: {
-        type: 'category',
-        show: false,
-        data: ['']
-      },
-      animation: false,
-      series: []
-    };
-    data.forEach(r => {
+  //ws收到消息追加数据
+  chartOption() {
+    this.keys.forEach(r => {
+      var option = this.dataOptions.filter(d => d['device'] == r)[0]['option'];
+      if (option.series.length >= this.max) {
+        option.series.splice(0, 1);
+      }
       var colorindex = Math.floor(Math.random() * 100 / 33);
-
       option.series = [...option.series, {
         type: 'bar',
         stack: '1',
-        data: [r['value']],
+        data: [1],
         itemStyle: {
           normal: {
             color: this.presetColors[colorindex]
           }
         }
       }];
-      sum += r['value'];
     });
-    option.xAxis.max = sum;
-
-    return option;
-    // } catch (e) {
-    //
-    // }
+    this.matchValue();
   }
-
 
   ngOnInit() {
     this.loading = true;
     this.getList();
   }
 
-
   connectWs() {
-    if (this.ws != null) {
-      this.ws.close();
-    }
+    this.closeWS();
     var self = this;
     this.ws = new WebSocket('ws://10.24.20.71:7777/devicevalue');
     this.ws.onopen = function (event) {
@@ -260,27 +259,34 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
       }));
     };
     this.ws.onmessage = function (event) {
-      console.log(event.data);
       self.attValue = JSON.parse(event.data);
-      self.matchValue();
+      self.chartOption();
     };
   }
 
   matchValue() {
-    this.viewList.forEach(c => {
-      var e = $('#' + c.key);
-      var chart = echarts.init(e.get(0));
-      chart.setOption(this.chartOption(c.key));
-      new ResizeSensor(e, function () {
-        chart.resize();
+    try {
+      this.keys.forEach(c => {
+        var e = $('#' + c);
+        var chart = echarts.init(e.get(0));
+        chart.setOption(this.dataOptions.filter(d => d['device'] == c)[0]['option']);
+        new ResizeSensor(e, function () {
+          chart.resize();
+        });
       });
-    });
+    }catch (e) {
+
+    }
   }
 
-  ngOnDestroy(): void {
+  closeWS(){
     if (this.ws != null) {
       this.ws.close();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.closeWS();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -289,5 +295,13 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
+  setInterval() {
+    const t=this.interval;
+    var self=this;
+    setTimeout(function () {
+      if (t==self.interval){
+        self.connectWs();
+      }
+    },1000);
+  }
 }
