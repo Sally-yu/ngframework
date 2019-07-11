@@ -60,6 +60,7 @@ export class DeviceListComponent implements OnInit, OnChanges {
 
   //同步设备列表
   synchro() {
+    this.loading = true;
     this.OpcService.getserviceList().then(res => {
       var serviceList = res;
       serviceList.forEach(element => {
@@ -67,13 +68,13 @@ export class DeviceListComponent implements OnInit, OnChanges {
 
         }, err => {
           this.message.warning('同步失败');
+          this.loading = true;
         });
       });
+      this.getList();
       this.message.success('同步成功');
-      setTimeout(() => {
-        this.getList();
-      }, 1000);
     }, err => {
+      this.loading = false;
     });
   }
 

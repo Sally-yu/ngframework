@@ -33,8 +33,16 @@
  **/
 
 
-import {Component, OnInit} from '@angular/core';
-import {NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {
+  NzDropdownContextComponent,
+  NzDropdownService,
+  NzFormatEmitEvent,
+  NzIconService,
+  NzMenuItemDirective,
+  NzMessageService,
+  NzTreeNode
+} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
@@ -46,9 +54,13 @@ import {NotifyService} from '../notify.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  private dropdown: NzDropdownContextComponent;
 
   user = {};
+
+  notifList = [];
 
   menuList = 'all'; //菜单选项 全部 收藏 共享
 
@@ -145,7 +157,7 @@ export class HomeComponent implements OnInit {
     // {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}
   ]; //用户工具下拉菜单
 
-  optionsAll=[];
+  optionsAll = [];
 
   allNodes = [
     {
@@ -184,8 +196,8 @@ export class HomeComponent implements OnInit {
       expanded: false,
       icon: 'bulb',
       children: [
-        {title: '仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
-        {title: '仿真发布管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
+        {title: '三维仿真设计', key: '2011', app: '3d-design', isLeaf: true, fav: false, share: false},
+        {title: '三维仿真管理', key: '2012', app: '3d-mgr', isLeaf: true, fav: false, share: false},
       ]
     },
     {
@@ -262,6 +274,7 @@ export class HomeComponent implements OnInit {
   key;
   notifcount = 0;
   indexFlag = 0;
+  ws: WebSocket;
 
   constructor(
     private userSrv: UserService,
@@ -292,27 +305,18 @@ export class HomeComponent implements OnInit {
 
   // 激活节点，赋类，调整样式，tab页响应
   activeNode(data: NzFormatEmitEvent): void {
+    this.close();
     if (data.node.origin.isLeaf || data.node.children.length < 1) {     //仅子节点可选中
       this.activedNode = data.node.origin;
-      // var obj = this.activedNode;
       var keys = this.tabs.map(e => e['key']);
       var index = keys.indexOf(this.activedNode['key']);
       this.active = this.activedNode['key'];
       this.tabIndex = index >= 0 ? index : this.tabs.push(this.activedNode) - 1;
-      this.indexFlag=this.indexFlag>100?0:this.indexFlag+1;
+      this.indexFlag = this.indexFlag > 100 ? 0 : this.indexFlag + 1;
     } else {
 
     }
   }
-
-  // contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
-  //   this.dropdown = this.nzDropdownService.create($event, template);
-  // }
-  //
-  // selectDropdown(): void {
-  //   this.dropdown.close();
-  //   // do something
-  // }
 
   //右悬浮导航新弹出页面
   click(key) {
@@ -385,12 +389,7 @@ export class HomeComponent implements OnInit {
     this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);
     // let tab = this.tabs[this.tabIndex];
     this.active = key;
-    this.indexFlag=this.indexFlag>100?0:this.indexFlag+1;
-
-    // console.log("active:"+this.active);
-    // console.log("event:"+event.index);
-    // console.log("index:"+this.tabIndex);
-    // console.log("tabs:"+JSON.stringify(this.tabs));
+    this.indexFlag = this.indexFlag > 100 ? 0 : this.indexFlag + 1;
     this.findNode(this.nodes, key);
   }
 
@@ -572,6 +571,8 @@ export class HomeComponent implements OnInit {
         reload: false
       },
         {title: '角色管理', key: '1044', app: 'role', icon: 'control', isLeaf: true, fav: true, share: false, reload: false}];
+    } else {
+      this.optionsAll = JSON.parse(JSON.stringify(this.options));
     }
     this.setting.children = JSON.parse(JSON.stringify(this.optionsAll));
     this.nodes = [...this.nodes, JSON.parse(JSON.stringify(this.setting))]; //系统管理
@@ -601,19 +602,65 @@ export class HomeComponent implements OnInit {
     }
     if (cookie) {
       this.getUser();
-      this.notifyCount();
+      this.connectWs();
       this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
     }
   }
 
-  notifyCount(): any {
-    var list;
-    this.notifySrv.allNotif().then(res => {
-      list = res;
-      this.notifcount = list.filter(l => l.new).length;
-    }, err => {
-    });
+  connectWs() {
+    if (this.ws != null) {
+      this.ws.close();
+    }
+    var self = this;
+    this.ws = new WebSocket('ws://10.24.20.71:7777/notify');
+    this.ws.onopen = function (event) {
+    };
+    this.ws.onmessage = function (event) {
+
+      if (JSON.stringify(self.notifList) != event.data) {
+        console.log('update');
+        self.notifList = JSON.parse(event.data);
+        self.notifcount = self.notifList.filter(l => l.new).length;
+      }
+    };
+  }
+
+  ngOnDestroy(): void {
+    if (this.ws != null) {
+      this.ws.close();
+    }
+  }
+
+  contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
+    this.dropdown = this.nzDropdownService.create($event, template);
+    console.log(this.dropdown);
+  }
+
+  close(): void {
+    if (this.dropdown) {
+      this.dropdown.close();
+    }
+  }
+
+  tabRight(tab: any) {
+    if (tab.key != '000') {
+      if (this.tabIndex >= this.tabs.indexOf(tab)) {
+        this.tabIndex -= 1;    //删除元素重新检索index有问题，手动修改
+      }
+      this.tabs.splice(this.tabs.indexOf(tab), 1); //原数组长度缩短，索引改变
+      try {
+        this.active = this.tabs[this.tabIndex]['key']; //刷新选中tab的key
+        this.findNode(this.nodes, this.active);
+      } catch (e) {
+
+      }    }
+  }
+
+  closeAllTab() {
+    this.tabs=this.tabs.filter(t=>t.key=='000');
+    this.active = '000'; //刷新选中tab的key
+
   }
 }

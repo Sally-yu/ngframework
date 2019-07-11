@@ -18,9 +18,13 @@
       </div>
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
-        <button nz-button (click)="getList()">刷新</button>
-        <button nz-button (click)="connectWs()">自动</button>
-        <button nz-button (click)="add()" nzType="primary">新增</button>
+        <!--<button nz-button title="刷新频率" (click)="connectWs()" nzType="primary">{{interval}}S</button>-->
+        <button nz-button (click)="getList()" nzType="primary" [nzLoading]="loading"><i nz-icon [nzSpin]="ws&&ws.CONNECTING==1"
+                                                                                        nzType="loading-3-quarters"
+                                                                                        nzTheme="outline"></i></button>
+        <button nz-button (click)="add()" nzType="primary" [nzLoading]="loading"><i nz-icon
+                                                                                    nzType="plus"
+                                                                                    nzTheme="outline"></i></button>
       </div>
     </div>
     <nz-list [nzDataSource]="viewList" [nzRenderItem]="item"

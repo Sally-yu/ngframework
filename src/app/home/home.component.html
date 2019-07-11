@@ -145,8 +145,14 @@
   <!--tab条-->
   <nz-tabset [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" [nzAnimated]="false">
     <nz-tab (nzClick)="selectChange(tab['key'])" *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+      <ng-template #template>
+        <ul nz-menu nzInDropDown (nzClick)="close()">
+          <li *ngIf="tab['key']!='000'" nz-menu-item (click)="tabRight(tab)">关闭标签</li>
+          <li nz-menu-item (click)="closeAllTab()">关闭全部标签</li>
+        </ul>
+      </ng-template>
       <ng-template #titleTemplate>
-        <div [ngStyle]="{'user-select':'none'}">
+        <div [ngStyle]="{'user-select':'none'}" (contextmenu)="contextMenu($event, template)">
           <i nz-icon nzTheme="outline" [nzType]="tab['icon']?tab['icon']:'tag'"></i>
           {{ tab["title"] }}
           <i *ngIf="tab['key']!='000'" nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
@@ -198,25 +204,28 @@
 
     <!--edge service-->
     <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
+                       [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
     <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>
-       <!--cloud service-->
+                        [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>
+    <!--cloud service-->
     <app-cloud-image *ngIf="exist('3011')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>
+                     [ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>
     <app-cloud-list *ngIf="exist('3012')" class="back" [refresh]="indexFlag"
-                      [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>
+                    [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>
 
     <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
     <app-notification *ngIf="exist('1042')" class="back"
-                      [ngStyle]="{'display':active=='1042'?'block':'none'}"></app-notification>
+                      [ngStyle]="{'display':active=='1042'?'block':'none'}" [notifList]="notifList"></app-notification>
     <app-user-list *ngIf="exist('1043')" class="back"
                    [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
     <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
 
-    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}" [flag]="indexFlag"></app-topo-show>
-    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}" [flag]="indexFlag"></app-model3d-show>
-    <app-grafana-show *ngIf="exist('1070')" class="back" [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>
+    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"
+                   [flag]="indexFlag"></app-topo-show>
+    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"
+                      [flag]="indexFlag"></app-model3d-show>
+    <app-grafana-show *ngIf="exist('1070')" class="back"
+                      [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>
 
 
     <app-topo-design *ngIf="exist('2001')" class="back"
@@ -296,4 +305,5 @@
     <!--</li>-->
   </ul>
 </div>
+
 
