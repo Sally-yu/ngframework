@@ -7,8 +7,8 @@ import {HttpHeaders} from '@angular/common/http';
 })
 export class UrlService {
 
-  // hostname = 'http://10.24.20.71';
-  hostname = 'http://127.0.0.1';
+  hostname = 'http://10.24.20.71';
+  //hostname = 'http://127.0.0.1';
   hostPort = ':9060';
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表
   topoUrl = 'http://10.24.20.71:9099'; //此url配合topo的路由自动跳转，topo主页自动跳转到topo/list  页面路由nginx负责，后台单独启动
