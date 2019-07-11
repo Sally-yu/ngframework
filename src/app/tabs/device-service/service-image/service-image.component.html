@@ -14,7 +14,7 @@
       </nz-content>
     </nz-layout>
     <div>
-      <nz-list [nzDataSource]="serviceList" [nzRenderItem]="item" [nzLoading]="loading"
+      <nz-list [nzDataSource]="serviceList" [nzRenderItem]="item" [nzLoading]="OpcService.loading"
         [nzGrid]="{ gutter: 16, lg: 8, md: 6, sm: 6, xs: 4,  xl: 4 }">
         <ng-template #item let-item>
           <ng-template #contextTemplate>
@@ -35,7 +35,7 @@
                     <img *ngIf="toBoolean(item.opcstate)" src="../../../../assets/src/service-up.png" style="width: 50px; align-self: center;"alt="database" />
                     <img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />
                   </th>
-                  <td align="left" colspan="2"><span>{{item.servername}}</span></td>
+                  <td align="left" colspan="2"><span style="margin-left: 10px;">{{item.servername}}</span></td>
                 </tr>
               </table>
             </div>

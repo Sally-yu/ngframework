@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {NzMessageService} from 'ng-zorro-antd';
+import { TimeoutError, throwError } from 'rxjs';
+import { catchError, timeout } from 'rxjs/operators';
+import { DbMgrService } from '../db-mgr/db-mgr.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +13,7 @@ export class OpcService {
   constructor(
     private http: HttpClient,
     private message: NzMessageService,
+    private dbMgrService: DbMgrService,
     ) { }
 
   public host='http://10.24.20.71:4000';
@@ -21,7 +25,23 @@ export class OpcService {
 
   public influxhandleUrl="/Api/InfluxHandle.ashx";
   public opchandleUrl="/Api/OpcHandle.ashx";
-  
+  public loading=false;
+  handleError(error: HttpErrorResponse) {
+    // if (error.error instanceof ErrorEvent) {
+    //   // A client-side or network error occurred. Handle it accordingly.
+    //   this.message.error('An error occurred:'+error.error.message.toString());
+    // } else {
+    //   // The backend returned an unsuccessful response code.
+    //   // The response body may contain clues as to what went wrong,
+    //   this.message.error(error.error.message.toString());
+    // }
+    this.message.error(error.message);
+    this.loading=false;
+    // }
+    // return an observable with a user-facing error message
+    return throwError(
+      'Something bad happened; please try again later.');
+  };
    
     // 数据列表，返回所有的数据。
     getserviceList(): any {
@@ -89,6 +109,7 @@ export class OpcService {
     }
 
     startServer(serveraddress:string,serviceList,influxlist):any {
+      this.loading=true;
       return new Promise((resolve, reject) => {
         var saveobj=serviceList.filter(d => d.serveraddress === serveraddress);
         var servername=JSON.parse(saveobj[0].servergroup)[0];
@@ -107,58 +128,85 @@ export class OpcService {
         data.append('database', influx[0].database);
         var opcHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.opchandleUrl;
         var influxHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.influxhandleUrl;
-        this.http.post(influxHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+        this.http.post(influxHandleUrl, data, {responseType: 'text'})
+        .pipe(
+          catchError((err) => this.handleError(err))
+        )
+        .subscribe(res => {
           var state=res.search("连接错误") != -1 ;
           if(state){
             this.message.info(res);
+            this.loading=false;
            reject(null);
           }else{
-            this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+            this.http.post(opcHandleUrl, data, {responseType: 'text'})
+            .subscribe(res => {
                   if (res.indexOf('Error') > -1 || res.indexOf('Exception') > -1) {   //后端代码内部报错也返回200，会在请求成功的结果中
                     this.message.warning('启动失败');
+                    this.loading=false;
                     reject(null);
                   } else {
                     this.message.success(res);
                     saveobj[0].opcstate="true";//应设置状态变化
+                    influx[0].state=influx[0].state+1;
+                    this.dbMgrService.updateDbMgr(influx[0]);
+                    this.loading=false;
                     resolve(saveobj[0]);
                   }
                 }, error1 => { 
                   this.message.warning('启动失败', error1.error);
+                  this.loading=false;
                   reject(null);
                 });
           }
       
         }, error1 => {
-          this.message.warning('数据库连接出错');
+          this.message.warning('客户端连接失败', error1.error);
+          this.loading=false;
           reject(null);
         }); 
       });
  
     }
-    stopServer(serveraddress:string,serviceList) :any {
+    stopServer(serveraddress:string,serviceList,influxlist) :any {
+      this.loading=true;
       return new Promise((resolve, reject) => {
         var saveobj=serviceList.filter(d => d.serveraddress === serveraddress);
+        var servername=JSON.parse(saveobj[0].servergroup)[0];
+        var influx=influxlist.filter(d => d.servername === servername)
         var opcaction = 'stopcollect';
         var data = new FormData();
         data.append('opcaction', opcaction);
         var opcHandleUrl="http://"+serveraddress+":"+saveobj[0].serverport+this.opchandleUrl;
-        this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+        this.http.post(opcHandleUrl, data, {responseType: 'text'})
+        .pipe(
+          catchError((err) => this.handleError(err))
+        )
+        .subscribe(res => {
           if (res.indexOf('Error') > -1 || res.indexOf('Exception') > -1) {   //后端代码内部报错也返回200，会在请求成功的结果中
             this.message.warning('停止失败');
+            this.loading=false;
             reject(null);
           } else {
             this.message.success(res);
             saveobj[0].opcstate="false";//应设置状态变化
+            if(influx[0].state>0){
+              influx[0].state=influx[0].state-1;
+              this.dbMgrService.updateDbMgr(influx[0]);
+            }
+            this.loading=false;
             resolve(saveobj[0]);
           }
         }, error1 => {
-          this.message.warning('停止失败', error1.error);
+          this.message.warning('客户端连接失败', error1.error);
+          this.loading=false;
           reject(null);
         });
       });
     }
     //查找OPC服务端名称
     searchServer(service):any {
+      this.loading=true;
       return new Promise((resolve, reject) => {
         var data = new FormData();
         var opcHandleUrl;
@@ -166,11 +214,17 @@ export class OpcService {
         data.append('opctype', service.opctype);
         data.append('opcaction', 'recognition');
         opcHandleUrl="http://"+service.opchost+":"+service.serverport+this.opchandleUrl;
-        this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
+        this.http.post(opcHandleUrl, data, {responseType: 'text'})
+        .pipe(
+          catchError((err) => this.handleError(err))
+        )
+        .subscribe(res => {
           this.message.success("查找成功");
+          this.loading=false;
           resolve(res);
         }),error1=>{
-          this.message.warning(error1.error);
+          this.message.warning('客户端连接失败', error1.error);
+          this.loading=false;
           reject(null);
         };
       });
@@ -182,12 +236,14 @@ export class OpcService {
         var opcHandleUrl;
         data.append('serverurl', service.serverurl);
         data.append('opctype', service.opctype);
+        data.append('servername', service.servername);
+        data.append('serveraddress', service.opchost);
         data.append('opcaction', 'updatedevice');
         opcHandleUrl="http://"+service.opchost+":"+service.serverport+this.opchandleUrl;
         this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
           resolve(res);
         }),error1=>{
-          this.message.warning(error1.error);
+          this.message.warning('客户端连接失败', error1.error);
           reject(null);
         };
       });
@@ -202,7 +258,7 @@ export class OpcService {
         this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
           resolve(res.toString());
         }),error1=>{
-          this.message.warning(error1.error);
+          this.message.warning('客户端连接失败', error1.error);
           reject(null);
         };
       });

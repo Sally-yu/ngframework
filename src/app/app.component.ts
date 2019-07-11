@@ -39,7 +39,7 @@ export class AppComponent {
     });
   }
   ngOnInit() {
-    setInterval(() => { this.keepAlive(); }, 10000);
+    setInterval(() => { this.keepAlive(); }, 1000);
     // this.cookie = document.cookie;
     // if (!this.cookie) {
     //   this.router.navigate(['/login']);

@@ -115,7 +115,7 @@ export class ServiceDetailComponent implements OnInit {
         this.servernames=JSON.parse(res);
         this.service.serverurl = this.servernames[0];
       }
-    });
+    },);
   }
 
   //获取influx数据库配置信息列表

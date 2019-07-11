@@ -55,9 +55,15 @@
     </button>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="7">设备连接</nz-form-label>
+    <nz-form-label [nzSpan]="7">设备服务</nz-form-label>
     <nz-form-control [nzSpan]="12">
-      <input nz-input name="connect" [(ngModel)]="device['connect']" placeholder="请输入设备连接"/>
+      <input nz-input name="servername" [(ngModel)]="device['servername']" placeholder="请输入设备服务"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">服务端地址</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input name="serveraddress" [(ngModel)]="device['serveraddress']" placeholder="请输入服务地址"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>

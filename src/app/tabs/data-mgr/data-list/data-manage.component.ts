@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AjaxService } from '../../../services/ajax/ajax.service';
@@ -9,11 +9,13 @@ import { DbMgrService } from 'src/app/services/db-mgr/db-mgr.service';
   templateUrl: './data-manage.component.html',
   styleUrls: ['./data-manage.component.less']
 })
-export class DataManageComponent implements OnInit {
+export class DataManageComponent implements OnInit,OnChanges {
+
+  @Input() change;
   dataAll= [];   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件
-  selectData = '';  // 被选择的数据
+  selectData ;  // 被选择的数据
   addFlag = false;  //添加功能的标志位
   loading = false;
 
@@ -23,8 +25,9 @@ export class DataManageComponent implements OnInit {
     servername: "",
     serverip: "",
     serverport: "",
+    state:0,
     database: "",
-    databasetype: "MongoDB",
+    databasetype: "",
     username: "",
     password: "",
     description: "",
@@ -45,10 +48,14 @@ cancel($event: any) {
 }
  
   //编辑
-  edit(serverip: string) {
-    this.addFlag = !this.addFlag;
-    this.option = 'edit';
-    this.selectData = this.dataAll.filter(d => d.serverip === serverip)[0];
+  edit(serverip: string, state) {
+    if(state>0){
+      this.message.warning('数据库使用中，禁止编辑！');
+    }else{
+      this.addFlag = !this.addFlag;
+      this.option = 'edit';
+      this.selectData = this.dataAll.filter(d => d.serverip === serverip)[0];
+    }
   }
 
   
@@ -68,7 +75,9 @@ cancel($event: any) {
   ngOnInit() {
     this.getDatabaselist();
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getDatabaselist();
+  }
   getDatabaselist() {
     this.loading = true;
     this.dbMgrService.dbMgrList().then(res => {
@@ -97,18 +106,22 @@ cancel($event: any) {
   }
 
   // 删除
-  remove(serverip: string) {
-    this.dbMgrService.deleteDbMgr(serverip).then(res => {
+  remove(serverip: string,state) {
+    if(state>0){
+      this.message.warning('数据库使用中，禁止删除！');
+    }else{
+      this.dbMgrService.deleteDbMgr(serverip).then(res => {
+        this.getDatabaselist();
+      }, err => {
+      });
       this.getDatabaselist();
-    }, err => {
-    });
-    this.getDatabaselist();
+    }
   }
 
   // 测试连接
   connection(data) {
     const messageId = this.message.loading('正在测试连接...', { nzDuration: 0 }).messageId
-    if (data.databasetype == 'InfluxDB') {
+    if (data.databasetype == '时序数据库') {
       let url_port = data.serverip;
       if (data.serverport) {
         url_port = url_port + `:${data.serverport}`
@@ -128,7 +141,7 @@ cancel($event: any) {
       );
     }
 
-    if (data.databasetype == 'MongoDB') {
+    if (data.databasetype == '文档数据库') {
       this.dbMgrService.dbMgrPing(data).then(res => {
         this.message.remove(messageId);
         this.message.success('测试连接成功！');

@@ -20,7 +20,7 @@ export class DbMgrComponent implements OnInit,OnChanges {
   dataAll=[];   // 所有数据
   data = [];//数组列表信息
   searchValue = '';  // 搜索条件
-  selectData = '';  // 被选择的数据
+  selectData ;  // 被选择的数据
   addFlag = false;  //添加功能的标志位
   loading = false;
 
@@ -34,8 +34,9 @@ export class DbMgrComponent implements OnInit,OnChanges {
     servername: "",
     serverip: "",
     serverport: "",
+    state:0,
     database: "",
-    databasetype: "MongoDB",
+    databasetype: "",
     username: "",
     password: "",
     description: "",
@@ -123,18 +124,22 @@ export class DbMgrComponent implements OnInit,OnChanges {
   }
 
   // 编辑
-  edit(serverip: string) {
+  edit(serverip: string,state) {
     this.dropdown.close();  //右键菜单关闭
-    this.addFlag = !this.addFlag;
-    this.option = 'edit';
-    this.selectData = this.dataAll.filter(d => d.serverip === serverip)[0];
+    if(state>0){
+      this.message.warning('数据库使用中，禁止编辑！');
+    }else{
+      this.addFlag = !this.addFlag;
+      this.option = 'edit';
+      this.selectData = this.dataAll.filter(d => d.serverip === serverip)[0];
+    }
   }
 
   // 测试连接
   connection(data) {
     this.dropdown.close();  //右键菜单关闭
     const messageId = this.message.loading('正在测试连接...', { nzDuration: 0 }).messageId
-    if (data.databasetype == 'InfluxDB') {
+    if (data.databasetype == '时序数据库') {
       let url_port = data.serverip;
       if (data.serverport) {
         url_port = url_port + `:${data.serverport}`
@@ -158,7 +163,7 @@ export class DbMgrComponent implements OnInit,OnChanges {
       );
     }
 
-    if (data.databasetype == 'MongoDB') {
+    if (data.databasetype == '文档数据库') {
       this.dbMgrService.dbMgrPing(data).then(res => {
         this.message.remove(messageId);
         this.message.success('测试连接成功！');
@@ -171,33 +176,24 @@ export class DbMgrComponent implements OnInit,OnChanges {
       });
     }
 
-    // var url = 'mongodb://admin:123456@10.24.20.71:28081';
-    // // Use connect method to connect to the Server passing in
-    // // additional options
-    // MongoClient.connect(url, {
-    //   poolSize: 10, ssl: true
-    // }, function (err, db) {
-    //   // assert.equal(null, err);
-    //   console.log("Connected correctly to server");
-    //   db.close();
-    // });
-
-    // let url = 'http://10.72.43.193:8086/ping?u=admin&p=admin'
-    // let url = 'http://10.72.43.193/ping'
-    // let url = 'http://10.25.11.104/ping'
   }
 
   // 删除
-  remove(serverip: string) {
-    this.dbMgrService.deleteDbMgr(serverip).then(res => {
+  remove(serverip: string,state) {
+    if(state>0){
+      this.message.warning('数据库使用中，禁止删除！');
+    }else{
+      this.dbMgrService.deleteDbMgr(serverip).then(res => {
+        this.getDatabaselist();
+      }, err => {
+      });
       this.getDatabaselist();
-    }, err => {
-    });
-    this.getDatabaselist();
+    }
   }
   ngOnChanges(changes: SimpleChanges): void {
     if(this.dropdown!=null){
       this.dropdown.close();  //右键菜单关闭
     }
+    this.getDatabaselist();
   }
 }

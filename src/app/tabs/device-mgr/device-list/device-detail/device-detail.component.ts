@@ -29,6 +29,8 @@ export class DeviceDetailComponent implements OnInit {
     type: null,
     group: null,
     name: null,
+    servername:null,
+    serveraddress:null,
     template: null,
     connect: null,
     interval: null,

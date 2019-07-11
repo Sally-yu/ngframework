@@ -185,11 +185,11 @@
     <!--data-mgr-->
     <app-db-mgr *ngIf="exist('1020')" class="back" [change]="indexFlag"
                 [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>
-    <app-data-manage *ngIf="exist('1021')" class="back"
+    <app-data-manage *ngIf="exist('1021')" class="back" [change]="indexFlag"
                      [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>
 
     <!--data-process-->
-    <app-data-define *ngIf="exist('1030')" class="back"
+    <app-data-define *ngIf="exist('1030')" class="back" 
                      [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>
 
     <!--user-->

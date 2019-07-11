@@ -79,6 +79,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
 //启动
  startOPCServer(serveraddress:string) {
     this.dropdown.close();  //右键菜单关闭
+    this.loading=true;
     this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
       if(res){
         this.OpcService.updateService(res).then(res => {
@@ -92,7 +93,8 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   //停止
   stopOPCServer(serveraddress:string) {  
     this.dropdown.close();  //右键菜单关闭
-    this.OpcService.stopServer(serveraddress,this.serviceList).then(res => {
+    this.loading=true;
+    this.OpcService.stopServer(serveraddress,this.serviceList,this.influxlist).then(res => {
       if(res){
         this.OpcService.updateService(res).then(res => {
           this.reFresh();

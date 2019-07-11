@@ -13,7 +13,7 @@
               <button nz-button nzType="primary" (click)="addNewOpcRow()">新增</button>
             </div>
           </div>
-          <nz-table #basicTable [nzData]="serviceList" [nzLoading]="loading">
+          <nz-table #basicTable [nzData]="serviceList" [nzLoading]="OpcService.loading">
             <thead>
             <tr>
               <th nzWidth="100px">#</th>
@@ -40,7 +40,6 @@
                   <div *ngIf="data.opcstate=='false'" nz-button  nzShape="circle" [nzSize]="small" style="width: 25px;height: 25px; background-color: #bfbfbf"></div>
                   <div *ngIf="data.opcstate=='true'" nz-button  nzLoading nzType="primary" nzShape="circle" [nzSize]="small" style="width: 25px;height: 25px; background-color: #095df8"></div>
               </td>
-              
               <td>
                   <a style="font-size: 15px;" (click)="editRow(data.serveraddress)">编辑</a>
                   <nz-divider nzType="vertical"></nz-divider>

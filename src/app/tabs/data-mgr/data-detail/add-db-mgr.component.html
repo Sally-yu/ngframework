@@ -13,12 +13,12 @@
   
   <form nz-form >
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>服务器名称</nz-form-label>
+      <nz-form-label [nzSpan]="7" nzRequired>数据源名称</nz-form-label>
       <nz-form-control [nzSpan]="12" [nzHasFeedback]="!serverNameRequired"
         [nzValidateStatus]="serverNameRequired?'success':'error'">
         <input #codeEle nz-input name="serverName" [(ngModel)]="selectData.servername" [disabled]="option=='preview'"
-          placeholder="请输入服务器名称" />
-        <nz-form-explain *ngIf="!serverNameRequired">{{'请输入服务器名称！'}}</nz-form-explain>
+          placeholder="请输入数据源名称" />
+        <nz-form-explain *ngIf="!serverNameRequired">{{'请输入数据源名称！'}}</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
