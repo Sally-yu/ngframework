@@ -22,7 +22,7 @@
                    nzTheme="outline" style="float: right" (click)="$event.stopPropagation();setIndex(item)"></i>
               </div>
               <!--循环加载-->
-              <div class="card-content" [ngStyle]="{'background-image':'url('+url+item.cover+'.png)'}"
+              <div class="card-content" [ngStyle]="{'background-image':'url('+urlSrv.uploadUrl+'/'+item.cover+'.png)'}"
                    style="overflow: hidden;background-size: cover; background-repeat: no-repeat;background-position-y: center;background-position-x: center"></div>
             </div>
           </ng-template>

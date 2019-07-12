@@ -29,11 +29,11 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
 
   attValue = [];//设备属性（参数）的值
 
-  presetColors = ['#f1c40f', '#e74c3c', '#2ecc71'];
+  presetColors = ['#2ecc71', '#e74c3c'];
   keys: [];
   interval = 1; //默认一秒刷新
   dataOptions = [];
-  max=20;
+  max = 20;
 
   //预置卡片颜色选项
 
@@ -68,7 +68,6 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   spliceViewList(list) {
-    this.connectWs();//建立ws协议，自动刷新
     this.viewList = JSON.parse(JSON.stringify(list)).splice((this.currentIndex - 1) * this.pageSize, this.pageSize);
     this.keys = this.viewList.map(d => {
       return d.key;
@@ -76,48 +75,52 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     this.deviceService.deviceValue(this.keys).then(res => {
       this.attValue = res;
       this.keys.forEach(r => {
-        let o = this.dataOptions.filter(d=>d['device']==r)[0]?this.dataOptions.filter(d=>d['device']==r)[0]['option']:null;
-        let option=o?o:
-        {
-          grid: {
-            left: '1%',
-            right: '1%',
-            bottom: '0%',
-            top: '0%',
-            containLabel: false
-          },
-          xAxis: {
-            max: this.max,
-            type: 'value',
-            show: false
-          },
-          yAxis: {
-            type: 'category',
-            show: false,
-            data: ['']
-          },
-          animation: false,
-          series: []
-        };
+        let o = this.dataOptions.filter(d => d['device'] == r)[0] ? this.dataOptions.filter(d => d['device'] == r)[0]['option'] : null;
+        let option = o ? o :
+          {
+            grid: {
+              left: '6%',
+              right: '6%',
+              bottom: '40%',
+              top: '0%',
+              containLabel: false
+            },
+            xAxis: {
+              max: this.max,
+              type: 'value',
+              name: 'S',
+              show: true
+            },
+            yAxis: {
+              type: 'category',
+              show: false,
+              data: ['']
+            },
+            animation: false,
+            series: []
+          };
         this.dataOptions = [...this.dataOptions, {
           device: r,
           option: option,
         }];
-        var colorindex = Math.floor(Math.random() * 100 / 33);
-        if (option.series.length >= this.max) {
-          option.series.splice(0, 1);
-        }
-        option.series = [...option.series, {
-          type: 'bar',
-          stack: '1',
-          data: [1],
-          itemStyle: {
-            normal: {
-              color: this.presetColors[colorindex]
-            }
+        for (var i = 0; i < this.max - 1; i++) {
+          if (option.series.length < this.max) {
+            var colorindex = Math.floor(Math.random() + 0.1);
+            option.series = [...option.series, {
+              type: 'bar',
+              stack: '1',
+              data: [1],
+              itemStyle: {
+                normal: {
+                  color: this.presetColors[colorindex]
+                }
+              }
+            }];
           }
-        }];
+        }
+
       });
+      this.connectWs();//建立ws协议，自动刷新
       this.matchValue();
       this.loading = false;
     }, err => {
@@ -228,7 +231,7 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
       if (option.series.length >= this.max) {
         option.series.splice(0, 1);
       }
-      var colorindex = Math.floor(Math.random() * 100 / 33);
+      var colorindex = Math.floor(Math.random() + 0.1);
       option.series = [...option.series, {
         type: 'bar',
         stack: '1',
@@ -251,7 +254,7 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   connectWs() {
     this.closeWS();
     var self = this;
-    this.ws = new WebSocket('ws://10.24.20.71:7777/devicevalue');
+    this.ws = new WebSocket(this.deviceService.wsUrl);
     this.ws.onopen = function (event) {
       self.ws.send(JSON.stringify({
         keys: self.keys,
@@ -274,13 +277,13 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
           chart.resize();
         });
       });
-    }catch (e) {
+    } catch (e) {
 
     }
   }
 
-  closeWS(){
-    if (this.ws != null) {
+  closeWS() {
+    if (this.ws) {
       this.ws.close();
     }
   }
@@ -295,13 +298,4 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  setInterval() {
-    const t=this.interval;
-    var self=this;
-    setTimeout(function () {
-      if (t==self.interval){
-        self.connectWs();
-      }
-    },1000);
-  }
 }
