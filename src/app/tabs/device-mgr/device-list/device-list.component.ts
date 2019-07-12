@@ -71,7 +71,7 @@ export class DeviceListComponent implements OnInit, OnChanges {
           this.loading = true;
         });
       });
-      setTimeout(() => { this.getList(); }, 1000);
+      setTimeout(() => { this.getList(); }, 2000);
       this.message.success('同步成功');
     }, err => {
       this.loading = false;
