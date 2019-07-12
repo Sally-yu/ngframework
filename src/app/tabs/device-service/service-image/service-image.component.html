@@ -20,7 +20,7 @@
           <ng-template #contextTemplate>
             <ul nz-menu nzInDropDown>
               <li nz-menu-item (click)="edit(item.serveraddress)">编辑</li>
-              <li *ngIf="!toBoolean(item.opcstate)" nz-menu-item (click)="startOPCServer(item.serveraddress,item.servergroup)">启动</li>
+              <li *ngIf="!toBoolean(item.opcstate)" nz-menu-item (click)="startOPCServer(item.serveraddress)">启动</li>
               <li *ngIf="toBoolean(item.opcstate)" nz-menu-item style="color:#F22;" (click)="stopOPCServer(item.serveraddress)">停止</li>
               <li nz-menu-item>
                 <a nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.serveraddress)">删除</a></li>
@@ -32,8 +32,8 @@
               <table style="border:0">
                 <tr>
                   <th  align="right" >
-                    <img *ngIf="toBoolean(item.opcstate)" [src]="toBoolean(item.opcstate)?'../../../../assets/src/service-up.png':'../../../../assets/src/service-down.png'" style="width: 50px; align-self: center;"alt="database" />
-                    <!--<img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />-->
+                    <img *ngIf="toBoolean(item.opcstate)" src="../../../../assets/src/service-up.png" style="width: 50px; align-self: center;"alt="database" />
+                    <img *ngIf="!toBoolean(item.opcstate)" src="../../../../assets/src/service-down.png" style="width: 50px; align-self: center;"alt="database" />
                   </th>
                   <td align="left" colspan="2"><span style="margin-left: 10px;">{{item.servername}}</span></td>
                 </tr>
