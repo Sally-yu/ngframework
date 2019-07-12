@@ -136,8 +136,6 @@ export class Model3dShowComponent implements OnInit,OnChanges {
   allList = [];
   list = [];
 
-  url = 'http://10.24.20.71:9098/assets/upload/';
-
   detialUrl;
   cardColor = '#deeef9dd';
 

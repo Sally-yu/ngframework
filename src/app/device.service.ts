@@ -17,6 +17,7 @@ export class DeviceService {
   ) {
   }
 
+  public wsUrl=this.url.wsHost+'devicevalue';
 
   //设备模板list
   deviceTempList(): any {

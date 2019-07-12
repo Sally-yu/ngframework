@@ -8,6 +8,7 @@ import {HttpHeaders} from '@angular/common/http';
 export class UrlService {
 
   hostname = 'http://10.24.20.71';
+  wsHost='ws://10.24.20.71:7777/';
   //hostname = 'http://127.0.0.1';
   hostPort = ':9060';
   gafanaUrl = 'http://10.24.20.45:8080/dashboards'; //grafana仪表管理列表

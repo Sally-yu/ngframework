@@ -12,15 +12,12 @@
 
         <div style="background-color: #e74c3c;"></div>
         <span>停机</span>
-
-        <div style="background-color: #f1c40f;"></div>
-        <span>报警</span>
       </div>
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
         <!--<button nz-button title="刷新频率" (click)="connectWs()" nzType="primary">{{interval}}S</button>-->
-        <button nz-button (click)="getList()" nzType="primary" [nzLoading]="loading"><i nz-icon [nzSpin]="ws&&ws.CONNECTING==1"
-                                                                                        nzType="loading-3-quarters"
+        <button nz-button (click)="closeWS()" nzType="primary" [nzLoading]="loading"><i nz-icon
+                                                                                        nzType="reload"
                                                                                         nzTheme="outline"></i></button>
         <button nz-button (click)="add()" nzType="primary" [nzLoading]="loading"><i nz-icon
                                                                                     nzType="plus"

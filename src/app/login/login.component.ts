@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {NzMessageService} from 'ng-zorro-antd';
-import {RsaService} from '../rsa.service';
 import {UrlService} from '../url.service';
 import {UserService} from '../user.service';
 
@@ -27,8 +25,6 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private message: NzMessageService,
               private userSrv: UserService,
-              private rsa: RsaService,
-              private http: HttpClient,
               private url: UrlService,
   ) {
   }
@@ -43,7 +39,7 @@ export class LoginComponent implements OnInit {
         document.cookie = JSON.stringify(c);
         // document.cookie=res["data"];
         // this.router.navigate(['/']);
-        this.message.success("验证成功，请稍后…");
+        this.message.success("验证成功，请稍候…");
         window.location.href="/" //该跳转后获取的cookie是最新存储的
       } else {
         console.log(res);
