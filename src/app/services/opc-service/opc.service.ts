@@ -234,10 +234,12 @@ export class OpcService {
       return new Promise((resolve, reject) => {
         var data = new FormData();
         var opcHandleUrl;
+        var database=JSON.parse(service.servergroup)[0];
         data.append('serverurl', service.serverurl);
         data.append('opctype', service.opctype);
         data.append('servername', service.servername);
         data.append('serveraddress', service.opchost);
+        data.append('database', database);
         data.append('opcaction', 'updatedevice');
         opcHandleUrl="http://"+service.opchost+":"+service.serverport+this.opchandleUrl;
         this.http.post(opcHandleUrl, data, {responseType: 'text'}).subscribe(res => {
