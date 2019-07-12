@@ -52,7 +52,7 @@ export class ServiceDetailComponent implements OnInit {
     private message: NzMessageService,
     private http: HttpClient,
     private DbMgrService: DbMgrService,
-    private OpcService:OpcService,
+    public OpcService:OpcService,
   ) {
   }
 
