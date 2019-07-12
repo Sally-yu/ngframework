@@ -20,7 +20,7 @@
           <ng-template #contextTemplate>
             <ul nz-menu nzInDropDown>
               <li nz-menu-item (click)="edit(item.serveraddress)">编辑</li>
-              <li *ngIf="!toBoolean(item.opcstate)" nz-menu-item (click)="startOPCServer(item.serveraddress)">启动</li>
+              <li *ngIf="!toBoolean(item.opcstate)" nz-menu-item (click)="startOPCServer(item.serveraddress,item.servergroup)">启动</li>
               <li *ngIf="toBoolean(item.opcstate)" nz-menu-item style="color:#F22;" (click)="stopOPCServer(item.serveraddress)">停止</li>
               <li nz-menu-item>
                 <a nz-popconfirm nzTitle="确定删除？" (nzOnConfirm)="remove(item.serveraddress)">删除</a></li>

@@ -77,17 +77,22 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   this.dropdown = this.nzDropdownService.create($event, template);
 }
 //启动
- startOPCServer(serveraddress:string) {
+ startOPCServer(serveraddress:string,servergroup:any) {
     this.dropdown.close();  //右键菜单关闭
     this.loading=true;
-    this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
-      if(res){
-        this.OpcService.updateService(res).then(res => {
-          this.reFresh();
-        }, err => {
-        });
-      }
-    }); 
+    if(servergroup!=="[]"){
+      this.OpcService.startServer(serveraddress,this.serviceList,this.influxlist).then(res => {
+        if(res){
+          this.OpcService.updateService(res).then(res => {
+            this.reFresh();
+          }, err => {
+          });
+        }
+      }); 
+    }else{
+      this.message.warning("未选择数据库");
+    }
+   
   }
 
   //停止
