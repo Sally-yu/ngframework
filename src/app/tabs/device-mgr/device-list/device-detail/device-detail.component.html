@@ -178,21 +178,21 @@
   </thead>
   <tbody>
   <tr *ngFor="let data of attrsTable.data">
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       {{device['attrs'].indexOf(data) + 1}}
     </td>
-    <td *ngIf="data.key=='null'">
+    <td *ngIf="data.code=='null'">
       <button class="custom-btn" nz-button (click)="addAttr()" nz-tooltip nzTitle="添加一条属性" nzPlacement="right">
         <i nz-icon nzType="plus" nzTheme="outline"></i>
       </button>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <input type="text" nz-input [(ngModel)]="data['name']" placeholder="请填写名称" />
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <input type="text" nz-input [(ngModel)]="data['code']" placeholder="请填写唯一编号"/>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <nz-select [(ngModel)]="data['valuetype']" nzPlaceHolder="请选择数值类型" style="width:100%;">
         <nz-option [nzValue]="'string'" [nzLabel]="'字符串'"></nz-option>
         <nz-option [nzValue]="'number'" [nzLabel]="'数字'"></nz-option>
@@ -200,20 +200,20 @@
         <nz-option [nzValue]="'option'" [nzLabel]="'枚举'"></nz-option>
       </nz-select>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <input type="text" nz-input [(ngModel)]="data['description']" placeholder="请填写描述"/>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <input type="text" nz-input [(ngModel)]="data['unit']" placeholder="请填写单位"/>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <nz-switch class="switch" [(ngModel)]="data['sum']"></nz-switch>
     </td>
-    <td *ngIf="data.key!='null'">
+    <td *ngIf="data.code!='null'">
       <nz-switch class="switch" [(ngModel)]="data['display']"></nz-switch>
     </td>
-    <td *ngIf="data.key!='null'">
-      <a style="color: #ff2222" (click)="remove(data['key'])">
+    <td *ngIf="data.code!='null'">
+      <a style="color: #ff2222" (click)="remove(data['code'])">
         <i nz-icon nzType="delete" nzTheme="outline"></i>删除
       </a>
     </td>

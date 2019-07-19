@@ -8,15 +8,15 @@ import {NzMessageService} from 'ng-zorro-antd';
 export class SubscribeService {
 
   constructor(
-    private http: HttpClient,
-    private message: NzMessageService,
+    // private http: HttpClient,
+    // private message: NzMessageService,
     ) { }
 
   public host='http://10.24.20.71:4000';
-  public insertsubUrl=this.host+'/api/v1/subscribe/insert';
-  public updatesubUrl=this.host+'/api/v1/subscribe/update';
-  public getsubUrl=this.host+'/api/v1/subscribe/get';
-  public deletesubUrl=this.host+'/api/v1/subscribe/delete';
+  // public insertsubUrl=this.host+'/api/v1/subscribe/insert';
+  // public updatesubUrl=this.host+'/api/v1/subscribe/update';
+  // public getsubUrl=this.host+'/api/v1/subscribe/get';
+  // public deletesubUrl=this.host+'/api/v1/subscribe/delete';
   registrations=[
     {
       id: "00001",
@@ -82,7 +82,7 @@ export class SubscribeService {
       }
     }
   ];//全部注册的订阅事件
-   
+
     // 数据列表，返回所有的数据。
     getsubscribeList(): any {
       let data = [];
@@ -104,9 +104,9 @@ export class SubscribeService {
         }else{
           reject(data);
         }
-       
+
       });
-      
+
     }
     // 添加一条记录
     addSubscribe(addData): any {
@@ -129,7 +129,7 @@ export class SubscribeService {
         }else{
           reject(false);
         }
-       
+
       });
     }
     // 更新一条记录
@@ -153,10 +153,10 @@ export class SubscribeService {
         }else{
           reject(false);
         }
-       
+
       });
     }
-  
+
     // 删除一条记录
     deleteSubscribe(id): any {
       // return new Promise((resolve, reject) => {

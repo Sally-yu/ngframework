@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {TopoService} from '../topo.service';
 import {UrlService} from '../url.service';
 import * as go from '../../assets/js/go.js';
-import {ModelService} from '../model.service';
 import {UserService} from '../user.service';
 
 declare var $: any;
@@ -15,7 +14,6 @@ declare var $: any;
 export class TopoShowComponent implements OnInit,OnChanges{
 
   @Input() flag;
-
   detail = false;
   searchValue;
   loading = false;
@@ -24,9 +22,9 @@ export class TopoShowComponent implements OnInit,OnChanges{
   viewList = [];
   list = [];
   workspace;
-
   cardColor = '#deeef9dd';
 
+  //构造函数
   constructor(
     private userSrv: UserService,
     private topoSrv: TopoService,

@@ -34,20 +34,13 @@
 
 
 import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {
-  NzDropdownContextComponent,
-  NzDropdownService,
-  NzFormatEmitEvent,
-  NzIconService,
-  NzMenuItemDirective,
-  NzMessageService,
-  NzTreeNode
-} from 'ng-zorro-antd';
+import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
 import {NotifyService} from '../notify.service';
+import {OpcService} from '../services/opc-service/opc.service';
 
 @Component({
   selector: 'app-home',
@@ -284,6 +277,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private notifySrv: NotifyService,
     private message: NzMessageService,
     private nzDropdownService: NzDropdownService,
+    private OpcService: OpcService,
     private _iconService: NzIconService) {
     this._iconService.fetchFromIconfont({
       scriptUrl: 'https://at.alicdn.com/t/font_1250422_9drpyoq4o3c.js' //自定义图标一个
@@ -594,6 +588,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.location.href = '/';
   }
 
+//同步设备列表
+  keepAlive(){
+    // console.log("12121212121")
+    this.OpcService.getserviceList().then(res => {
+      res.forEach(element => {
+        if(element.opcstate=="true"){
+          this.OpcService.keepServerAlive(element).then(res => {
+           if(res=="False"){
+            element.opcstate=="false";
+            this.OpcService.updateService(element);
+           }
+          },err => {
+            element.opcstate=="false";
+            this.OpcService.updateService(element);
+          });;
+        }
+      });
+
+    },err => {
+    });
+  }
 
   ngOnInit() {
     var cookie = document.cookie;
@@ -605,6 +620,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.connectWs();
       this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
       );
+      setInterval(() => { this.keepAlive(); }, 10000);
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
     }
   }

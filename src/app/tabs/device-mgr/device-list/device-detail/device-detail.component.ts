@@ -194,10 +194,10 @@ export class DeviceDetailComponent implements OnInit {
 
   //添加设备属性
   addAttr() {
-    this.device.attrs = [...this.device.attrs.filter(a => a.key != 'null'), {
-      key: uuid.v4(),
+    this.device.attrs = [...this.device.attrs.filter(a => a.code != 'null'), {
+      key: null,
       name: null,
-      code: null,
+      code: uuid.v4(),
       unit: null,
       description: null,
       valuetype: 'number',
@@ -208,9 +208,9 @@ export class DeviceDetailComponent implements OnInit {
 
   addNullAtt() {
     this.device.attrs = [...this.device.attrs, {
-      key: 'null',
+      key: null,
       name: null,
-      code: null,
+      code: 'null',
       unit: null,
       description: null,
       valuetype: null,
@@ -219,8 +219,8 @@ export class DeviceDetailComponent implements OnInit {
   }
 
   //删除设备属性
-  remove(key: any) {
-    this.device.attrs = this.device.attrs.filter(a => a.key != key);
+  remove(code: any) {
+    this.device.attrs = this.device.attrs.filter(a => a.code != code);
   }
 
   //获取模板列表

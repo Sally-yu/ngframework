@@ -1,10 +1,9 @@
 import { Component, OnInit, OnChanges,SimpleChanges,Input,TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzDropdownService,NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { NzDropdownContextComponent, NzDropdownService } from 'ng-zorro-antd';
+import { HttpClient, } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import {OpcService} from '../../../services/opc-service/opc.service';
-import {Observable} from 'rxjs';
 import {MonitorService} from '../../../services/monitor-service/monitor.service';
 
 @Component({
@@ -33,20 +32,20 @@ export class ServiceImageComponent implements OnInit,OnChanges {
   loading = false;
   servername:string;
   searchValue:string;
-  removestate:boolean=false;//判断是否显示删除数据库按钮
-  addstate:boolean=false;//判断是否显示添加数据库按钮
-  opchandleUrl=this.OpcService.opchandleUrl;
-  influxhandleUrl=this.OpcService.influxhandleUrl;
-  collectFrq = [
-    '100', '300', '500', '800', '1000', '1500'
-  ];
-  servernames = ["opcda://10.25.11.197/KEPware.KEPServerEx.V4"];
+  // removestate:boolean=false;//判断是否显示删除数据库按钮
+  // addstate:boolean=false;//判断是否显示添加数据库按钮
+  // opchandleUrl=this.OpcService.opchandleUrl;
+  // influxhandleUrl=this.OpcService.influxhandleUrl;
+  // collectFrq = [
+  //   '100', '300', '500', '800', '1000', '1500'
+  // ];
+  // servernames = ["opcda://10.25.11.197/KEPware.KEPServerEx.V4"];
   influxlist = [];//时序数据库数组列表信息
   service= {
     id: null,
     servername: "",
-    serveraddress: "", 
-    serverlocation: "", 
+    serveraddress: "",
+    serverlocation: "",
     serverport: "",
     description:"",
     opcstate:   "false",
@@ -56,12 +55,12 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     interval:     "100",
     savestrategy:  "单机版部署",
     servergroup:   [],
-    login:         []   
-  };;
-  serviceList = [];//opc客户端数组列表信息            
+    login:         []
+  };
+  serviceList = [];//opc客户端数组列表信息
 
-  isAddnewRow:boolean;//是否是在添加新行
-  indexOfdataSet:number;//数组索引号
+  // isAddnewRow:boolean;//是否是在添加新行
+  // indexOfdataSet:number;//数组索引号
 
   constructor(
     private nzDropdownService: NzDropdownService,
@@ -69,7 +68,6 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     private message: NzMessageService,
     private DbMgrService: DbMgrService,
     private OpcService:OpcService,
-    private MonitorService: MonitorService,
   ) {
   }
  // 右键创建菜单
@@ -88,15 +86,15 @@ export class ServiceImageComponent implements OnInit,OnChanges {
           }, err => {
           });
         }
-      }); 
+      });
     }else{
       this.message.warning("未选择数据库");
     }
-   
+
   }
 
   //停止
-  stopOPCServer(serveraddress:string) {  
+  stopOPCServer(serveraddress:string) {
     this.dropdown.close();  //右键菜单关闭
     this.loading=true;
     this.OpcService.stopServer(serveraddress,this.serviceList,this.influxlist).then(res => {
@@ -106,7 +104,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
         }, err => {
         });
       }
-    }); 
+    });
   }
 
   edit(serveraddress: string) {
@@ -119,7 +117,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
       this.service=this.toEditableobj(this.service,data);
       this.option = 'edit';
       this.serviceDetail = true;
-    }    
+    }
   }
     //将数据库取出对象转化为可编辑对象
     toEditableobj(reobj,obj){
@@ -132,7 +130,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
       });
       return reobj;
     }
-  add(){  
+  add(){
      this.option = 'new';
      this.serviceDetail = true;
   }
@@ -150,7 +148,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
           return d.servername.indexOf(this.searchValue) >= 0 || d.servername.indexOf(this.searchValue) >= 0;
         });
         this.loading = false;
-      }  
+      }
   }
   //刷新
   reFresh(){
@@ -180,9 +178,9 @@ export class ServiceImageComponent implements OnInit,OnChanges {
       this.getServicelist();
     },err => {
       this.getServicelist();
-    });  
+    });
   }
- 
+
   //将字符串转为bool变量
   toBoolean(state:string){
     return eval(state.toLowerCase());
@@ -196,7 +194,7 @@ export class ServiceImageComponent implements OnInit,OnChanges {
     if(this.dropdown!=null){
       this.dropdown.close();  //右键菜单关闭
     }
-    this.ngOnInit();    
+    this.ngOnInit();
   }
 
 }
