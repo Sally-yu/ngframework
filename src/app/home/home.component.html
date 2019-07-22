@@ -13,10 +13,6 @@
         <i nz-icon nzType="user" nzTheme="outline"></i>
         个人中心
       </li>
-      <!--      <li (click)="optionClick('1041')">
-              <i nz-icon nzType="setting" nzTheme="outline"></i>
-              基本设置
-            </li>-->
       <li (click)="optionClick('1042')">
         <nz-badge [nzCount]="notifcount">
           <a class="head-example" style="margin-right: 24px"></a>
@@ -84,39 +80,21 @@
     </div>
   </div>
 
-  <!--菜单主体树列表-->
-  <nz-tree [nzData]="nodes" (nzDblClick)="openFolder($event)" (nzClick)="activeNode($event)" [nzHideUnMatched]="true"
-           [nzShowExpand]="false" [nzSearchValue]="searchValue" (nzSearchValueChange)="nzEvent($event)">
-
-    <ng-template #nzTreeTemplate let-node>
-      <div (click)="openFolder(node)" class="custom-node"
-           [class.active]="activedNode?(activedNode.key == node.key):false">
-        <div *ngIf="node.children.length>=1">
-          <i nz-icon [type]="node.icon"
-             style="display: inline-block;"></i>
-          <div class="folder-name"
-               style="display: inline-flex;padding-left: 8px;width: 160px;margin-right: 10px;overflow-x: hidden;">{{ node.title }}</div>
-          <i nz-icon [type]="'down'" [ngStyle]="{  'transform':node.isExpanded ? 'rotateZ(180deg)':'rotateZ(0)'}"
-             style="display: inline-block;z-index: 10;       -webkit-transition-duration: 400ms;
-      -moz-transition-duration: 400ms;
-      -o-transition-duration: 400ms;
-      transition-duration: 400ms;"></i>
-        </div>
-        <div *ngIf="node.isLeaf">
-          <i nz-icon [type]="node['icon']?node['icon']:'tag'"
-             style="display: inline-block;"></i>
-          <div class="file-name"
-               style="display:inline-flex;padding-left: 8px;width:156px;overflow-x: hidden">{{ node.title }}</div>
-        </div>
-        <div *ngIf="!node.isLeaf&&node.children.length<1">
-          <i nz-icon [type]="node.icon"
-             style="display: inline-block;"></i>
-          <div class="folder-name"
-               style="display: inline-flex;padding-left: 8px;width: 160px;margin-right: 10px;overflow-x: hidden;">{{ node.title }}</div>
-        </div>
-      </div>
-    </ng-template>
-  </nz-tree>
+  <ul nz-menu [nzMode]="'inline'" [nzSelectable]="false"
+      style="width: 240px;position: absolute;top:0;bottom: 60px;left: 0;margin-top: 100px;overflow-y: auto;overflow-x: hidden"
+      nzTheme="dark">
+    <li nz-menu-item (click)="menuClick(index)" >
+      <span title><i nz-icon [type]="'home'" ></i>首页</span>
+    </li>
+    <li nz-submenu *ngFor="let first of nodes">
+      <span title><i nz-icon [type]="first.icon"></i>{{first.title}}</span>
+      <ul>
+        <li nz-menu-item (click)="menuClick(second)" *ngFor="let second of first.children">
+          {{second.title}}
+        </li>
+      </ul>
+    </li>
+  </ul>
 
   <div id="menu-footer">
     <ul>
@@ -195,7 +173,7 @@
                      [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>
 
     <!--data-process-->
-    <app-data-define *ngIf="exist('1030')" class="back" 
+    <app-data-define *ngIf="exist('1030')" class="back"
                      [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>
 
     <!--user-->
@@ -245,48 +223,12 @@
     <app-grafana-mgr *ngIf="exist('2022')" class="back"
                      [ngStyle]="{'display':active=='2022'?'block':'none'}"></app-grafana-mgr>
 
-
-    <!--此处三个自定义菜单，逻辑相同，且细致缠绵，不确定能否简化，建议兄弟们别乱搞-->
-    <!--自定义grafana区域，其子菜单存在tab页时渲染-->
-    <!--打开的tab页中有grafana自定义菜单，则渲染整个大div（感觉可以去掉，还有显隐控制） // 激活的tab页属于grafana自定义菜单时才display // height必须100%，否则有高度问题，应该源于ant样式-->
-    <!--<div *ngIf="cusExist('grafana')" [ngStyle]="{'display':activeExist('grafana')?'block':'none'}">-->
-    <!--&lt;!&ndash;每个子菜单渲染一个div，height100% 源于ant // 激活的tab页对应显示div（除非关掉tab，内部的iframe持续存在，切换回来不会刷新） // ngFor和ngIf不可同时用&ndash;&gt;-->
-    <!--<div *ngFor="let meta of cusGrafana.children"-->
-    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
-    <!--&lt;!&ndash;iframe嵌入，需要safe管道 // tab页打开即渲染，切换不会刷新，关掉tab停止渲染&ndash;&gt;-->
-    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--&lt;!&ndash;自定义3D区域，其子菜单存在tab页时渲染&ndash;&gt;-->
-    <!--<div *ngIf="cusExist('3d')" [ngStyle]="{'display':activeExist('3d')?'block':'none'}">-->
-    <!--&lt;!&ndash;每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用&ndash;&gt;-->
-    <!--<div *ngFor="let meta of custom3D.children"-->
-    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
-    <!--&lt;!&ndash;iframe嵌入，需要safe管道。按tab存在状态控制渲染&ndash;&gt;-->
-    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--&lt;!&ndash;自定义topo内容区，其子菜单存在tab页时渲染&ndash;&gt;-->
-    <!--<div *ngIf="cusExist('topo')" [ngStyle]="{'display':activeExist('topo')?'block':'none'}">-->
-    <!--&lt;!&ndash;每个子菜单渲染一个div，不设高度，按tab页选中状态控制显隐，ngFor和ngIf不可同时用&ndash;&gt;-->
-    <!--<div *ngFor="let meta of customTopo.children"-->
-    <!--[ngStyle]="{'display':active==meta.key?'block':'none'}">-->
-    <!--&lt;!&ndash;iframe嵌入，需要safe管道。按tab存在状态控制渲染&ndash;&gt;-->
-    <!--<iframe [src]="meta.url | safe" *ngIf="exist(meta.key)" class="back"></iframe>-->
-    <!--</div>-->
-    <!--</div>-->
-
   </div>
 </div>
 
 <!--右悬浮导航，绝对定位-->
 <div id="nav">
   <ul>
-    <!--<li class="li-active" nzTitle="仪表盘" nzPlacement="left" nz-tooltip >-->
-    <!--<i nz-icon nzType="dashboard" nzTheme="outline"></i>-->
-    <!--</li>-->
     <li nzTitle="综合分析" nzPlacement="left" nz-tooltip (click)="click('grafana')">
       <i nz-icon nzType="area-chart" nzTheme="outline"></i>
     </li>
@@ -297,12 +239,6 @@
       <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
       <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
     </li>
-    <!--<li nzTitle="数据处理" nzPlacement="left" nz-tooltip (click)="click('datapro')">-->
-    <!--<i nz-icon nzType="robot" nzTheme="outline"></i>-->
-    <!--</li>-->
-    <!--<li nzTitle="数据管理" nzPlacement="left" nz-tooltip (click)="click('datamgr')">-->
-    <!--<i nz-icon nzType="database" nzTheme="outline"></i>-->
-    <!--</li>-->
   </ul>
 </div>
 

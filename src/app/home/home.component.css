@@ -68,10 +68,6 @@
   color: #fff;
 }
 .menu {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   width: 240px;
   position: absolute;
   top: 0;
@@ -82,10 +78,6 @@
   box-shadow: 0 0 4px rgba(10, 10, 10, 0.5);
 }
 .menu-mini {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   width: 240px;
   position: absolute;
   top: 0;
@@ -96,10 +88,6 @@
   box-shadow: 0 0 4px rgba(10, 10, 10, 0.5);
 }
 .content {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   background-color: #f0f2f5;
   position: absolute;
   top: 0;
@@ -108,10 +96,6 @@
   right: 0;
 }
 .contentExp {
-  -webkit-transition-duration: 400ms;
-  -moz-transition-duration: 400ms;
-  -o-transition-duration: 400ms;
-  transition-duration: 400ms;
   background-color: #f0f2f5;
   position: absolute;
   top: 0;
@@ -293,50 +277,6 @@
   -moz-transition-duration: 400ms;
   -o-transition-duration: 400ms;
   transition-duration: 400ms;
-}
-:host ::ng-deep .ant-tree {
-  width: 240px;
-  position: absolute;
-  top: 100px;
-  left: 0;
-  bottom: 62px;
-  color: #f2f2f2;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-:host ::ng-deep .ant-tree li ul {
-  padding-left: 36px;
-}
-.custom-node {
-  padding: 8px 0 8px 54px;
-  margin-left: -36px;
-  width: 276px;
-  font-size: 14px;
-  color: #bdbdbd;
-  cursor: pointer;
-  line-height: 28px;
-  display: inline-block;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.custom-node i {
-  font-size: 16px;
-  color: #bdbdbd;
-}
-.custom-node:hover {
-  background-color: #0987fe;
-  color: #fff;
-}
-.custom-node:hover i {
-  color: #fff;
-}
-.active {
-  color: #0987fe;
-}
-.active i {
-  color: #0987fe;
 }
 .ant-tabs {
   height: 44px;

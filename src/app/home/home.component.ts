@@ -152,17 +152,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   optionsAll = [];
 
+  index={
+    title: '首页',
+    key: '000',
+    expanded: false,
+    icon: 'home',
+    children: [],
+    isLeaf: false,
+    fav: true,
+    share: true,
+  };
+
   allNodes = [
-    {
-      title: '首页',
-      key: '000',
-      expanded: false,
-      icon: 'home',
-      children: [],
-      isLeaf: false,
-      fav: true,
-      share: true,
-    },
     {
       title: '综合分析',
       key: '202',
@@ -284,34 +285,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  //树列表父级展开
-  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
-    // do something if u want
-    if (data instanceof NzTreeNode) {
-      data.isExpanded = !data.isExpanded;
-    } else {
-      const node = data.node;
-      if (node) {
-        node.isExpanded = !node.isExpanded;
-      }
-    }
-  }
-
-  // 激活节点，赋类，调整样式，tab页响应
-  activeNode(data: NzFormatEmitEvent): void {
-    this.close();
-    if (data.node.origin.isLeaf || data.node.children.length < 1) {     //仅子节点可选中
-      this.activedNode = data.node.origin;
-      var keys = this.tabs.map(e => e['key']);
-      var index = keys.indexOf(this.activedNode['key']);
-      this.active = this.activedNode['key'];
-      this.tabIndex = index >= 0 ? index : this.tabs.push(this.activedNode) - 1;
-      this.indexFlag = this.indexFlag > 100 ? 0 : this.indexFlag + 1;
-    } else {
-
-    }
-  }
-
   //右悬浮导航新弹出页面
   click(key) {
     let url;
@@ -346,6 +319,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
       return e.key;
     }).indexOf(obj.key) : this.tabs.push(obj) - 1;
+  }
+
+  menuClick(node){
+    this.active = node['key'];
+    this.tabIndex = this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(node.key) >= 0 ? this.tabs.map(function (e) {
+      return e.key;
+    }).indexOf(node.key) : this.tabs.push(node) - 1;
   }
 
   topoClick(key: string) {
@@ -435,66 +417,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }).indexOf(key) >= 0;
   }
 
-  //自定义菜单子项是否有打开的tab页
-  // cusExist(key: string): boolean {
-  //   var cus = {
-  //     key: '',
-  //     children: []
-  //   };
-  //   switch (key) {
-  //     case 'topo':
-  //       cus = this.customTopo;
-  //       break;
-  //     case 'grafana':
-  //       cus = this.cusGrafana;
-  //       break;
-  //     case '3d':
-  //       cus = this.custom3D;
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   var arr = [];
-  //   cus.children.forEach(e => {
-  //     arr = [...arr, this.exist(e.key)];
-  //   });
-  //   // console.log(arr);
-  //   return arr.indexOf(true) >= 0;
-  // }
-
-  //激活tab是否在某自定义菜单，需要区分
-  // activeExist(key: string): boolean {
-  //   var cus = {
-  //     key: '',
-  //     children: []
-  //   };
-  //   switch (key) {
-  //     case 'topo':
-  //       cus = this.customTopo;
-  //       break;
-  //     case 'grafana':
-  //       cus = this.cusGrafana;
-  //       break;
-  //     case '3d':
-  //       cus = this.custom3D;
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   return cus.children.map(function (e) {
-  //     return e.key;
-  //   }).indexOf(this.active) >= 0;
-  // }
-
-  // //展开 关闭 所有菜单
-  // expandAll(b: boolean) {
-  //   this.nodes.forEach(data => {
-  //     data.expanded = b;
-  //   });
-  //   this.selectDropdown();
-  //   this.nodes = JSON.parse(JSON.stringify(this.nodes)); //自我深复制，刷新树列表
-  // }
-
   //切换选择 全部 收藏 共享
   menuSwitch(key: string) {
     this.menuList = key;
@@ -528,7 +450,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   //ant表示有用，具体有啥用，怎么用，如何运作，能否删除，没研究
   nzEvent(event: NzFormatEmitEvent): void {
   }
-
 
   //异步获取布局图
   getWorkSpc() {
@@ -618,7 +539,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (cookie) {
       this.getUser();
       this.connectWs();
-      this.tabs.push({title: '首页', key: '000', app: 'home', icon: 'home', isLeaf: false, fav: true, share: true},
+      this.tabs.push({
+          title: '首页',
+          key: '000',
+          expanded: false,
+          icon: 'home',
+          children: [],
+          isLeaf: false,
+          fav: true,
+          share: true,
+        },
       );
       setInterval(() => { this.keepAlive(); }, 10000);
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');

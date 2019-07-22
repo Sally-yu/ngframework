@@ -67,7 +67,7 @@
         <div>
           <span class="setted" *ngIf="user['index']"><i nz-icon nzType="check-circle" nzTheme="outline"></i>自定义首页</span>
 
-          <i nz-icon nz-tooltip nzTitle="在拓扑监控，仿真监控中，点击卡片右上角按钮可设置成主页" nzType="exclamation-circle" nzTheme="outline"></i>&nbsp;<span *ngIf="!user['index']">默认首页</span>
+          <i *ngIf="!user['index']" nz-icon nz-tooltip nzTitle="在拓扑监控，仿真监控中，点击卡片右上角按钮可设置成主页" nzType="exclamation-circle" nzTheme="outline"></i>&nbsp;<span *ngIf="!user['index']">默认首页</span>
           <nz-divider nzType="vertical" *ngIf="user['index']"></nz-divider>
           <span *ngIf="user['index']" (click)="setIndex()" class="edit"><i nz-icon nzType="reload" nzTheme="outline"></i>还原</span>
         </div>
