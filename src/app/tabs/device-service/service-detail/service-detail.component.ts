@@ -1,6 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { DbMgrService } from '../../../services/db-mgr/db-mgr.service';
 import {OpcService} from '../../../services/opc-service/opc.service';
 
@@ -52,7 +52,7 @@ export class ServiceDetailComponent implements OnInit {
     private message: NzMessageService,
     private http: HttpClient,
     private DbMgrService: DbMgrService,
-    private OpcService:OpcService,
+    public OpcService:OpcService,
   ) {
   }
 

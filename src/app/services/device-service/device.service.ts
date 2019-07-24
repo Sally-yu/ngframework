@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {NzMessageService} from 'ng-zorro-antd';
 import {AjaxService} from '../ajax/ajax.service';
 import {Injectable} from '@angular/core';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Injectable({
   providedIn: 'root'
@@ -102,7 +101,7 @@ export class EdgeDeviceService {
       });
     });
   }
- 
+
   //删除设备
   removeDevice(key: any): any {
     return new Promise((resolve, reject) => {

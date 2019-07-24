@@ -24,9 +24,8 @@
           <tr *ngFor="let data of list.data">
             <td>{{notifList.indexOf(data) + 1}}</td>
             <td>
-              <a (click)="view(data.key)" *ngIf="data.new">{{ data.title }} &nbsp;<nz-tag nzColor="#52c41a">新通知</nz-tag>
+              <a (click)="view(data.key)" >{{ data.title }} &nbsp;<nz-tag  *ngIf="data.new" nzColor="#52c41a">新通知</nz-tag>
               </a>
-              <a (click)="view(data.key)" *ngIf="!data.new" style="color: #000000;">{{ data.title }} </a>
             </td>
             <td>{{ data.time }}</td>
             <td>
@@ -39,7 +38,7 @@
               <!--标为未读-->
               <!--</a>-->
               <!--<nz-divider nzType="vertical"></nz-divider>-->
-              <a (click)="remove(data.key)" style="color: #ff2222;">
+              <a nz-popconfirm nzTitle="确认删除？" (nzOnConfirm)="remove(data.key)" style="color: #ff2222;">
                 <i nz-icon nzType="delete" nzTheme="outline"></i>
                 删除</a>
             </td>

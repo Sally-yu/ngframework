@@ -16,7 +16,7 @@
       <div id="search">
         <input nz-input [(ngModel)]="searchValue" (ngModelChange)="search()" placeholder="请输入关键字搜索">
         <!--<button nz-button title="刷新频率" (click)="connectWs()" nzType="primary">{{interval}}S</button>-->
-        <button nz-button (click)="closeWS()" nzType="primary" [nzLoading]="loading"><i nz-icon
+        <button nz-button  nzType="primary" [nzLoading]="loading"><i nz-icon
                                                                                         nzType="reload"
                                                                                         nzTheme="outline"></i></button>
         <button nz-button (click)="add()" nzType="primary" [nzLoading]="loading"><i nz-icon

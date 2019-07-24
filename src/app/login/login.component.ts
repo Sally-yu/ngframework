@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private message: NzMessageService,
               private userSrv: UserService,
-              private url: UrlService,
+              public url: UrlService,
   ) {
   }
 

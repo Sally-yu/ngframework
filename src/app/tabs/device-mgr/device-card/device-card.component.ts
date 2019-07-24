@@ -35,8 +35,7 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   dataOptions = [];
   max = 20;
 
-  //预置卡片颜色选项
-
+  //构造函数
   constructor(
     private deviceService: DeviceService,
   ) {

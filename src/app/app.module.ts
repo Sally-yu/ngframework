@@ -17,23 +17,13 @@ import {RouterModule, Routes} from '@angular/router';
 import {DeviceCardComponent} from './tabs/device-mgr/device-card/device-card.component';
 import {DeviceListComponent} from './tabs/device-mgr/device-list/device-list.component';
 import {DeviceTemplateComponent} from './tabs/device-mgr/device-template/device-template.component';
-import {RealtimeDetectionComponent} from './tabs/operation-detect/realtime-detection/realtime-detection.component';
-import {OperationDetailsComponent} from './tabs/operation-detect/operation-details/operation-details.component';
-import {OperationSummaryComponent} from './tabs/operation-detect/operation-summary/operation-summary.component';
 import {AlarmMgrComponent} from './tabs/alarm/alarm-mgr/alarm-mgr.component';
 import {AlarmStrategyListComponent} from './tabs/alarm/alarm-strategy-list/alarm-strategy-list.component';
 import {AlarmSummaryComponent} from './tabs/alarm/alarm-summary/alarm-summary.component';
 import {AlarmDetailComponent} from './tabs/alarm/alarm-detail/alarm-detail.component';
-import {TableCodeAnalysisComponent} from './tabs/efficiency/table-code-analysis/table-code-analysis.component';
-import {UsageAnalysisComponent} from './tabs/efficiency/usage-analysis/usage-analysis.component';
-import {TrendAnalysisComponent} from './tabs/efficiency/trend-analysis/trend-analysis.component';
-import {EfficiencyAnalysisComponent} from './tabs/efficiency/efficiency-analysis/efficiency-analysis.component';
-import {PriceAnalysisComponent} from './tabs/efficiency/price-analysis/price-analysis.component';
 import {NotificationComponent} from './tabs/user-mgr/notification/notification.component';
 import {UserListComponent} from './tabs/user-mgr/user-list/user-list.component';
 import {RoleComponent} from './tabs/user-mgr/role/role.component';
-import {UtilizationDetailComponent} from './tabs/operation-detect/utilization-detail/utilization-detail.component';
-import {UtilizationSummaryComponent} from './tabs/operation-detect/utilization-summary/utilization-summary.component';
 import {SettingComponent} from './tabs/user-mgr/setting/setting.component';
 import {UserComponent} from './tabs/user-mgr/user/user.component';
 import {SafePipe} from './safe.pipe';
@@ -50,7 +40,6 @@ import {DataDefineComponent} from './tabs/data-process/data-define/data-define.c
 import {DeviceTableComponent} from './tabs/device-mgr/device-card/device-table/device-table.component';
 import {AddAlarmStrategyComponent} from './tabs/alarm/alarm-strategy-list/add-alarm-strategy/add-alarm-strategy.component';
 import {ColorPickerModule} from 'ngx-color-picker';
-import {NgxEchartsModule} from 'ngx-echarts';
 import {EditAlarmSummaryComponent} from './tabs/alarm/alarm-summary/edit-alarm-summary/edit-alarm-summary.component';
 import {EditAlarmMgrComponent} from './tabs/alarm/alarm-mgr/edit-alarm-mgr/edit-alarm-mgr.component';
 import {IndexComponent} from './index/index.component';
@@ -86,8 +75,8 @@ registerLocaleData(zh);
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'signin', component: SigninComponent},
-  {path: 'forget', component: ForgetComponent},
+  {path: 'signin', loadChildren:'./signin/signin.module#SigninModule'},
+  {path: 'forget', loadChildren: './forget/forget.module#ForgetModule'},
 ];
 
 @NgModule({
@@ -98,24 +87,14 @@ const routes: Routes = [
     DeviceCardComponent,
     DeviceListComponent,
     DeviceTemplateComponent,
-    RealtimeDetectionComponent,
-    OperationDetailsComponent,
-    OperationSummaryComponent,
     AlarmMgrComponent,
     AlarmStrategyListComponent,
     AddAlarmStrategyComponent,
     AlarmSummaryComponent,
     AlarmDetailComponent,
-    TableCodeAnalysisComponent,
-    UsageAnalysisComponent,
-    TrendAnalysisComponent,
-    EfficiencyAnalysisComponent,
-    PriceAnalysisComponent,
     NotificationComponent,
     UserListComponent,
     RoleComponent,
-    UtilizationDetailComponent,
-    UtilizationSummaryComponent,
     SettingComponent,
     UserComponent,
     SafePipe,
@@ -162,7 +141,6 @@ const routes: Routes = [
     BrowserAnimationsModule,
     ReactiveFormsModule,
     ColorPickerModule,
-    NgxEchartsModule,
     RouterModule.forRoot(routes),
   ],
   providers: [
@@ -172,7 +150,6 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA // Added for custom elements support
   ]
 
 })
