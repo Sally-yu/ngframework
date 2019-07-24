@@ -99,59 +99,75 @@ export class TopoDesignComponent implements OnInit {
   diagram;
 
   DataArray = [
-    {svg: '卡车', deviceid: '', status: ''},
-    {svg: '卡车1', deviceid: '', status: ''},
-    {svg: '卡车2', deviceid: '', status: '0'},
-    {svg: '车厢', deviceid: '', status: '0'},
-    {svg: '传送带', deviceid: '', status: '0'},
-    {svg: '船舶', deviceid: '', status: '1'},
+    {svg: '传送带',     deviceid: '', status: '0'},
+    {svg: '传送带式炉', deviceid: '', status: '0'},
+    {svg: '传送装置',   deviceid: '', status: '0'},
+    {svg: '颗粒传送机', deviceid: '', status: '0'},
+    {svg: '蜗杆传动',   deviceid: '', status: '0'},
   ];
   DataArray1 = [
-    {svg: '红白烟囱', deviceid: '', status: ''},
-    {svg: '烟囱', deviceid: '', status: '0'},
-    {svg: '加工厂', deviceid: '', status: '0'},
-    {svg: '冷却塔', deviceid: '', status: '0'},
-    {svg: '提炼塔', deviceid: '', status: '1'},
-    {svg: '烘干塔', deviceid: '', status: '1'},
-    {svg: '钻探工厂', deviceid: '', status: '1'},
-    {svg: '干燥塔', deviceid: '', status: '1'},
-    {svg: '抛光机', deviceid: '', status: ''},
-    {svg: '烧结机', deviceid: '', status: ''},
-    {svg: '均化器', deviceid: '', status: '0'},
-    {svg: '冷却器', deviceid: '', status: '0'},
-    {svg: '汽轮机', deviceid: '', status: '0'},
+    {svg: 'PLC设备',  deviceid: '', status: '0'},
+    {svg: '多轴车床', deviceid: '', status: '0'},
+    {svg: '滚刀磨床', deviceid: '', status: '0'},
+    {svg: '加工中心', deviceid: '', status: '0'},
+    {svg: '立式车床', deviceid: '', status: '1'},
+    {svg: '立式机床', deviceid: '', status: '1'},
+    {svg: '立轴磨床', deviceid: '', status: '1'},
+    {svg: '内圆磨床', deviceid: '', status: '1'},
+    {svg: '普通车床', deviceid: '', status: '0'},
+    {svg: '数控车床', deviceid: '', status: '0'},
+    {svg: '数控钻床', deviceid: '', status: '0'},
+    {svg: '卧式磨床', deviceid: '', status: '0'},
+    {svg: '摇臂钻床', deviceid: '', status: '0'},
+    {svg: '自动车床', deviceid: '', status: '0'},
 
   ];
   DataArray2 = [
-    {svg: '结晶器', deviceid: '', status: ''},
-    {svg: '搅拌器', deviceid: '', status: ''},
-    {svg: '漏斗', deviceid: '', status: '0'},
-    {svg: '化学处理塔', deviceid: '', status: '0'},
-    {svg: '锅炉', deviceid: '', status: '0'},
+    {svg: '结晶器', deviceid: '', status: '0'},
     {svg: '粉碎机', deviceid: '', status: '1'},
     {svg: '剪切机', deviceid: '', status: '1'},
+    {svg: '冷却塔', deviceid: '', status: '0'},
+    {svg: '提炼塔', deviceid: '', status: '1'},
+    {svg: '烘干塔', deviceid: '', status: '1'},
+    {svg: '干燥塔', deviceid: '', status: '1'},
+    {svg: '烧结机', deviceid: '', status: '0'},
+    {svg: '均化器', deviceid: '', status: '0'},
+    {svg: '冷却器', deviceid: '', status: '0'},
 
   ];
   DataArray3 = [
-    {svg: '抛光机', deviceid: '', status: ''},
-    {svg: '烧结机', deviceid: '', status: ''},
-    {svg: '均化器', deviceid: '', status: '0'},
-    {svg: '冷却器', deviceid: '', status: '0'},
-    {svg: '汽轮机', deviceid: '', status: '0'},
+    {svg: '电度表',   deviceid: '', status: '0'},
+    {svg: '电气柜',   deviceid: '', status: '0'},
+    {svg: '核电站',   deviceid: '', status: '0'},
+    {svg: '核反应堆', deviceid: '', status: '0'},
+    {svg: '水利站',   deviceid: '', status: '0'},
+    {svg: '太阳能板', deviceid: '', status: '0'},
+    {svg: '沼气发电', deviceid: '', status: '0'},
+    {svg: '智能水表', deviceid: '', status: '0'},
+    {svg: '发电机',   deviceid: '', status: '0'},
   ];
   DataArray4 = [
-    {svg: '真空助力机', deviceid: '', status: ''},
-    {svg: '热风加热器', deviceid: '', status: ''},
-    {svg: '搅拌器', deviceid: '', status: '0'},
-    {svg: '制氮机', deviceid: '', status: '0'},
-    {svg: '结晶器', deviceid: '', status: '0'},
+    {svg: '冲压机',     deviceid: '', status: '0'},
+    {svg: '吊车',       deviceid: '', status: '0'},
+    {svg: '机械压力机', deviceid: '', status: '0'},
+    {svg: '矫平机',     deviceid: '', status: '1'},
+    {svg: '金属压机',   deviceid: '', status: '1'},
+    {svg: '立式冲床',   deviceid: '', status: '1'},
+    {svg: '立式液压机', deviceid: '', status: '1'},
+    {svg: '龙门吊',     deviceid: '', status: '0'},
+    {svg: '卧式冲床',   deviceid: '', status: '0'},
+    {svg: '卧式液压机', deviceid: '', status: '0'},
+    {svg: '液压折弯机', deviceid: '', status: '0'},
   ];
   DataArray5 = [
-    {svg: '锅炉', deviceid: '', status: ''},
-    {svg: '锅炉1', deviceid: '', status: ''},
-    {svg: '机组', deviceid: '', status: '0'},
-    {svg: '烘干塔', deviceid: '', status: '1'},
-    {svg: '钻探工厂', deviceid: '', status: '1'}
+    {svg: '仪表1', deviceid: '', status: '0'},
+    {svg: '仪表2', deviceid: '', status: '0'},
+    {svg: '仪表3', deviceid: '', status: '0'},
+    {svg: '仪表4', deviceid: '', status: '1'},
+    {svg: '仪表5', deviceid: '', status: '1'},
+    {svg: '仪表6', deviceid: '', status: '0'},
+    {svg: '仪表7', deviceid: '', status: '0'},
+    {svg: '仪表8', deviceid: '', status: '0'},
   ];
 
   cusData;
@@ -676,7 +692,7 @@ export class TopoDesignComponent implements OnInit {
     self.diagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     self.diagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
-    Palette.model = new go.GraphLinksModel(self.builtIn);
+    Palette.model  = new go.GraphLinksModel(self.builtIn);
     Palette1.model = new go.GraphLinksModel(DataArray);
     Palette2.model = new go.GraphLinksModel(this.DataArray1);
     Palette3.model = new go.GraphLinksModel(this.DataArray2);
