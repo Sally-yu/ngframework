@@ -30,7 +30,7 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   attValue = [];//设备属性（参数）的值
 
   presetColors = ['#2ecc71', '#e74c3c'];
-  keys: [];
+  keys=[];
   interval = 1; //默认一秒刷新
   dataOptions = [];
   max = 20;

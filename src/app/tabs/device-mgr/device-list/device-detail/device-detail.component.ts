@@ -137,7 +137,7 @@ export class DeviceDetailComponent implements OnInit {
           break;
       }
       // data.interval = data.interval.toString();
-      data.attrs = data.attrs.filter(a => a.key != 'null'); //去除添加尾行
+      data.attrs = data.attrs.filter(a => a.code != 'null'); //去除添加尾行
       switch (this.option) {
         case 'new': //新增
           this.deviceService.newDevice(data).then(res => {
@@ -201,6 +201,7 @@ export class DeviceDetailComponent implements OnInit {
       unit: null,
       description: null,
       valuetype: 'number',
+      display:true,
       sum: false
     }];
     this.addNullAtt();
@@ -214,6 +215,7 @@ export class DeviceDetailComponent implements OnInit {
       unit: null,
       description: null,
       valuetype: null,
+      display:true,
       sum: false
     }];
   }

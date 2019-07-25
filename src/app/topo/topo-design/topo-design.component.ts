@@ -5,8 +5,11 @@ import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
 import {filter} from 'rxjs/operators';
 import {UUID} from 'angular2-uuid';
 import * as go from '../../../assets/js/go.js';
+import {DeviceService} from '../../device.service';
+import {ResizeSensor} from 'css-element-queries';
 
 declare var $: any;
+declare var echarts: any; //angular方式引用echarts做循环处理性能奇差 用土方子吧，给个延时
 
 @Component({
   selector: 'app-topo-design',
@@ -14,16 +17,56 @@ declare var $: any;
   styleUrls: ['./topo-design.component.less']
 })
 export class TopoDesignComponent implements OnInit {
+  ws: WebSocket;
+  templateList;
 
+  cardColors=['#2ecc71','#1abc9c','#3498db','#f1c40f','#e67e22','#e74c3c',
+    '#78e08f','#4a69bd','#38ada9','#fa983a','#f8c291','#fad390',
+    '#A8EBE1','#FFEAC0','#9FBECC','#EFFFED','#D8AAB9','#F5DFDF',
+  ];//预置颜色选项
+
+  nullDevice = {
+    key: null,
+    code: null,
+    type: null,
+    group: null,
+    name: null,
+    servername:null,
+    serveraddress:null,
+    template: null,
+    connect: null,
+    interval: null,
+    model: null,
+    gps: null,
+    phone: null,
+    manufacturer: null,
+    status: null,
+    note: null,
+    time: null,
+    attrs: [],
+    display:true,
+    devicesetting:{
+      cardcolor:"#2ecc71"
+    }
+  };
+
+  timeUint = 'ms';
+  t = 0;
+  codeRequire = true;
+  nameRequire = true;
+  templateRequire = true;
   note: any;
   code;
   sence: any;
   released = false;
+  keys=[];
+  max=20;
 
   constructor(
     private url: UrlService,
     private http: HttpClient,
     private message: NzMessageService,
+    private deviceService: DeviceService,
   ) {
   }
 
@@ -259,7 +302,11 @@ export class TopoDesignComponent implements OnInit {
 
   tempDeviceId = '';
   devices;
-
+  attValue=[];
+  deviceList = [];
+  dataOptions = [];
+  presetColors = ['#2ecc71', '#e74c3c'];
+  interval = 1; //默认一秒刷新
 
   visible = false;//主布局右键菜单显示
   addSvgShow = false;//新增图源对话框
@@ -279,6 +326,7 @@ export class TopoDesignComponent implements OnInit {
 
   uploading = false;
   fileList: UploadFile[] = [];
+  compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.key === o2.key : o1 === o2);
 
   //初始化布局图和工具栏
   initDiagram() {
@@ -356,8 +404,8 @@ export class TopoDesignComponent implements OnInit {
     function showToolTip(obj, diagram, tool) {
       var toolTipDIV = document.getElementById('toolTipDIV');
       var pt = diagram.lastInput.viewPoint;
-      // self.currDevice = obj.data;
-      // self.matchDevice();
+      self.currDevice = obj.data;
+      self.matchDevice();
       // console.log(self.currDevice);
       var fromLeft = document.getElementById('leftbar').offsetWidth;
       var left = pt.x + fromLeft + 10;//左侧菜单宽度  左侧图源栏款 10点向右偏移，在鼠标点击位置右侧
@@ -917,6 +965,10 @@ export class TopoDesignComponent implements OnInit {
     this.fileList = this.fileList.concat(file);
     return false;
   };
+  config=false;
+  device=null;
+  option;
+  loading=false;
 
   //上传自定义图标3
   handleUpload() {
@@ -1069,6 +1121,256 @@ export class TopoDesignComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+    this.getList();
+  }
+
+  //控制显示属性参数
+  display(item: any) {
+    var display = item.attrs.filter(a => a.display);
+    if (display.length > 16) {
+      display = display.slice(0, 16);
+    }
+    return display;
+  }
+
+  length(item) {
+    return this.display(item).length;
+  }
+
+  column(item) {
+    const length = this.length(item);
+    const d = Math.ceil(length / 4);
+    if (d <= 2) {
+      return 2;
+    } else {
+      return d;
+    }
+  }
+
+  row(item) {
+    return Math.ceil(this.length(item) / this.column(item));
+  }
+
+  width(item, att) {
+    var display = this.display(item);
+    var tail = display.slice(this.column(item) * (this.row(item) - 1), display.length);
+    if (tail.indexOf(att) < 0) {
+      return 100 / this.column(item) + '%';
+    } else {
+      return 100 / tail.length + '%';
+    }
+  }
+
+  //设备属性数值
+  keyValue(key, att): any {
+    if (!this.attValue) {
+      return;
+    }
+    try {
+      let data = this.attValue.filter(v => v['device'] === key)[0]['data'];
+      if (data) {
+        return data.filter(d => d['attcode'] === att)[0]['value'];
+      } else {
+        return;
+      }
+    } catch (e) {
+
+    }
+  }
+
+  getList() {
+    this.deviceService.deviceList().then(res => {
+        this.deviceList = res.filter(d => d.display);
+        this.spliceViewList(this.deviceList);
+      },
+      err => {
+        this.spliceViewList(this.deviceList);
+      });
+  }
+
+  spliceViewList(list) {
+    this.keys = this.deviceList.map(d => {
+      return d.key;
+    });
+    this.deviceService.deviceValue(this.keys).then(res => {
+      this.attValue = res;
+      this.keys.forEach(r => {
+        let o = this.dataOptions.filter(d => d['device'] == r)[0] ? this.dataOptions.filter(d => d['device'] == r)[0]['option'] : null;
+        let option = o ? o :
+          {
+            grid: {
+              left: '6%',
+              right: '6%',
+              bottom: '40%',
+              top: '0%',
+              containLabel: false
+            },
+            xAxis: {
+              max: this.max,
+              type: 'value',
+              name: 'S',
+              show: true
+            },
+            yAxis: {
+              type: 'category',
+              show: false,
+              data: ['']
+            },
+            animation: false,
+            series: []
+          };
+        this.dataOptions = [...this.dataOptions, {
+          device: r,
+          option: option,
+        }];
+        for (var i = 0; i < this.max - 1; i++) {
+          if (option.series.length < this.max) {
+            var colorindex = Math.floor(Math.random() + 0.1);
+            option.series = [...option.series, {
+              type: 'bar',
+              stack: '1',
+              data: [1],
+              itemStyle: {
+                normal: {
+                  color: this.presetColors[colorindex]
+                }
+              }
+            }];
+          }
+        }
+
+      });
+      $('.card').draggable({scroll: false});
+
+      this.connectWs();//建立ws协议，自动刷新
+      this.matchValue();
+      // this.loading = false;
+    }, err => {
+      // this.loading = false;
+    });
+  }
+
+  connectWs() {
+    this.closeWS();
+    var self = this;
+    this.ws = new WebSocket(this.deviceService.wsUrl);
+    this.ws.onopen = function (event) {
+      self.ws.send(JSON.stringify({
+        keys: self.keys,
+        time: self.interval
+      }));
+    };
+    this.ws.onmessage = function (event) {
+      self.attValue = JSON.parse(event.data);
+      self.chartOption();
+    };
+  }
+
+  matchValue() {
+    try {
+      this.keys.forEach(c => {
+        var e = $('#' + c+'chart');
+        var chart = echarts.init(e.get(0));
+        chart.setOption(this.dataOptions.filter(d => d['device'] == c)[0]['option']);
+        new ResizeSensor(e, function () {
+          chart.resize();
+        });
+      });
+    } catch (e) {
+
+    }
+  }
+
+  closeWS() {
+    if (this.ws) {
+      this.ws.close();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.closeWS();
+  }
+
+  //ws收到消息追加数据
+  chartOption() {
+    this.keys.forEach(r => {
+      var option = this.dataOptions.filter(d => d['device'] == r)[0]['option'];
+      if (option.series.length >= this.max) {
+        option.series.splice(0, 1);
+      }
+      var colorindex = Math.floor(Math.random() + 0.1);
+      option.series = [...option.series, {
+        type: 'bar',
+        stack: '1',
+        data: [1],
+        itemStyle: {
+          normal: {
+            color: this.presetColors[colorindex]
+          }
+        }
+      }];
+    });
+    this.matchValue();
+  }
+
+  addAttr() {
+    this.device.attrs = [...this.device.attrs.filter(a => a.code != 'null'), {
+      key: null,
+      name: null,
+      code: UUID.UUID(),
+      unit: null,
+      description: null,
+      valuetype: 'number',
+      display:true,
+      sum: false
+    }];
+    this.addNullAtt();
+  }
+
+  addNullAtt() {
+    this.device.attrs = [...this.device.attrs, {
+      key: null,
+      name: null,
+      code: 'null',
+      unit: null,
+      description: null,
+      valuetype: null,
+      display:true,
+      sum: false
+    }];
+  }
+
+  //删除设备属性
+  remove(code: any) {
+    this.device.attrs = this.device.attrs.filter(a => a.code != code);
+  }
+
+  //获取模板列表
+  getTemplate() {
+    this.loading = true;
+    this.deviceService.deviceTempList().then(res => {
+      this.templateList = res;
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+    });
+  }
+
+  templateChanged() {
+    this.device.template ? this.templateRequire = true : this.templateRequire = false;
+    this.device.attrs = this.device.template.attrs;
+    this.addNullAtt();
+  }
+
+  editCard(device){
+    this.device=device;
+    this.config=true;
+    this.addNullAtt();
+  }
+
+  closeConfig(){
+    this.device.attrs = this.device.attrs.filter(a => a.code != 'null'); //去除添加尾行
+    this.config=false;
   }
 
 }

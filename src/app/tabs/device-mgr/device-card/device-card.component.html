@@ -43,7 +43,7 @@
                   {{item.code}}
                 </div>
                 <div *ngFor="let att of display(item)"
-                     [ngStyle]="{'height':200/row(item)+'px','padding-top':100/row(item)-36+'px','width':width(item,att)}">
+                     [ngStyle]="{'height':200/row(item)+'px','padding-top':100/row(item)-64+'px','width':width(item,att)}">
                   <span>{{keyValue(item.key, att.code)}}</span><br>
                   {{att.name}}
                 </div>

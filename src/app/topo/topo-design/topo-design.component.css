@@ -235,4 +235,64 @@
   height: 400px;
   max-height: 800px;
 }
+.card {
+  margin: 8px;
+  border-radius: 4px;
+  width: 360px;
+  height: 260px;
+  z-index: 5;
+  position: absolute;
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  transition-duration: 200ms;
+  box-shadow: 0 0 4px rgba(10, 10, 10, 0.5);
+  cursor: pointer;
+}
+.card ul {
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+  padding: 12px 20%;
+  border-radius: 0 0 4px 4px;
+  line-height: 40px;
+}
+.card div {
+  background-color: #ffffff;
+}
+.card-content {
+  height: 180px;
+  background-color: #ffffff;
+}
+.card-content div {
+  display: inline-block;
+  text-align: center;
+  color: #a3a3a3;
+  font-size: 12px;
+}
+.card-content div span {
+  color: #000000;
+  font-weight: bold;
+  font-size: 14px;
+}
+.title {
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+  border-radius: 4px 4px 0 0;
+  padding: 4px 16px 4px 40px;
+  line-height: 20px;
+  color: #000000;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+.title i {
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+}
 /*# sourceMappingURL=topo-design.component.css.map */

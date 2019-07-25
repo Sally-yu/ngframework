@@ -121,7 +121,7 @@
   </div>
 
   <!--tab条-->
-  <nz-tabset [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" [nzAnimated]="false">
+  <nz-tabset [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" [nzAnimated]="false" (nzSelectedIndexChange)="indexFlag>100?indexFlag=0:indexFlag=indexFlag+1;">
     <nz-tab (nzClick)="selectChange(tab['key'])" *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
       <ng-template #template>
         <ul nz-menu nzInDropDown (nzClick)="close()">
@@ -222,7 +222,6 @@
                         [ngStyle]="{'display':active=='2021'?'block':'none'}"></app-grafana-design>
     <app-grafana-mgr *ngIf="exist('2022')" class="back"
                      [ngStyle]="{'display':active=='2022'?'block':'none'}"></app-grafana-mgr>
-
   </div>
 </div>
 

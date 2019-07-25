@@ -1,7 +1,7 @@
-<div id="content">
+<div id="content" >
   <div id="topbar">
     <!--<div *ngIf="option" class="topbtn" (click)="close()" nzTitle="列表" nzPlacement="bottom" nz-tooltip>-->
-      <!--<i nz-icon nzType="import" nzTheme="outline"></i>-->
+    <!--<i nz-icon nzType="import" nzTheme="outline"></i>-->
     <!--&lt;!&ndash;返回&ndash;&gt;-->
     <!--</div>-->
     <!--<nz-divider *ngIf="option" class="divider" [nzType]="'vertical'"></nz-divider>-->
@@ -85,7 +85,7 @@
 
   <div id="toolcontent">
     <!--<div id="droptop" (click)="toggleTop()">-->
-      <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
+    <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
     <div id="leftbar">
       <nz-collapse nzAccordion>
         <nz-collapse-panel [nzActive]="true" [nzHeader]="'交通运输'">
@@ -141,7 +141,7 @@
       </nz-collapse>
     </div>
     <!--<div id="dropleft" (click)="toggleleft()">-->
-      <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
+    <!--<i nz-icon nzType="dash" nzTheme="outline"></i></div>-->
     <div id="toolTipDIV">
       <ul style="list-style: none">
         <li>设备信息：{{currDevice["svg"]}}</li>
@@ -228,17 +228,256 @@
       <input style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="sence">
     </label>
     <label style="margin-bottom: 8px;">备注:
-      <textarea style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="note" nzAutosize="{ minRows: 2, maxRows: 6 }"></textarea>
+      <textarea style="margin-bottom: 16px;" type="text" nz-input [(ngModel)]="note"
+                nzAutosize="{ minRows: 2, maxRows: 6 }"></textarea>
     </label>
   </nz-modal>
 
-  <!--滑动缩放条 有问题 暂时不用-->
-  <!--  <div class="floatbar">
-    <nz-slider nzVertical [ngModel]="zoom" nztooltipvisible="never"></nz-slider>
-  </div>-->
+  <div *ngFor="let item of deviceList" class="card" >
+    <div class="title" [title]="'备注  '+item.note"
+         [ngStyle]="{'background-color':item['devicesetting']['cardcolor'],'left':deviceList.indexOf(item)*100+'px','top':deviceList.indexOf(item)*130+'px'}">
+      {{item.name}}
+      <i nz-icon nzType="pie-chart" title="设备图表"
+         nzTheme="outline" style="float: right" (click)="editCard(item)"></i>
+    </div>
+
+    <div class="card-content">
+      <div style="height: 20px;width: 100%;font-size: 16px;font-weight: bold;color:#000000;">
+        {{item.code}}
+      </div>
+      <div *ngFor="let att of display(item)"
+           [ngStyle]="{'height':160/row(item)+'px','padding-top':80/row(item)-80+'px','width':width(item,att)}">
+        <span>{{keyValue(item.key, att.code)}}</span><br>
+        {{att.name}}
+      </div>
+    </div>
+    <div [id]="item.key+'chart'" style="height: 50px"></div>
+  </div>
 </div>
 
-<!--<div class="echarts" id="echart1" *ngIf="true"></div>-->
-<!--<div class="echarts" id="echart2" style="left:300px" *ngIf="true"></div>-->
-<!--<div class="echarts" id="echart3" style="bottom:40px;" *ngIf="true"></div>-->
-<!--<div class="echarts" id="echart4" style="bottom: 40px;left:300px" *ngIf="true"></div>-->
+<nz-modal class="custom-modal" *ngIf="device" nzWrapClassName="vertical-center-modal" [(nzVisible)]="config" nzTitle="保存布局"
+          (nzAfterClose)="closeConfig()" (nzOnCancel)="closeConfig()" (nzOnOk)="closeConfig()">
+
+  <p style="    padding-left: 24px;
+    font-size: 16px;
+    border-left: solid #0987fe;">基本信息</p>
+
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>设备编号</nz-form-label>
+      <nz-form-control [nzSpan]="12" [nzHasFeedback]="!codeRequire"
+                       [nzValidateStatus]="codeRequire?'success':'error'">
+        <input #codeEle nz-input name="code" [(ngModel)]="device['code']" [disabled]="option=='edit'"
+               placeholder="请输入唯一编号"
+               (ngModelChange)="device.code?codeRequire=true:codeRequire=false;"/>
+        <nz-form-explain *ngIf="!codeRequire">{{'请输入唯一编号！'}}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>设备名称</nz-form-label>
+      <nz-form-control [nzSpan]="12" [nzHasFeedback]="!nameRequire"
+                       [nzValidateStatus]="nameRequire?'success':'error'">
+        <input nz-input name="name" [(ngModel)]="device['name']" placeholder="请输入设备名称"
+               (ngModelChange)="device.name?nameRequire=true:nameRequire=false;"/>
+        <nz-form-explain *ngIf="!nameRequire">{{'请输入设备名称！'}}</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备类型</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-select name="type"  [(ngModel)]="device['type']" placeholder="请选择设备类型">
+          <nz-option [nzLabel]="'A类设备'" [nzValue]="'重点设备'"></nz-option>
+          <nz-option [nzLabel]="'B类设备'" [nzValue]="'主要设备'"></nz-option>
+          <nz-option [nzLabel]="'C类设备'" [nzValue]="'一般设备'"></nz-option>
+        </nz-select>
+        <!-- <input nz-input name="type" [(ngModel)]="device['type']" placeholder="请选择设备类型"/> -->
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备分组</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="group" [(ngModel)]="device['group']" placeholder="请选择设备分组"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>设备模板</nz-form-label>
+      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!templateRequire"
+                       [nzValidateStatus]="templateRequire?'success':'error'">
+        <nz-select name="template" [(ngModel)]="device.template" nzPlaceHolder="请选择设备模板" [compareWith]="compareFn"
+                   (ngModelChange)="templateChanged()">
+          <nz-option *ngFor="let temp of templateList" [nzValue]="temp" [nzLabel]="temp['name']"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="!templateRequire">{{'请选择设备模板！'}}</nz-form-explain>
+      </nz-form-control>
+      <button nz-tooltip nzTitle="刷新设备模板列表" nzPlacement="right" nz-button
+              style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="getTemplate()"
+              [nzLoading]="loading">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+      </button>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">数据源名称</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="connect" [(ngModel)]="device['connect']" placeholder="请输入数据源名称"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">设备服务</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="servername" [(ngModel)]="device['servername']" placeholder="请输入设备服务"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">服务端地址</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="serveraddress" [(ngModel)]="device['serveraddress']" placeholder="请输入服务地址"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">规格型号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="model" [(ngModel)]="device['model']" placeholder="请输入规格型号"/>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">采样间隔</nz-form-label>
+      <nz-form-control [nzSpan]="8">
+        <nz-input-number style="width:100%;" name="interval" [(ngModel)]="t" [nzMin]="0" [nzStep]="1"
+                         (focus)="t==0?t=null:t;" (blur)="t==null?t=0:t;"></nz-input-number>
+      </nz-form-control>
+      <nz-select name="timeunit" style="width:92px;margin-top: 5px;margin-left: 8px" [(ngModel)]="timeUint"
+                 (ngModelChange)="calcTime()">
+        <nz-option [nzLabel]="'毫秒'" [nzValue]="'ms'"></nz-option>
+        <nz-option [nzLabel]="'秒'" [nzValue]="'s'"></nz-option>
+        <nz-option [nzLabel]="'分'" [nzValue]="'min'"></nz-option>
+        <nz-option [nzLabel]="'时'" [nzValue]="'h'"></nz-option>
+        <nz-option [nzLabel]="'日'" [nzValue]="'d'"></nz-option>
+      </nz-select>
+    </nz-form-item> -->
+    <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">GPS</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="gps" [(ngModel)]="device['gps']" placeholder="请输入GPS位置信息"/>
+      </nz-form-control>
+    </nz-form-item> -->
+    <!-- <nz-form-item>
+      <nz-form-label [nzSpan]="7">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12"> -->
+    <!--单向绑定可防止change事件后model改变-->
+    <!-- <input #telEle (ngModelChange)="telChange($event)" nz-input name="phone" [ngModel]="device['phone']"
+           placeholder="请输入手机号码"/>
+  </nz-form-control>
+</nz-form-item> -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">厂商</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input name="manufacturer" [(ngModel)]="device['manufacturer']" placeholder="请输入设备厂商"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" >展示卡片</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-switch class="switch" name="display" [(ngModel)]="device.display"></nz-switch>
+        <span style="margin-left: 8px"
+              [ngStyle]="{'color':device.display?'#1ab768':'#ff2222'}">{{device.display ? '展示' : '隐藏'}}</span>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" >卡片颜色</nz-form-label>
+      <nz-form-control [nzSpan]="10">
+        <input name="color" nz-input [(ngModel)]="device['devicesetting']['cardcolor']">
+      </nz-form-control>
+      <input [cpPresetColors]="cardColors" readonly title="选择颜色"
+             [(colorPicker)]="device['devicesetting']['cardcolor']"
+             style="border: 1px solid;outline: none;height: 30px;width: 30px;margin-top: 5px;margin-left: 8px;cursor: pointer;"
+             [style.background]="device['devicesetting']['cardcolor']"/>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" >状态</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-switch class="switch" name="status" [(ngModel)]="device.status"></nz-switch>
+        <span style="margin-left: 8px"
+              [ngStyle]="{'color':device.status?'#1ab768':'#ff2222'}">{{device.status ? '运行' : '停机'}}</span>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">备注</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+      <textarea name="note" [(ngModel)]="device['note']" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                placeholder="设备备注信息"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+
+  <p *ngIf="device['attrs']!=null" style="padding-left: 24px;
+    font-size: 16px;
+    border-left: solid #0987fe;">属性信息</p>
+
+  <nz-table *ngIf="device['attrs']!=null" #attrsTable nzSize="small" [nzData]="device['attrs']"
+            [nzFrontPagination]="false" [nzShowPagination]="false"
+            style="margin: 24px;padding-left: 150px;padding-right: 150px">
+    <thead>
+    <tr>
+      <th nzWidth="64px">
+        #
+      </th>
+      <th>名称</th>
+      <th>编号</th>
+      <th>值类型</th>
+      <th>描述</th>
+      <th>单位</th>
+      <th nzWidth="80px">累加值</th>
+      <th nzWidth="80px">卡片展示</th>
+      <th nzWidth="80px">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of attrsTable.data">
+      <td *ngIf="data.code!='null'">
+        {{device['attrs'].indexOf(data) + 1}}
+      </td>
+      <td *ngIf="data.code=='null'">
+        <button class="custom-btn" nz-button (click)="addAttr()" nz-tooltip nzTitle="添加一条属性" nzPlacement="right">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>
+        </button>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <input type="text" nz-input [(ngModel)]="data['name']" placeholder="请填写名称" />
+      </td>
+      <td *ngIf="data.code!='null'">
+        <input type="text" nz-input [(ngModel)]="data['code']" placeholder="请填写唯一编号"/>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <nz-select [(ngModel)]="data['valuetype']" nzPlaceHolder="请选择数值类型" style="width:100%;">
+          <nz-option [nzValue]="'string'" [nzLabel]="'字符串'"></nz-option>
+          <nz-option [nzValue]="'number'" [nzLabel]="'数字'"></nz-option>
+          <nz-option [nzValue]="'bool'" [nzLabel]="'布尔'"></nz-option>
+          <nz-option [nzValue]="'option'" [nzLabel]="'枚举'"></nz-option>
+        </nz-select>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <input type="text" nz-input [(ngModel)]="data['description']" placeholder="请填写描述"/>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <input type="text" nz-input [(ngModel)]="data['unit']" placeholder="请填写单位"/>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <nz-switch class="switch" [(ngModel)]="data['sum']"></nz-switch>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <nz-switch class="switch" [(ngModel)]="data['display']"></nz-switch>
+      </td>
+      <td *ngIf="data.code!='null'">
+        <a style="color: #ff2222" (click)="remove(data['code'])">
+          <i nz-icon nzType="delete" nzTheme="outline"></i>删除
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+
+
+
+</nz-modal>
