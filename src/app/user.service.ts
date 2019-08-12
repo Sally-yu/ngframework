@@ -84,6 +84,7 @@ export class UserService {
 
   //新增用户
   newUser(user: any): any {
+    user['username']=new Buffer(user['username']).toString('base64');//base64处理用户名，中文直接rsa加密，解密易出错
     return new Promise((resolve, reject) => {
       this.rsa.Encrypt(JSON.stringify(user)).then(encrypt => {
         if (!encrypt) {

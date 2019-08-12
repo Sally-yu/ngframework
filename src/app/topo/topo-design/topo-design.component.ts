@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component,  OnInit} from '@angular/core';
 import {UrlService} from '../../url.service';
 import {NzMessageService, UploadFile} from 'ng-zorro-antd';
 import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
@@ -9,7 +9,7 @@ import {DeviceService} from '../../device.service';
 import {ResizeSensor} from 'css-element-queries';
 
 declare var $: any;
-declare var echarts: any; //angular方式引用echarts做循环处理性能奇差 用土方子吧，给个延时
+declare var echarts: any; //angular方式引用echarts做循环处理性能奇差 用土方，给个延时
 
 @Component({
   selector: 'app-topo-design',
@@ -1254,15 +1254,12 @@ export class TopoDesignComponent implements OnInit {
             }];
           }
         }
-
+        this.matchValue(r)
       });
       $('.card').draggable({scroll: false});
 
       this.connectWs();//建立ws协议，自动刷新
-      this.matchValue();
-      // this.loading = false;
     }, err => {
-      // this.loading = false;
     });
   }
 
@@ -1282,16 +1279,14 @@ export class TopoDesignComponent implements OnInit {
     };
   }
 
-  matchValue() {
+  matchValue(c) {
     try {
-      this.keys.forEach(c => {
         var e = $('#' + c+'chart');
         var chart = echarts.init(e.get(0));
         chart.setOption(this.dataOptions.filter(d => d['device'] == c)[0]['option']);
         new ResizeSensor(e, function () {
           chart.resize();
         });
-      });
     } catch (e) {
 
     }
@@ -1325,8 +1320,8 @@ export class TopoDesignComponent implements OnInit {
           }
         }
       }];
+      this.matchValue(r);
     });
-    this.matchValue();
   }
 
   addAttr() {
@@ -1378,15 +1373,96 @@ export class TopoDesignComponent implements OnInit {
     this.addNullAtt();
   }
 
+  //卡片编辑 打开对话框
   editCard(device){
     this.device=device;
     this.config=true;
+    this.getTemplate();
+    this.parseInterval();
     this.addNullAtt();
   }
 
+  //
   closeConfig(){
     this.device.attrs = this.device.attrs.filter(a => a.code != 'null'); //去除添加尾行
     this.config=false;
+  }
+
+  submit() {
+    this.loading = true;
+    this.validate();
+    if (this.codeRequire && this.nameRequire && this.templateRequire) {
+      let data = JSON.parse(JSON.stringify(this.device));
+      data.interval = JSON.parse(JSON.stringify(this.t));
+      switch (this.timeUint) {
+        case 'ms':
+          data.interval = data.interval * 1;
+          break;
+        case 's':
+          data.interval = data.interval * 1000;
+          break;
+        case 'min':
+          data.interval = data.interval * 1000 * 60;
+          break;
+        case 'h':
+          data.interval = data.interval * 1000 * 60 * 60;
+          break;
+        case 'd':
+          data.interval = data.interval * 1000 * 60 * 60 * 24;
+          break;
+        default:
+          break;
+      }
+      // data.interval = data.interval.toString();
+      data.attrs = data.attrs.filter(a => a.code != 'null'); //去除添加尾行
+          this.deviceService.updateDevice(data).then(res => {
+            this.closeConfig();
+          }, err => {
+          });
+    } else {
+      this.message.warning('请完善表单信息');
+      this.loading = false;
+    }
+  }
+
+  //计算时间间隔显示值
+  parseInterval() {
+    this.t = this.device['interval'] ? JSON.parse(JSON.stringify(this.device))['interval'] : 0;
+    if (this.t >= 1000 && this.t % 1000 == 0) {
+      this.timeUint = 's';
+      this.t = this.t / 1000;
+      if (this.t >= 60 && this.t % 60 == 0) {
+        this.timeUint = 'min';
+        this.t = this.t / 60;
+        if (this.t >= 60 && this.t % 60 == 0) {
+          this.timeUint = 'h';
+          this.t = this.t / 60;
+          if (this.t >= 24 && this.t % 24 == 0) {
+            this.timeUint = 'd';
+            this.t = this.t / 24;
+          }
+        }
+      }
+    }
+  }
+
+  //提交前验证
+  validate() {
+    if (this.device.code) {
+      this.codeRequire = true;
+    } else {
+      this.codeRequire = false;
+    }
+    if (this.device.name) {
+      this.nameRequire = true;
+    } else {
+      this.nameRequire = false;
+    }
+    if (this.device.template) {
+      this.templateRequire = true;
+    } else {
+      this.templateRequire = false;
+    }
   }
 
 }

@@ -300,19 +300,14 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>设备模板</nz-form-label>
-      <nz-form-control [nzSpan]="10" [nzHasFeedback]="!templateRequire"
+      <nz-form-control [nzSpan]="12" [nzHasFeedback]="!templateRequire"
                        [nzValidateStatus]="templateRequire?'success':'error'">
-        <nz-select name="template" [(ngModel)]="device.template" nzPlaceHolder="请选择设备模板" [compareWith]="compareFn"
+        <nz-select (nzFocus)="getTemplate()" name="template" [(ngModel)]="device.template" nzPlaceHolder="请选择设备模板" [compareWith]="compareFn"
                    (ngModelChange)="templateChanged()">
           <nz-option *ngFor="let temp of templateList" [nzValue]="temp" [nzLabel]="temp['name']"></nz-option>
         </nz-select>
         <nz-form-explain *ngIf="!templateRequire">{{'请选择设备模板！'}}</nz-form-explain>
       </nz-form-control>
-      <button nz-tooltip nzTitle="刷新设备模板列表" nzPlacement="right" nz-button
-              style="margin-top: 4px;margin-left: 8px;padding: 0 13px;" nzType="primary" (click)="getTemplate()"
-              [nzLoading]="loading">
-        <i nz-icon nzType="reload" nzTheme="outline"></i>
-      </button>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">数据源名称</nz-form-label>
@@ -383,7 +378,7 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" >卡片颜色</nz-form-label>
-      <nz-form-control [nzSpan]="10">
+      <nz-form-control [nzSpan]="11">
         <input name="color" nz-input [(ngModel)]="device['devicesetting']['cardcolor']">
       </nz-form-control>
       <input [cpPresetColors]="cardColors" readonly title="选择颜色"
@@ -415,7 +410,7 @@
 
   <nz-table *ngIf="device['attrs']!=null" #attrsTable nzSize="small" [nzData]="device['attrs']"
             [nzFrontPagination]="false" [nzShowPagination]="false"
-            style="margin: 24px;padding-left: 150px;padding-right: 150px">
+            style="margin: 24px">
     <thead>
     <tr>
       <th nzWidth="64px">

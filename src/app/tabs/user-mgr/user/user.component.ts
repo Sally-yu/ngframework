@@ -18,7 +18,7 @@ export class UserComponent implements OnInit,OnChanges {
 
   changePwd = false;
   changePhone = false;
-  @Input() key: string;
+  key;
 
   constructor(private rsa: RsaService,
               private http: HttpClient,
@@ -29,6 +29,7 @@ export class UserComponent implements OnInit,OnChanges {
   }
 
   getUser() {
+    this.key = this.url.key();
     this.loading = true;
     this.userSrv.getUser(this.key).then(user => {
       this.user = user;

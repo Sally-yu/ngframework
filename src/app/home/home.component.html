@@ -1,30 +1,30 @@
 <!--右上用户下拉选项，绝对定位-->
 <div id="ava">
   <nz-badge *ngIf="notifcount>0" nzDot>
-    <nz-avatar (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']"
+    <nz-avatar [routerLink]="[{outlets:{aux: 'user'}}]" nzText="User" [nzSrc]="user['img']"
                style="background-color:#555d60;"></nz-avatar>
   </nz-badge>
-  <nz-avatar *ngIf="notifcount<=0" (click)="optionClick('1040')" nzText="User" [nzSrc]="user['img']"
+  <nz-avatar *ngIf="notifcount<=0" [routerLink]="[{outlets:{aux: 'user'}}]"  nzText="User" [nzSrc]="user['img']"
              style="background-color:#555d60;"></nz-avatar>
 
   <div id="user-menu">
     <ul>
-      <li (click)="optionClick('1040')">
+      <li [routerLink]="[{outlets:{aux: 'user'}}]" >
         <i nz-icon nzType="user" nzTheme="outline"></i>
         个人中心
       </li>
-      <li (click)="optionClick('1042')">
+      <li [routerLink]="[{outlets:{aux: 'notification'}}]" >
         <nz-badge [nzCount]="notifcount">
           <a class="head-example" style="margin-right: 24px"></a>
           <i nz-icon nzType="notification" nzTheme="outline"></i>
           消息通知
         </nz-badge>
       </li>
-      <li (click)="optionClick('1043')" *ngIf="user['role']==='admin'">
+      <li [routerLink]="[{outlets:{aux: 'userlist'}}]"  *ngIf="user['role']==='admin'">
         <i nz-icon nzType="team" nzTheme="outline"></i>
         用户列表
       </li>
-      <li (click)="optionClick('1044')" *ngIf="user['role']==='admin'">
+      <li [routerLink]="[{outlets:{aux: 'role'}}]"  *ngIf="user['role']==='admin'">
         <i nz-icon nzType="safety" nzTheme="outline"></i>
         角色管理
       </li>
@@ -83,13 +83,13 @@
   <ul nz-menu [nzMode]="'inline'" [nzSelectable]="false"
       style="width: 240px;position: absolute;top:0;bottom: 60px;left: 0;margin-top: 100px;overflow-y: auto;overflow-x: hidden"
       nzTheme="dark">
-    <li nz-menu-item (click)="menuClick(index)" >
+    <li nz-menu-item [routerLink]="[{outlets:{aux: 'home'}}]" >
       <span title><i nz-icon [type]="'home'" ></i>首页</span>
     </li>
     <li nz-submenu *ngFor="let first of nodes">
       <span title><i nz-icon [type]="first.icon"></i>{{first.title}}</span>
       <ul>
-        <li nz-menu-item (click)="menuClick(second)" *ngFor="let second of first.children">
+        <li nz-menu-item [routerLink]="[{outlets:{aux: second.url}}]" *ngFor="let second of first.children">
           {{second.title}}
         </li>
       </ul>
@@ -98,13 +98,13 @@
 
   <div id="menu-footer">
     <ul>
-      <li nzTitle="综合分析" nzPlacement="top" nz-tooltip (click)="grafanaClick('1070')">
+      <li nzTitle="综合分析" nzPlacement="top" nz-tooltip [routerLink]="['/index',{outlets:{aux:'grafanashow'}}]">
         <i nz-icon nzType="area-chart" nzTheme="outline"></i>
       </li>
-      <li nzTitle="拓扑监控" nzPlacement="top" nz-tooltip (click)="topoClick('1050')">
+      <li nzTitle="拓扑监控" nzPlacement="top" nz-tooltip [routerLink]="['/index',{outlets:{aux:'toposhow'}}]">
         <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>
       </li>
-      <li nzTitle="仿真监控" nzPlacement="top" nz-tooltip (click)="modelClick('1060')">
+      <li nzTitle="仿真监控" nzPlacement="top" nz-tooltip [routerLink]="['/index',{outlets:{aux:'modelshow'}}]">
         <!--<i nz-icon nzType="bulb" nzTheme="outline"></i>-->
         <i nz-icon [nzIconfont]="'iconrenjijiaohuD-DduixiangVR'"></i>
       </li>
@@ -121,11 +121,11 @@
   </div>
 
   <!--tab条-->
-  <nz-tabset [nzType]="'line'" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" [nzAnimated]="false" (nzSelectedIndexChange)="indexFlag>100?indexFlag=0:indexFlag=indexFlag+1;">
-    <nz-tab (nzClick)="selectChange(tab['key'])" *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+  <nz-tabset class="index-tab" [nzType]="'line'"  (nzSelectChange)="selectChange($event)" [(nzSelectedIndex)]="tabIndex" [nzTabBarGutter]="0" [nzAnimated]="false">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
       <ng-template #template>
         <ul nz-menu nzInDropDown (nzClick)="close()">
-          <li *ngIf="tab['key']!='000'" nz-menu-item (click)="tabRight(tab)">关闭标签</li>
+          <li *ngIf="tab['key']!='000'" nz-menu-item (click)="closeTab(tab)">关闭标签</li>
           <li nz-menu-item (click)="closeAllTab()">关闭全部标签</li>
         </ul>
       </ng-template>
@@ -133,96 +133,100 @@
         <div [ngStyle]="{'user-select':'none'}" (contextmenu)="contextMenu($event, template)">
           <i nz-icon nzTheme="outline" [nzType]="tab['icon']?tab['icon']:'tag'"></i>
           {{ tab["title"] }}
-          <i *ngIf="tab['key']!='000'" nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
+          <i *ngIf="tab['key']!='home'" nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
         </div>
       </ng-template>
     </nz-tab>
   </nz-tabset>
+  <div id="app-content">
+    <router-outlet name="aux"></router-outlet>
+  </div>
+
 
   <!--tab条下内容，根据tab页切换-->
-  <div id="app-content">
+  <!--<div id="app-content">-->
 
-    <!--控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测-->
-    <!--首页-->
-    <app-index *ngIf="exist('000')" class="back"
-               [ngStyle]="{'display':active=='000'?'block':'none'}" [flag]="indexFlag"></app-index>
+    <!--&lt;!&ndash;控制显隐方式，方便内置的iframe缓存页面信息，不必刷新，性能是否有损耗暂未实测&ndash;&gt;-->
+    <!--&lt;!&ndash;首页&ndash;&gt;-->
+    <!--<app-index *ngIf="exist('000')" class="back"-->
+               <!--[ngStyle]="{'display':active=='000'?'block':'none'}" [flag]="indexFlag"></app-index>-->
 
-    <!--device mgr-->
-    <app-device-card *ngIf="exist('1000')" class="back"
-                     [ngStyle]="{'display':active=='1000'?'block':'none'}" [flag]="indexFlag"></app-device-card>
-    <app-device-list *ngIf="exist('1001')" class="back"
-                     [ngStyle]="{'display':active=='1001'?'block':'none'}" [flag]="indexFlag"></app-device-list>
-    <app-device-template *ngIf="exist('1002')" class="back"
-                         [ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>
+    <!--&lt;!&ndash;device mgr&ndash;&gt;-->
+    <!--<app-device-card *ngIf="exist('1000')" class="back"-->
+                     <!--[ngStyle]="{'display':active=='1000'?'block':'none'}" [flag]="indexFlag"></app-device-card>-->
+    <!--<app-device-list *ngIf="exist('1001')" class="back"-->
+                     <!--[ngStyle]="{'display':active=='1001'?'block':'none'}" [flag]="indexFlag"></app-device-list>-->
+    <!--<app-device-template *ngIf="exist('1002')" class="back"-->
+                         <!--[ngStyle]="{'display':active=='1002'?'block':'none'}"></app-device-template>-->
 
-    <!--alarm-->
-    <app-alarm-detail *ngIf="exist('1010')" class="back"
-                      [ngStyle]="{'display':active=='1010'?'block':'none'}"></app-alarm-detail>
-    <app-alarm-strategy-list *ngIf="exist('1011')" class="back"
-                             [ngStyle]="{'display':active=='1011'?'block':'none'}"></app-alarm-strategy-list>
-    <app-alarm-summary *ngIf="exist('1012')" class="back"
-                       [ngStyle]="{'display':active=='1012'?'block':'none'}"></app-alarm-summary>
-    <app-alarm-mgr *ngIf="exist('1013')" class="back"
-                   [ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-mgr>
-
-
-    <!--data-mgr-->
-    <app-db-mgr *ngIf="exist('1020')" class="back" [change]="indexFlag"
-                [ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>
-    <app-data-manage *ngIf="exist('1021')" class="back" [change]="indexFlag"
-                     [ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>
-
-    <!--data-process-->
-    <app-data-define *ngIf="exist('1030')" class="back"
-                     [ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>
-
-    <!--user-->
-    <app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"
-              [key]="key" [flag]="indexFlag"></app-user>
-
-    <!--edge service-->
-    <app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"
-                       [ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>
-    <app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"
-                        [ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>
-    <!--cloud service-->
-    <app-cloud-image *ngIf="exist('3011')" class="back" [refresh]="indexFlag"
-                     [ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>
-    <app-cloud-list *ngIf="exist('3012')" class="back" [refresh]="indexFlag"
-                    [ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>
-
-    <app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>
-    <app-notification *ngIf="exist('1042')" class="back"
-                      [ngStyle]="{'display':active=='1042'?'block':'none'}" [notifList]="notifList"></app-notification>
-    <app-user-list *ngIf="exist('1043')" class="back"
-                   [ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>
-    <app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>
-
-    <app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"
-                   [flag]="indexFlag"></app-topo-show>
-    <app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"
-                      [flag]="indexFlag"></app-model3d-show>
-    <app-grafana-show *ngIf="exist('1070')" class="back"
-                      [ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>
+    <!--&lt;!&ndash;alarm&ndash;&gt;-->
+    <!--<app-alarm-detail *ngIf="exist('1010')" class="back"-->
+                      <!--[ngStyle]="{'display':active=='1010'?'block':'none'}"></app-alarm-detail>-->
+    <!--<app-alarm-strategy-list *ngIf="exist('1011')" class="back"-->
+                             <!--[ngStyle]="{'display':active=='1011'?'block':'none'}"></app-alarm-strategy-list>-->
+    <!--<app-alarm-summary *ngIf="exist('1012')" class="back"-->
+                       <!--[ngStyle]="{'display':active=='1012'?'block':'none'}"></app-alarm-summary>-->
+    <!--<app-alarm-mgr *ngIf="exist('1013')" class="back"-->
+                   <!--[ngStyle]="{'display':active=='1013'?'block':'none'}"></app-alarm-mgr>-->
 
 
-    <app-topo-design *ngIf="exist('2001')" class="back"
-                     [ngStyle]="{'display':active=='2001'?'block':'none'}"></app-topo-design>
-    <app-topo-mgr *ngIf="exist('2002')" class="back"
-                  [ngStyle]="{'display':active=='2002'?'block':'none'}"></app-topo-mgr>
+    <!--&lt;!&ndash;data-mgr&ndash;&gt;-->
+    <!--<app-db-mgr *ngIf="exist('1020')" class="back" [change]="indexFlag"-->
+                <!--[ngStyle]="{'display':active=='1020'?'block':'none'}"></app-db-mgr>-->
+    <!--<app-data-manage *ngIf="exist('1021')" class="back" [change]="indexFlag"-->
+                     <!--[ngStyle]="{'display':active=='1021'?'block':'none'}"></app-data-manage>-->
+
+    <!--&lt;!&ndash;data-process&ndash;&gt;-->
+    <!--<app-data-define *ngIf="exist('1030')" class="back"-->
+                     <!--[ngStyle]="{'display':active=='1030'?'block':'none'}"></app-data-define>-->
+
+    <!--&lt;!&ndash;user&ndash;&gt;-->
+    <!--<app-user *ngIf="exist('1040')" class="back" [ngStyle]="{'display':active=='1040'?'block':'none'}"-->
+              <!--[key]="key" [flag]="indexFlag"></app-user>-->
+
+    <!--&lt;!&ndash;edge service&ndash;&gt;-->
+    <!--<app-service-image *ngIf="exist('3001')" class="back" [refresh]="indexFlag"-->
+                       <!--[ngStyle]="{'display':active=='3001'?'block':'none'}"></app-service-image>-->
+    <!--<app-device-service *ngIf="exist('3002')" class="back" [refresh]="indexFlag"-->
+                        <!--[ngStyle]="{'display':active=='3002'?'block':'none'}"></app-device-service>-->
+    <!--&lt;!&ndash;cloud service&ndash;&gt;-->
+    <!--<app-cloud-image *ngIf="exist('3011')" class="back" [refresh]="indexFlag"-->
+                     <!--[ngStyle]="{'display':active=='3011'?'block':'none'}"></app-cloud-image>-->
+    <!--<app-cloud-list *ngIf="exist('3012')" class="back" [refresh]="indexFlag"-->
+                    <!--[ngStyle]="{'display':active=='3012'?'block':'none'}"></app-cloud-list>-->
+
+    <!--<app-setting *ngIf="exist('1041')" class="back" [ngStyle]="{'display':active=='1041'?'block':'none'}"></app-setting>-->
+    <!--<app-notification *ngIf="exist('1042')" class="back"-->
+                      <!--[ngStyle]="{'display':active=='1042'?'block':'none'}" [notifList]="notifList"></app-notification>-->
+    <!--<app-user-list *ngIf="exist('1043')" class="back"-->
+                   <!--[ngStyle]="{'display':active=='1043'?'block':'none'}"></app-user-list>-->
+    <!--<app-role *ngIf="exist('1044')" class="back" [ngStyle]="{'display':active=='1044'?'block':'none'}"></app-role>-->
+
+    <!--<app-topo-show *ngIf="exist('1050')" class="back" [ngStyle]="{'display':active=='1050'?'block':'none'}"-->
+                   <!--[flag]="indexFlag"></app-topo-show>-->
+    <!--<app-model3d-show *ngIf="exist('1060')" class="back" [ngStyle]="{'display':active=='1060'?'block':'none'}"-->
+                      <!--[flag]="indexFlag"></app-model3d-show>-->
+    <!--<app-grafana-show *ngIf="exist('1070')" class="back"-->
+                      <!--[ngStyle]="{'display':active=='1070'?'block':'none'}"></app-grafana-show>-->
 
 
-    <app-model-design *ngIf="exist('2011')" class="back"
-                      [ngStyle]="{'display':active=='2011'?'block':'none'}"></app-model-design>
-    <app-model-mgr *ngIf="exist('2012')" class="back"
-                   [ngStyle]="{'display':active=='2012'?'block':'none'}"></app-model-mgr>
+    <!--<app-topo-design *ngIf="exist('2001')" class="back"-->
+                     <!--[ngStyle]="{'display':active=='2001'?'block':'none'}"></app-topo-design>-->
+    <!--<app-topo-mgr *ngIf="exist('2002')" class="back"-->
+                  <!--[ngStyle]="{'display':active=='2002'?'block':'none'}"></app-topo-mgr>-->
 
 
-    <app-grafana-design *ngIf="exist('2021')" class="back"
-                        [ngStyle]="{'display':active=='2021'?'block':'none'}"></app-grafana-design>
-    <app-grafana-mgr *ngIf="exist('2022')" class="back"
-                     [ngStyle]="{'display':active=='2022'?'block':'none'}"></app-grafana-mgr>
-  </div>
+    <!--<app-model-design *ngIf="exist('2011')" class="back"-->
+                      <!--[ngStyle]="{'display':active=='2011'?'block':'none'}"></app-model-design>-->
+    <!--<app-model-mgr *ngIf="exist('2012')" class="back"-->
+                   <!--[ngStyle]="{'display':active=='2012'?'block':'none'}"></app-model-mgr>-->
+
+
+    <!--<app-grafana-design *ngIf="exist('2021')" class="back"-->
+                        <!--[ngStyle]="{'display':active=='2021'?'block':'none'}"></app-grafana-design>-->
+    <!--<app-grafana-mgr *ngIf="exist('2022')" class="back"-->
+                     <!--[ngStyle]="{'display':active=='2022'?'block':'none'}"></app-grafana-mgr>-->
+  <!--</div>-->
 </div>
 
 <!--右悬浮导航，绝对定位-->

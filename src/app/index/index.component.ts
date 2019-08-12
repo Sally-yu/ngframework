@@ -1,18 +1,16 @@
-import {
-  Component, Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import ko from '../../assets/js/knockout-min.js';
 import _ from '../../assets/js/lodash.min.js';
 import {ResizeSensor} from 'css-element-queries';
 import {UrlService} from '../url.service';
 import {UserService} from '../user.service';
+// import * as $ from 'jquery'
+
 
 declare var $: any;
 declare var echarts: any; //index全局导入 保平安
-
+// declare var ko:any;
+// declare var _:any;
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -371,8 +369,7 @@ export class IndexComponent implements OnInit, OnChanges {
 
       this.charts.forEach(c => {
         var e = $('#' + c.key);
-        var inner = c.name + `<i nz-icon nzType="more" nzTheme="outline" style="    height: 40px; width: 40px; float: right;"></i>`;
-        e.prev().get(0).innerHTML = inner;
+        e.prev().get(0).innerHTML = c.name + `<i nz-icon nzType="more" nzTheme="outline" style="    height: 40px; width: 40px; float: right;"></i>`;
         var chart = echarts.init(e.get(0), 'macarons');
         chart.setOption(c.option);
         new ResizeSensor(e, function () {
@@ -404,7 +401,5 @@ export class IndexComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.ngOnInit();
   }
-
-
 
 }

@@ -30,7 +30,7 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   attValue = [];//设备属性（参数）的值
 
   presetColors = ['#2ecc71', '#e74c3c'];
-  keys=[];
+  keys = [];
   interval = 1; //默认一秒刷新
   dataOptions = [];
   max = 20;
@@ -117,10 +117,9 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
             }];
           }
         }
-
+        this.matchValue(r);
       });
       this.connectWs();//建立ws协议，自动刷新
-      this.matchValue();
       this.loading = false;
     }, err => {
       this.loading = false;
@@ -241,8 +240,8 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       }];
+      this.matchValue(r);
     });
-    this.matchValue();
   }
 
   ngOnInit() {
@@ -266,15 +265,13 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  matchValue() {
+  matchValue(c) {
     try {
-      this.keys.forEach(c => {
-        var e = $('#' + c);
-        var chart = echarts.init(e.get(0));
-        chart.setOption(this.dataOptions.filter(d => d['device'] == c)[0]['option']);
-        new ResizeSensor(e, function () {
-          chart.resize();
-        });
+      var e = $('#' + c);
+      var chart = echarts.init(e.get(0));
+      chart.setOption(this.dataOptions.filter(d => d['device'] == c)[0]['option']);
+      new ResizeSensor(e, function () {
+        chart.resize();
       });
     } catch (e) {
 

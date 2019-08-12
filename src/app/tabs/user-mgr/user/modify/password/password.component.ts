@@ -1,9 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserService} from '../../../../../user.service';
-import {NzMessageService} from 'ng-zorro-antd';
-import {RsaService} from '../../../../../rsa.service';
-import {HttpClient} from '@angular/common/http';
-import {UrlService} from '../../../../../url.service';
 
 @Component({
   selector: 'app-password',
