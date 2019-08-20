@@ -1,14 +1,16 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {NotifyService} from '../../../notify.service';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.less']
 })
-export class NotificationComponent implements OnInit,OnChanges {
+export class NotificationComponent implements OnInit {
 
-  @Input() notifList = [];
+  ws: WebSocket;
+  notifList = [];
 
   loading = false;
   detail = false;
@@ -17,29 +19,40 @@ export class NotificationComponent implements OnInit,OnChanges {
 
   constructor(
     private notifyService: NotifyService,
+    private message: NzMessageService
   ) {
+    this.ws=null;
+  }
+
+  closeWs() {
+    if (this.ws && this.ws.readyState == WebSocket.CONNECTING) {
+      this.ws.close();
+    }
+  }
+
+  //消息通知ws
+  connectWs() {
+    this.closeWs();
+    this.ws = new WebSocket('ws://10.24.20.71:7777/notify');
+    this.ws.onmessage = (event) => {
+      console.log('update');
+      if (JSON.stringify(this.notifList) != event.data) {
+        this.notifList = JSON.parse(event.data);
+      }
+    };
+    this.ws.onerror=event=>{
+      this.ws.close()
+    }
   }
 
   ngOnInit() {
-    this.getList();
-  }
-
-  getList() {
-    this.loading = true;
-    this.notifyService.allNotif().then(res => {
-      this.notifList = res;
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-    });
+    this.connectWs();
   }
 
   remove(key: any) {
     this.loading = true;
     this.notifyService.removeNotif(key).then(res => {
-      this.getList();
     }, error => {
-      this.getList();
     });
   }
 
@@ -51,7 +64,6 @@ export class NotificationComponent implements OnInit,OnChanges {
   cancel(event: any) {
     if (event) {
       this.detail = false;
-      this.getList();
     }
   }
 
@@ -70,7 +82,4 @@ export class NotificationComponent implements OnInit,OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
 }

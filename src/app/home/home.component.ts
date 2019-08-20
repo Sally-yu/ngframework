@@ -34,7 +34,7 @@
 
 
 import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService, NzTreeNode} from 'ng-zorro-antd';
+import {NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzIconService, NzMessageService} from 'ng-zorro-antd';
 import {UrlService} from '../url.service';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../user.service';
@@ -43,7 +43,7 @@ import {OpcService} from '../services/opc-service/opc.service';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {SimpleReuseStrategy} from '../service/SimpleReuseStrategy';
-import {filter, map, mergeMap} from 'rxjs/operators';
+import {filter, map, mergeMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'url-home',
@@ -52,12 +52,12 @@ import {filter, map, mergeMap} from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-
+  //tab右键弹出菜单
   private dropdown: NzDropdownContextComponent;
 
-  user = {};
+  user = {}; //用户
 
-  notifList = [];
+  notifList = []; //消息通知列表
 
   menuList = 'all'; //菜单选项 全部 收藏 共享
 
@@ -69,12 +69,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   menuExp = true; //菜单栏展开
 
-  activedNode: {}; //激活选中的树节点
-
   active = '000'; //当前激活tab页的key 默认首页
 
   tabs = []; //tab页内容数组，元素格式是数的子节点
-
 
   setting = {
     title: '系统管理',
@@ -101,7 +98,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     fav: true,
     share: true,
     url: 'home',
-  };
+  }; //首页菜单项
 
   allNodes = [
     {
@@ -207,8 +204,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   loading = false;
   key;
   notifcount = 0;
-  indexFlag = 0;
-  ws: WebSocket;
+  ws: WebSocket; //消息通知ws
 
   constructor(
     private userSrv: UserService,
@@ -237,17 +233,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       }),
       // filter(route => route.outlet === 'primary'),
       filter(route => route.data != null),
-      mergeMap(route => route.data)
+      mergeMap(route => route.data),
+      tap(event => {
+      })
     ).subscribe((event) => {
       // 路由data的标题
       const menu = {...event};
       if (menu.key) {
-        if (this.tabs.filter(t=>t.key=='home').length<=0){
+        if (this.tabs.filter(t => t.key == 'home').length <= 0) {
           this.router.navigate(['/index', {outlets: {aux: 'home'}}]);
         }
         console.log(menu);
-        // menu.url = this.router.url;
-        // const url = menu.url;
         this.titleService.setTitle(menu.title); // 设置网页标题
         const exitMenu = this.tabs.find(info => info.key === menu.key);
         if (!exitMenu) {// 如果不存在那么不添加，
@@ -285,67 +281,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.open(url);
   }
 
-  //右上用户列表选项，新增或激活tab页
-  // optionClick(key: string) {
-  //   this.router.navigate([{outlets:{aux:key}}]);
-  //   // this.active = key;
-  //   // var obj = JSON.parse(JSON.stringify(this.optionsAll.filter(n => n.key === key)[0]));
-  //   // this.tabIndex = this.tabs.map(function (e) {
-  //   //   return e.key;
-  //   // }).indexOf(obj.key) >= 0 ? this.tabs.map(function (e) {
-  //   //   return e.key;
-  //   // }).indexOf(obj.key) : this.tabs.push(obj) - 1;
-  // }
-
-  // menuClick(node) {
-  //   this.router.navigate([{outlets:{aux: node.url}}]);
-  // }
-
   //点击tab页签事件
   selectChange($event) {
     this.tabIndex = $event.index;
     // 跳转路由
     this.router.navigate(['/index', {outlets: {aux: this.tabs[this.tabIndex].key}}]);
-    // this.tabIndex = this.tabs.map(t => t['key']).indexOf(key);
-    // let tab = this.tabs[this.tabIndex];
-    // this.active = key;
-    // this.indexFlag = this.indexFlag > 100 ? 0 : this.indexFlag + 1;
-    // this.findNode(this.nodes, key);
   }
-
-  // //激活tab页变更后对应树节点响应
-  // findNode(nodes, key) {
-  //   nodes.forEach(node => {
-  //     if (!node.isLeaf) {
-  //       if (node.children.length > 0) {
-  //         this.findNode(node.children, key);
-  //       } else {
-  //         if (node.key == key) {
-  //           this.activedNode = node;
-  //           node.selected = true;
-  //           // console.log(this.nodes);
-  //         } else {
-  //           node.selected = false;
-  //         }
-  //       }
-  //     } else if (node.isLeaf) {
-  //       if (node.key == key) {
-  //         this.activedNode = node;
-  //         node.selected = true;
-  //         // console.log(this.nodes);
-  //       } else {
-  //         node.selected = false;
-  //       }
-  //     }
-  //   });
-  // }
-
-  //判断tab页是否已打开
-  // exist(key: string): boolean {
-  //   return this.tabs.map(function (e) {
-  //     return e.key;
-  //   }).indexOf(key) >= 0;
-  // }
 
   //切换选择 全部 收藏 共享
   menuSwitch(key: string) {
@@ -381,6 +322,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   nzEvent(event: NzFormatEmitEvent): void {
   }
 
+  //重新加载菜单
   reloadTree() {
     this.loading = true;
     this.nodes = JSON.parse(JSON.stringify(this.allNodes)); //深复制防联动
@@ -405,6 +347,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
+  //获取用户信息
   getUser() {
     this.key = this.url.key();
     console.log(this.key);
@@ -414,9 +357,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  //退出登录
   logout() {
     document.cookie = '';
-    window.location.href = '/';
+    window.location.href = '/login';
   }
 
 //同步设备列表
@@ -426,11 +370,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (element.opcstate == 'true') {
           this.OpcService.keepServerAlive(element).then(res => {
             if (res == 'False') {
-              element.opcstate == 'false';
+              element.opcstate = 'false';
               this.OpcService.updateService(element);
             }
           }, err => {
-            element.opcstate == 'false';
+            element.opcstate = 'false';
             this.OpcService.updateService(element);
           });
         }
@@ -443,65 +387,53 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     var cookie = document.cookie;
     if (!cookie) {
-      this.router.navigate(['/login']);
+      window.location.href = '/login';
     }
     if (cookie) {
       this.getUser();
       this.connectWs();
-      // this.tabs.push({
-      //     title: '首页',
-      //     key: '000',
-      //     expanded: false,
-      //     icon: 'home',
-      //     children: [],
-      //     isLeaf: false,
-      //     fav: true,
-      //     share: true,
-      //     url: 'home',
-      //   },
-      // );
-      setInterval(() => {
-        this.keepAlive();
-      }, 10000);
+      //opc设备检查
+      // setInterval(() => {
+      //   this.keepAlive();
+      // }, 10000);
       console.log('祝贺你喜提彩蛋！🍭\n欢迎来我公司搬砖😘\n发现有飘红请忍着🙃\n或者来我司自己改😁');
     }
   }
 
+  //消息通知ws
   connectWs() {
-    if (this.ws != null) {
+    this.closeWs();
+    this.ws = new WebSocket('ws://10.24.20.71:7777/notify');
+    this.ws.onmessage = (event) => {
+      this.notifList = JSON.parse(event.data);
+      this.notifcount = this.notifList.filter(l => l.new).length;
+    };
+}
+
+  closeWs() {
+    if (this.ws && this.ws.readyState == WebSocket.CONNECTING) {
       this.ws.close();
     }
-    var self = this;
-    this.ws = new WebSocket('ws://10.24.20.71:7777/notify');
-    this.ws.onopen = function (event) {
-    };
-    this.ws.onmessage = function (event) {
-
-      if (JSON.stringify(self.notifList) != event.data) {
-        console.log('update');
-        self.notifList = JSON.parse(event.data);
-        self.notifcount = self.notifList.filter(l => l.new).length;
-      }
-    };
   }
 
   ngOnDestroy(): void {
-    if (this.ws != null) {
-      this.ws.close();
-    }
+    this.closeWs();
   }
 
+  //tab右键下拉菜单
   contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
     this.dropdown = this.nzDropdownService.create($event, template);
     console.log(this.dropdown);
   }
 
+  //tab右键下拉菜单关闭
   close(): void {
     if (this.dropdown) {
       this.dropdown.close();
     }
   }
 
+  //tab右键展示下拉菜单
   tabRight(tab: any) {
     if (tab.key != '000') {
       if (this.tabIndex >= this.tabs.indexOf(tab)) {
@@ -525,7 +457,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.tabs.length <= 1) {
       return;
     }
-    SimpleReuseStrategy.deleteRouteSnapshot(tab.key);
+    console.log(tab);
     // 如果当前删除的对象是当前选中的，那么需要跳转
     if (this.tabIndex == this.tabs.indexOf(tab)) {
       if (this.tabIndex > 0) {
@@ -535,12 +467,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     this.tabs = this.tabs.filter(t => t != tab);
+    //变更路由会存储路由快照，延时删除
+    setTimeout(() => {
+      SimpleReuseStrategy.deleteRouteSnapshot(tab.key); //路由复用删除快照
+    }, 500);
   }
 
+  //关闭所有标签页，index除外
   closeAllTab() {
     this.tabs.forEach(t => {
-      if(t.key!='home') {
-      SimpleReuseStrategy.deleteRouteSnapshot(t.key);
+      if (t.key != 'home') {
+        //路由变更会存储快照，延时删除
+        setTimeout(() => {
+          SimpleReuseStrategy.deleteRouteSnapshot(t.key); //路由复用删除快照
+        }, 500);
       }
     });
     this.tabs = this.tabs.filter(t => t.key == 'home');

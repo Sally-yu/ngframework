@@ -35,8 +35,8 @@ import {CloudImageComponent} from './tabs/cloud-service/cloud-image/cloud-image.
 import {CloudDetailComponent} from './tabs/cloud-service/cloud-detail/cloud-detail.component';
 import {LoginComponent} from './login/login.component';
 import {SimpleReuseStrategy} from './service/SimpleReuseStrategy';
-import {IndexComponent} from './index/index.component';
 import {SafePipe} from './safe.pipe';
+import {IndexComponent} from './index/index.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -48,6 +48,7 @@ registerLocaleData(zh);
 const routes: Routes = [
   {path:'',redirectTo:'index',pathMatch:'full'},
   {path: 'index', component: HomeComponent,children:[
+      {path:'',redirectTo:'home',pathMatch:'full'},
       {path:'home',component:IndexComponent,data:{key:'home',title:'首页'},outlet:'aux'},
 
       {path:'devicecard',loadChildren:'./tabs/device-mgr/device-card/device-card.module#DeviceCardModule',data:{key:'devicecard',title:'设备监控'},outlet:'aux'},
@@ -81,8 +82,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     HomeComponent,
-    IndexComponent,
     SafePipe,
+    IndexComponent,
     LoginComponent,
     AlarmMgrComponent,
     AlarmStrategyListComponent,

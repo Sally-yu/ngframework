@@ -9,7 +9,7 @@
           <label>
             <input type="text" nz-input placeholder="搜索关键字" [(ngModel)]="searchValue" (ngModelChange)="search()">
           </label>
-          <button nz-button (click)="getList()" nzType="primary">刷新</button>
+          <button nz-button (click)="connectWs()" nzType="primary">刷新</button>
         </div>
         <nz-table #list [nzData]="notifList" [nzLoading]="loading" [nzPageSize]="5">
           <thead>

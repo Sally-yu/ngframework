@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {DeviceService} from '../../../device.service';
 import {ResizeSensor} from 'css-element-queries';
 
@@ -10,10 +10,8 @@ declare var echarts: any; //angular方式引用echarts做循环处理性能奇�
   templateUrl: './device-card.component.html',
   styleUrls: ['./device-card.component.less']
 })
-export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
+export class DeviceCardComponent implements AfterViewInit, OnDestroy {
   ws: WebSocket;
-
-  @Input() flag;
 
   deviceList = [];
   loading = false;
@@ -244,24 +242,19 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.loading = true;
-    this.getList();
-  }
-
   connectWs() {
     this.closeWS();
-    var self = this;
     this.ws = new WebSocket(this.deviceService.wsUrl);
-    this.ws.onopen = function (event) {
-      self.ws.send(JSON.stringify({
-        keys: self.keys,
-        time: self.interval
+    this.ws.onopen = (event) => {
+      this.ws.send(JSON.stringify({
+        keys: this.keys,
+        time: this.interval
       }));
     };
-    this.ws.onmessage = function (event) {
-      self.attValue = JSON.parse(event.data);
-      self.chartOption();
+    this.ws.onmessage = (event) => {
+      console.log('ws message');
+      this.attValue = JSON.parse(event.data);
+      this.chartOption();
     };
   }
 
@@ -279,19 +272,19 @@ export class DeviceCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   closeWS() {
-    if (this.ws) {
+    //关闭已连接的ws
+    if (this.ws && this.ws.readyState == WebSocket.CONNECTING) {
+      console.log('closed');
       this.ws.close();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
+    this.getList();
   }
 
   ngOnDestroy(): void {
     this.closeWS();
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!this.deviceDetail && !this.deviceTable) {
-      this.getList();
-    }
-  }
-
 }
